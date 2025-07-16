@@ -41,21 +41,10 @@ const familyTreeData = {
         edit: { text: "Editar persona" },
         remove: { text: "Eliminar persona" },
     },
-    editForm: {
-        elements: [
-            { type: "textbox", label: "Nombre", binding: "nombre" },
-            { type: "textbox", label: "Año de nacimiento", binding: "nacimiento" },
-            {
-                type: "checkbox",
-                label: "¿Está en el grupo de WhatsApp?",
-                binding: "whatsapp"
-            }
-        ]
-    },
     nodeDetails: [
         { label: "Nombre", binding: "nombre" },
         { label: "Año de nacimiento", binding: "nacimiento" },
-        { label: "Género", binding: "genero" },
+        { label: "Género", binding: "genero" }
     ],
     filterBy: ['linea'],
     tags: {
