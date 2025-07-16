@@ -30,7 +30,7 @@ const FamilyTreeView = () => {
     FamilyTree.templates.hugo.field_1 =
       '<text data-width="230" style="font-size: 16px;" fill="#fff" x="125" y="65" text-anchor="middle">{val}</text>';
     FamilyTree.templates.hugo.field_2 =
-      '<text data-width="230" style="font-size: 14px;" fill="#fff" x="125" y="90" text-anchor="middle">{val}</text>';
+      '<text data-width="230" style="font-size: 14px;" fill="#fff" x="125" y="90" text-anchor="middle">Linea descendiente: {val}</text>';
 
     if (treeRef.current) {
       // Destruir instancia anterior si existe y es válida
