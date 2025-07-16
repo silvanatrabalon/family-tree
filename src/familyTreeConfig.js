@@ -44,7 +44,7 @@ const familyTreeData = {
         { label: "Año de nacimiento", binding: "nacimiento" },
         { label: "Género", binding: "genero" }
     ],
-    filterBy: ['linea'],
+    filterBy: ['tags'],
     tags: {
         filter: {
             template: 'hugo' // or your custom template
@@ -54,6 +54,10 @@ const familyTreeData = {
         zoom: true,
         fit: true,
     },
+  menu: {
+        pdf: { text: "Exportar documento PDF" },
+        png: { text: "Exportar imagen PNG" },
+    }  
 };
 
 export default familyTreeData;

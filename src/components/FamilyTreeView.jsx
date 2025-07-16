@@ -11,7 +11,6 @@ const FamilyTreeView = () => {
     FamilyTree.SEARCH_PLACEHOLDER = "Buscar persona...";
     FamilyTree.filterUI.textFilterBy = "Filtrar por";
     FamilyTree.filterUI.all = "[Todos]";
-
     // Definir plantilla minimizada si no existe
     if (!FamilyTree.templates.hugo.min) {
       const base = FamilyTree.templates.hugo;
