@@ -1,34 +1,7 @@
+import nodes from "./nodes";
+
 const familyTreeData = {
-    nodes: [
-        {
-            id: 1,
-            pids: [2],
-            nombre: "Juan",
-            genero: "masculino",
-            nacimiento: "1950",
-            Descendientes: ["8"],
-            tags: ["Descendientes", "8"]
-        },
-        {
-            id: 2,
-            pids: [1],
-            nombre: "Maria",
-            genero: "femenino",
-            nacimiento: "1952",
-            Descendientes: ["6"],
-            tags: ["Descendientes", "6"]
-        },
-        {
-            id: 3,
-            mid: 2,
-            fid: 1,
-            nombre: "Luis",
-            genero: "masculino",
-            nacimiento: "1975",
-            Descendientes: ["1"],
-            tags: ["Descendientes", "1"]
-        },
-    ],
+    nodes,
     nodeBinding: {
         field_0: "nombre",
         field_1: "nacimiento",
