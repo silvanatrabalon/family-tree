@@ -32,6 +32,7 @@ const familyTreeData = {
     nodeBinding: {
         field_0: "nombre",
         field_1: "nacimiento",
+        field_2: "linea"
     },
     template: "hugo",
     enableEditForm: true,
