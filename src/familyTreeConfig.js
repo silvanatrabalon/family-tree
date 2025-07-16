@@ -48,10 +48,14 @@ const familyTreeData = {
     ],
     filterBy: ['linea'],
     tags: {
-    filter: {
-        template: 'hugo' // or your custom template
-    }
-},
+        filter: {
+            template: 'hugo' // or your custom template
+        }
+    },
+    toolbar: {
+        zoom: true,
+        fit: true,
+    },
 };
 
 export default familyTreeData;
