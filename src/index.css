@@ -1,12 +1,12 @@
-/* FamilyTreeJS node color by tag (1-8) - use escaped class names for numbers */
-svg.hugo .node.\31 >rect { fill: #4CAF50 !important; }   /* green */
-svg.hugo .node.\32 >rect { fill: #F44336 !important; }   /* red */
-svg.hugo .node.\33 >rect { fill: #2196F3 !important; }   /* blue */
-svg.hugo .node.\34 >rect { fill: #FFEB3B !important; }   /* yellow */
-svg.hugo .node.\35 >rect { fill: #9C27B0 !important; }   /* purple */
-svg.hugo .node.\36 >rect { fill: #FF9800 !important; }   /* orange */
-svg.hugo .node.\37 >rect { fill: #009688 !important; }   /* teal */
-svg.hugo .node.\38 >rect { fill: #795548 !important; }   /* brown */
+/* FamilyTreeJS node color by Descendientes value (1-8) - use escaped class names for numbers */
+svg.hugo .node.Descendientes.\31 > rect { fill: #4CAF50 !important; }   /* green */
+svg.hugo .node.Descendientes.\32 > rect { fill: #F44336 !important; }   /* red */
+svg.hugo .node.Descendientes.\33 > rect { fill: #2196F3 !important; }   /* blue */
+svg.hugo .node.Descendientes.\34 > rect { fill: #FFEB3B !important; }   /* yellow */
+svg.hugo .node.Descendientes.\35 > rect { fill: #9C27B0 !important; }   /* purple */
+svg.hugo .node.Descendientes.\36 > rect { fill: #FF9800 !important; }   /* orange */
+svg.hugo .node.Descendientes.\37 > rect { fill: #009688 !important; }   /* teal */
+svg.hugo .node.Descendientes.\38 > rect { fill: #795548 !important; }   /* brown */
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

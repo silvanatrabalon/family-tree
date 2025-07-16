@@ -6,7 +6,8 @@ const familyTreeData = {
             nombre: "Juan",
             genero: "masculino",
             nacimiento: "1950",
-            tags: ["8"]
+            Descendientes: ["8"],
+            tags: ["Descendientes", "8"]
         },
         {
             id: 2,
@@ -14,7 +15,8 @@ const familyTreeData = {
             nombre: "Maria",
             genero: "femenino",
             nacimiento: "1952",
-            tags: ["6"]
+            Descendientes: ["6"],
+            tags: ["Descendientes", "6"]
         },
         {
             id: 3,
@@ -23,13 +25,14 @@ const familyTreeData = {
             nombre: "Luis",
             genero: "masculino",
             nacimiento: "1975",
-            tags: ["1"]
+            Descendientes: ["1"],
+            tags: ["Descendientes", "1"]
         },
     ],
     nodeBinding: {
         field_0: "nombre",
         field_1: "nacimiento",
-        field_2: "tags"
+        field_2: "Descendientes"
     },
     template: "hugo",
     enableEditForm: true,
@@ -44,12 +47,7 @@ const familyTreeData = {
         { label: "Año de nacimiento", binding: "nacimiento" },
         { label: "Género", binding: "genero" }
     ],
-    filterBy: ['tags'],
-    tags: {
-        filter: {
-            template: 'hugo' // or your custom template
-        }
-    },
+    filterBy: ['Descendientes'],
     toolbar: {
         zoom: true,
         fit: true,
