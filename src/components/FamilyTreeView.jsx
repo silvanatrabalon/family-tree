@@ -8,6 +8,8 @@ const FamilyTreeView = () => {
 
   useEffect(() => {
     FamilyTree.SEARCH_PLACEHOLDER = "Buscar persona...";
+    FamilyTree.filterUI.textFilterBy = 'Filtrar por';
+    FamilyTree.filterUI.all = '[Todos]'
     if (treeRef.current && !treeInstance.current) {
       treeInstance.current = new FamilyTree(treeRef.current, familyTreeData);
     }
