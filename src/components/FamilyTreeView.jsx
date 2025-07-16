@@ -18,7 +18,7 @@ const FamilyTreeView = () => {
       const min = Object.assign({}, base);
       min.size = [250, 60];
         min.field_0 =
-        '<text data-width="230" style="font-size: 18px;" fill="#000000" x="125" y="40" text-anchor="middle">{val}</text>';
+        '<text data-width="230" style="font-size: 18px;" fill="#fff" x="125" y="40" text-anchor="middle">{val}</text>';
 
       min.field_1 = "";
       FamilyTree.templates.hugo.min = min;
@@ -67,7 +67,7 @@ const FamilyTreeView = () => {
     };
   }, []);
 
-  return <div ref={treeRef} style={{ width: "100%", height: "90vh" }} />;
+  return <div ref={treeRef}  />;
 };
 
 export default FamilyTreeView;
