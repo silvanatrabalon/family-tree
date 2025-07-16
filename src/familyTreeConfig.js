@@ -6,8 +6,7 @@ const familyTreeData = {
             nombre: "Juan",
             genero: "masculino",
             nacimiento: "1950",
-            linea: "1",
-            tags: ["green"]
+            tags: ["8"]
         },
         {
             id: 2,
@@ -15,8 +14,7 @@ const familyTreeData = {
             nombre: "Maria",
             genero: "femenino",
             nacimiento: "1952",
-            linea: "2",
-            tags: ["red"]
+            tags: ["6"]
         },
         {
             id: 3,
@@ -25,14 +23,13 @@ const familyTreeData = {
             nombre: "Luis",
             genero: "masculino",
             nacimiento: "1975",
-            linea: "1",
-            tags: ["green"]
+            tags: ["1"]
         },
     ],
     nodeBinding: {
         field_0: "nombre",
         field_1: "nacimiento",
-        field_2: "linea"
+        field_2: "tags"
     },
     template: "hugo",
     enableEditForm: true,
