@@ -1,3 +1,10 @@
+/* FamilyTreeJS node color by tree number */
+svg.hugo .node.green>rect {
+  fill: #4CAF50 !important;
+}
+svg.hugo .node.red>rect {
+  fill: #F44336 !important;
+}
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

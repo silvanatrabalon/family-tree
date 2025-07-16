@@ -9,7 +9,6 @@ const FamilyTreeView = () => {
   useEffect(() => {
     FamilyTree.SEARCH_PLACEHOLDER = "Buscar persona...";
     if (treeRef.current && !treeInstance.current) {
-        console.log("Config FamilyTree:", familyTreeData);
       treeInstance.current = new FamilyTree(treeRef.current, familyTreeData);
     }
 
