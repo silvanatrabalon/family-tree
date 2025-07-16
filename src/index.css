@@ -65,3 +65,8 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.filter rect, .filter image, .filter text, .filter use {
+  filter: blur(4px);
+  opacity: 0.5;
+}
