@@ -26,7 +26,6 @@ const nodes = [
         nombre: "Maria Inisida Fernandez Gonzalez",
         genero: "femenino",
         nacimiento: "1952",
-        Descendientes: ["6"],
         tags: ["Descendientes"]
     },
     {
@@ -36,7 +35,7 @@ const nodes = [
         nombre: numberToName["1"],
         genero: "femenino",
         nacimiento: "1900",
-        Descendientes: ["1"],
+        Descendientes: numberToName["1"],
         tags: ["Descendientes", "1"]
     },
     {
@@ -46,7 +45,7 @@ const nodes = [
         nombre: numberToName["2"],
         genero: "masculino",
         nacimiento: "1900",
-        Descendientes: ["2"],
+        Descendientes: numberToName["2"],
         tags: ["Descendientes", "2"]
     },
     {
@@ -56,7 +55,7 @@ const nodes = [
         nombre: numberToName["3"],
         genero: "masculino",
         nacimiento: "1900",
-        Descendientes: ["3"],
+        Descendientes: numberToName["3"],
         tags: ["Descendientes", "3"]
     },
     {
@@ -66,7 +65,7 @@ const nodes = [
         nombre: numberToName["4"],
         genero: "masculino",
         nacimiento: "1900",
-        Descendientes: ["4"],
+        Descendientes: numberToName["4"],
         tags: ["Descendientes", "4"]
     },
     {
@@ -76,7 +75,7 @@ const nodes = [
         nombre: numberToName["5"],
         genero: "masculino",
         nacimiento: "1900",
-        Descendientes: ["5"],
+        Descendientes: numberToName["5"],
         tags: ["Descendientes", "5"]
     },
     {
@@ -86,7 +85,7 @@ const nodes = [
         nombre: numberToName["6"],
         genero: "femenino",
         nacimiento: "1900",
-        Descendientes: ["6"],
+        Descendientes: numberToName["6"],
         tags: ["Descendientes", "6"]
     },
     {
@@ -96,7 +95,7 @@ const nodes = [
         nombre: numberToName["7"],
         genero: "femenino",
         nacimiento: "1900",
-        Descendientes: ["7"],
+        Descendientes: numberToName["7"],
         tags: ["Descendientes", "7"]
     },
     {
@@ -106,7 +105,7 @@ const nodes = [
         nombre: numberToName["8"],
         genero: "masculino",
         nacimiento: "1900",
-        Descendientes: ["8"],
+        Descendientes: numberToName["8"],
         tags: ["Descendientes", "8"]
     },
     {
@@ -116,7 +115,7 @@ const nodes = [
         nombre: numberToName["9"],
         genero: "masculino",
         nacimiento: "1900",
-        Descendientes: ["9"],
+        Descendientes: numberToName["9"],
         tags: ["Descendientes", "9"]
     }
 
