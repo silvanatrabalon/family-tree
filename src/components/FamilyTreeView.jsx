@@ -18,7 +18,7 @@ const FamilyTreeView = () => {
           field_0: "name",
           field_1: "born"
         },
-        template: "john",
+        template: "hugo",
         enableEditForm: true
       });
     }
@@ -36,9 +36,7 @@ const FamilyTreeView = () => {
   }, []);
 
   return (
-    <div style={{ width: "100%", height: "600px" }}>
-      <div ref={treeRef} style={{ width: "100%", height: "100%" }} />
-    </div>
+      <div ref={treeRef} />
   );
 };
 
