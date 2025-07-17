@@ -1,4 +1,4 @@
-export async function fetchNodesFromSheet() {
+async function fetchNodesFromSheet() {
     const url = "https://sheets.googleapis.com/v4/spreadsheets/1_4ehjHFEK8IQEVo0JnyCYgEmbzNRl-Ez9aUpncANlRM/values/family-tree?alt=json&key=AIzaSyBDQFpGm89HcwUmzweaR4MQF04IWKvnXgk";
     const response = await fetch(url);
     const data = await response.json();
@@ -36,12 +36,33 @@ const familyTreeData = {
     },
     template: "hugo",
     enableEditForm: true,
-    nodeTreeMenu: true,
-    nodeMenu: {
-        details: { text: "Ver Detalles" },
-        edit: { text: "Editar persona" },
-        remove: { text: "Eliminar persona" },
-    },
+  nodeTreeMenu: true,
+  nodeMenu: {
+    add: { text: "Agregar persona" },
+    edit: { text: "Editar persona" },
+    remove: { text: "Eliminar persona" },
+    details: { text: "Ver Detalles" }
+  },
+  nodeDetails: [
+    { label: "Nombre", binding: "nombre" },
+    { label: "Año de nacimiento", binding: "nacimiento" },
+    { label: "Género", binding: "genero" }
+  ],
+  editForm: {
+    generateElementsFromFields: false,
+    fields: [
+      { type: "textbox", label: "Nombre", binding: "nombre" },
+      { type: "textbox", label: "Nacimiento", binding: "nacimiento" },
+      { type: "textbox", label: "Género", binding: "genero" },
+      { type: "textbox", label: "Descendientes", binding: "Descendientes" }
+    ],
+    buttons: {
+      edit: null,
+      share: null,
+      pdf: null
+    }
+  },
+
     nodeDetails: [
         { label: "Nombre", binding: "nombre" },
         { label: "Año de nacimiento", binding: "nacimiento" },
@@ -58,4 +79,4 @@ const familyTreeData = {
     }
 };
 
-export default familyTreeData;
+export { fetchNodesFromSheet, familyTreeData };
