@@ -2,7 +2,7 @@ import FamilyTree from "@balkangraph/familytree.js";
 import { hasDuplicateIds, hasSelfParenting } from "./treeUtils";
 import { fetchNodesFromSheet, familyTreeData } from "../familyTreeConfig";
 import { setupTreeTemplates } from "./treeTemplates";
-import { setupTreeEvents } from "./treeEvents";
+import { setupTreeEvents } from "./events/treeEvents";
 
 export async function initTree({ treeRef, treeInstance, setNodes }) {
   const fetchedNodes = await fetchNodesFromSheet();

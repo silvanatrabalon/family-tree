@@ -17,7 +17,7 @@ const FamilyTreeView = () => {
         }
       }
     };
-  }, []);
+  }, [treeRef, treeInstance, setNodes]);
 
   return <div ref={treeRef} />;
 };
