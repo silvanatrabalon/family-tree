@@ -8,14 +8,29 @@ const FamilyTreeView = () => {
   const [nodes, setNodes] = useState([]);
 
   useEffect(() => {
+    function hasDuplicateIds(nodes) {
+      const ids = nodes.map(n => n.id);
+      return ids.length !== new Set(ids).size;
+    }
+
+    function hasSelfParenting(nodes) {
+      return nodes.some(n => n.id === n.pid || (Array.isArray(n.pids) && n.pids.includes(n.id)));
+    }
+
     async function initTree() {
-      // 1. Obtener los nodos desde el backend
       const fetchedNodes = await fetchNodesFromSheet();
       setNodes(fetchedNodes);
 
-      // 2. Verificar que existe el contenedor
+      if (hasDuplicateIds(fetchedNodes)) {
+        console.error("❌ Data error: Duplicate node IDs detected.");
+        return;
+      }
+      if (hasSelfParenting(fetchedNodes)) {
+        console.error("❌ Data error: Self-parenting detected.");
+        return;
+      }
+
       if (treeRef.current && fetchedNodes.length > 0) {
-        // 3. Destruir instancia previa
         if (treeInstance.current?.destroy) {
           try {
             treeInstance.current.destroy();
@@ -24,12 +39,12 @@ const FamilyTreeView = () => {
           }
         }
 
-        // 4. Configurar textos y plantillas
         FamilyTree.SEARCH_PLACEHOLDER = "Buscar persona...";
         FamilyTree.filterUI.textFilterBy = "Filtrar por";
         FamilyTree.filterUI.all = "[Todos]";
         FamilyTree.filterUI.clear = "Limpiar filtro";
 
+        // Custom template min view
         if (!FamilyTree.templates.hugo.min) {
           const base = FamilyTree.templates.hugo;
           const min = { ...base };
@@ -41,6 +56,7 @@ const FamilyTreeView = () => {
           FamilyTree.templates.hugo.min = min;
         }
 
+        // Main template fields
         FamilyTree.templates.hugo.field_0 =
           '<text data-width="230" style="font-size: 18px;" fill="#fff" x="125" y="40" text-anchor="middle">{val}</text>';
         FamilyTree.templates.hugo.field_1 =
@@ -48,20 +64,25 @@ const FamilyTreeView = () => {
         FamilyTree.templates.hugo.field_2 =
           '<text data-width="230" style="font-size: 14px;" fill="#fff" x="125" y="90" text-anchor="middle">Linea descendiente: {val}</text>';
 
-        // 5. Crear nueva instancia del árbol
+        FamilyTree.templates.hugo.nodeCircleMenuButton = {
+          radius: 25,
+          x: 230,
+          y: 60,
+          color: '#fff',
+          stroke: '#aeaeae'
+        };
+
         try {
           treeInstance.current = new FamilyTree(treeRef.current, {
             ...familyTreeData,
             nodes: fetchedNodes,
             template: "hugo",
             min: true,
+            enableEditForm: true,
           });
 
-          console.log("✅ Árbol creado correctamente");
-
-          // 6. Listeners de eventos
+          // Click toggle min/max
           treeInstance.current.on("click", (sender, args) => {
-            console.log("🖱️ Click en nodo:", args.node);
             if (args?.node?.min) {
               sender.maximize(args.node.id);
             } else {
@@ -70,46 +91,65 @@ const FamilyTreeView = () => {
             return false;
           });
 
+          // Sync node changes
+          treeInstance.current.onUpdateNode(async (args) => {
+            // Add
+            if (args.addNodesData?.length) {
+              for (const node of args.addNodesData) {
+                const nodeData = { ...node };
+                if (Array.isArray(nodeData.tags)) nodeData.tags = JSON.stringify(nodeData.tags);
+                if (Array.isArray(nodeData.pids)) nodeData.pids = JSON.stringify(nodeData.pids);
+                await fetch("http://localhost:3001/api/add-node", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ nodeData }),
+                });
+              }
+            }
 
-          // Use 'update' event for both add and edit persistence
-          treeInstance.current.on("update", async (sender, args) => {
-            console.log("🔄 Update event fired:", args);
-            const node = args.node;
-            const nodeData = { ...node };
-            if (Array.isArray(nodeData.tags)) nodeData.tags = JSON.stringify(nodeData.tags);
-            if (Array.isArray(nodeData.pids)) nodeData.pids = JSON.stringify(nodeData.pids);
-            // If node.id exists in nodes, it's an edit; otherwise, it's an add
-            const existing = nodes.find(n => n.id === node.id);
-            if (existing) {
-              const rowIndex = nodes.findIndex(n => n.id === node.id) + 2;
-              await fetch("http://localhost:3001/api/update-node", {
+            // Update
+            if (args.updateNodesData?.length) {
+              for (const node of args.updateNodesData) {
+                const nodeData = { ...node };
+                if (Array.isArray(nodeData.tags)) nodeData.tags = JSON.stringify(nodeData.tags);
+                if (Array.isArray(nodeData.pids)) nodeData.pids = JSON.stringify(nodeData.pids);
+                const rowIndex = nodes.findIndex(n => String(n.id) === String(node.id)) + 2;
+                await fetch("http://localhost:3001/api/update-node", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ rowIndex, nodeData }),
+                });
+              }
+            }
+
+            // Delete
+            if (args.removeNodeId) {
+                console.error("❌ Nodo remove action");
+
+              const nodeIdToRemove = args.removeNodeId;
+              console.error("❌ Nodo remove ", nodeIdToRemove);
+              const allTreeNodes = treeInstance.current.config.nodes || [];
+              const nodeToDelete = allTreeNodes.find(n => String(n.id) === String(nodeIdToRemove));
+              console.log("Nodo a eliminar:", nodeToDelete);
+              if (!nodeToDelete) {
+                console.error("❌ Nodo a eliminar no encontrado:", nodeIdToRemove);
+                return;
+              }
+              const rowIndex = allTreeNodes.indexOf(nodeToDelete) + 2;
+              if (rowIndex <= 1 || isNaN(rowIndex)) {
+                console.error("❌ rowIndex inválido para delete:", rowIndex);
+                return;
+              }
+              await fetch("http://localhost:3001/api/delete-node", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ rowIndex, nodeData }),
-              });
-            } else {
-              await fetch("http://localhost:3001/api/add-node", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nodeData }),
+                body: JSON.stringify({ rowIndex }),
               });
             }
-            // Reload nodes
+
+            // Refresh UI
             const updatedNodes = await fetchNodesFromSheet();
             setNodes(updatedNodes);
-          });
-
-          treeInstance.current.on("remove", async (sender, args) => {
-            console.log("🗑️ Nodo eliminado:", args);
-            const node = args.node;
-            const rowIndex = fetchedNodes.findIndex(n => n.id === node.id) + 2;
-            await fetch("http://localhost:3001/api/delete-node", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ rowIndex }),
-            });
-            const updated = await fetchNodesFromSheet();
-            setNodes(updated);
           });
         } catch (error) {
           console.error("❌ Error al inicializar el árbol:", error);
