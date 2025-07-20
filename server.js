@@ -24,6 +24,16 @@ const auth = new google.auth.GoogleAuth({
 app.post('/api/update-node', async (req, res) => {
   try {
     const { rowIndex, nodeData } = req.body;
+    // Ensure tags is an array of strings
+    if (typeof nodeData.tags === 'string') {
+      nodeData.tags = nodeData.tags.split(',').map(tag => tag.trim());
+    }
+    if (!Array.isArray(nodeData.tags)) {
+      nodeData.tags = [];
+    }
+    // Stringify for Google Sheets
+    nodeData.tags = JSON.stringify(nodeData.tags);
+    console.log('[API] Update Node request:', { rowIndex, nodeData });
     const sheets = google.sheets({ version: 'v4', auth: await auth.getClient() });
     await sheets.spreadsheets.values.update({
       spreadsheetId: SPREADSHEET_ID,
@@ -31,8 +41,10 @@ app.post('/api/update-node', async (req, res) => {
       valueInputOption: 'RAW',
       requestBody: { values: [Object.values(nodeData)] },
     });
+    console.log('[API] Node updated successfully:', { rowIndex });
     res.json({ success: true });
   } catch (error) {
+    console.error('[API] Update Node error:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -41,6 +53,16 @@ app.post('/api/update-node', async (req, res) => {
 app.post('/api/add-node', async (req, res) => {
   try {
     const { nodeData } = req.body;
+    // Ensure tags is an array of strings
+    if (typeof nodeData.tags === 'string') {
+      nodeData.tags = nodeData.tags.split(',').map(tag => tag.trim());
+    }
+    if (!Array.isArray(nodeData.tags)) {
+      nodeData.tags = [];
+    }
+    // Stringify for Google Sheets
+    nodeData.tags = JSON.stringify(nodeData.tags);
+    console.log('[API] Add Node request:', { nodeData });
     const sheets = google.sheets({ version: 'v4', auth: await auth.getClient() });
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
@@ -49,8 +71,10 @@ app.post('/api/add-node', async (req, res) => {
       insertDataOption: 'INSERT_ROWS',
       requestBody: { values: [Object.values(nodeData)] },
     });
+    console.log('[API] Node added successfully');
     res.json({ success: true });
   } catch (error) {
+    console.error('[API] Add Node error:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -59,6 +83,7 @@ app.post('/api/add-node', async (req, res) => {
 app.post('/api/delete-node', async (req, res) => {
   try {
     const { rowIndex } = req.body;
+    console.log('[API] Delete Node request:', { rowIndex });
     const sheets = google.sheets({ version: 'v4', auth: await auth.getClient() });
     await sheets.spreadsheets.batchUpdate({
       spreadsheetId: SPREADSHEET_ID,
@@ -77,8 +102,10 @@ app.post('/api/delete-node', async (req, res) => {
         ],
       },
     });
+    console.log('[API] Node deleted successfully:', { rowIndex });
     res.json({ success: true });
   } catch (error) {
+    console.error('[API] Delete Node error:', error);
     res.status(500).json({ error: error.message });
   }
 });
