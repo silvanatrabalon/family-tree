@@ -3,9 +3,24 @@ import { hasDuplicateIds, hasSelfParenting } from "./treeUtils";
 import { fetchNodesFromSheet, familyTreeData } from "../familyTreeConfig";
 import { setupTreeTemplates } from "./treeTemplates";
 import { setupTreeEvents } from "./events/treeEvents";
-
+import { colorMap } from "../constant/const";
 export async function initTree({ treeRef, treeInstance, setNodes }) {
   const fetchedNodes = await fetchNodesFromSheet();
+  setTimeout(() => {
+    fetchedNodes.forEach((node) => {
+      const index = node.id - 2;
+      const colorKey = index.toString();
+      const color = colorMap[colorKey] || "#ccc";
+
+      const svgGroup = document.querySelector(`g[data-n-id="${node.id}"]`);
+      if (svgGroup) {
+        const rect = svgGroup.querySelector("rect");
+        if (rect) {
+          rect.setAttribute("fill", color);
+        }
+      }
+    });
+  }, 10);
   setNodes(fetchedNodes);
 
   if (hasDuplicateIds(fetchedNodes)) {
@@ -37,6 +52,16 @@ export async function initTree({ treeRef, treeInstance, setNodes }) {
         enableEditForm: true,
       });
       setupTreeEvents(treeInstance.current, setNodes, fetchedNodes);
+      treeInstance.current.on('redraw', () => {
+        console.log('[TreeInit] Render event triggered');
+        Object.values(treeInstance.current.nodes).forEach(node => {
+          const key = (node.id - 2).toString();
+          const rect = document.querySelector(`g[data-n-id="${node.id}"] rect`);
+          if (rect) rect.setAttribute('fill', colorMap[key] || '#ccc');
+        });
+      });
+
+
     } catch (error) {
       console.error("❌ Error al inicializar el árbol:", error);
     }
