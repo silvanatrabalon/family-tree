@@ -79,11 +79,32 @@ app.post('/api/add-node', async (req, res) => {
   }
 });
 
+const getSheetIdByName = async (sheetName) => {
+  const sheets = google.sheets({ version: 'v4', auth: await auth.getClient() });
+  const response = await sheets.spreadsheets.get({
+    spreadsheetId: SPREADSHEET_ID,
+  });
+
+  const sheet = response.data.sheets.find(s => s.properties.title === sheetName);
+  return sheet ? sheet.properties.sheetId : null;
+};
+
+
 // Delete a node (row) from the sheet
 app.post('/api/delete-node', async (req, res) => {
   try {
     const { rowIndex } = req.body;
-    console.log('[API] Delete Node request:', { rowIndex });
+        const sheetId = await getSheetIdByName(SHEET_NAME);
+
+    if (sheetId === null) {
+      throw new Error(`Sheet with name "${SHEET_NAME}" not found.`);
+    }
+    console.log("[API] DELETE from Google Sheets:", {
+      sheetId,
+      startIndex: rowIndex - 1,
+      endIndex: rowIndex
+    });
+
     const sheets = google.sheets({ version: 'v4', auth: await auth.getClient() });
     await sheets.spreadsheets.batchUpdate({
       spreadsheetId: SPREADSHEET_ID,
@@ -92,7 +113,7 @@ app.post('/api/delete-node', async (req, res) => {
           {
             deleteDimension: {
               range: {
-                sheetId: 0, // Usually 0 for the first sheet, you may need to adjust
+                sheetId: sheetId, // Usually 0 for the first sheet, you may need to adjust
                 dimension: 'ROWS',
                 startIndex: rowIndex - 1, // 0-based index
                 endIndex: rowIndex,
@@ -102,7 +123,6 @@ app.post('/api/delete-node', async (req, res) => {
         ],
       },
     });
-    console.log('[API] Node deleted successfully:', { rowIndex });
     res.json({ success: true });
   } catch (error) {
     console.error('[API] Delete Node error:', error);
