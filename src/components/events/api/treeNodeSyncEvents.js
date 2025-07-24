@@ -19,11 +19,7 @@ export function setupNodeSyncEvents(treeInstance, setNodes, fetchedNodes) {
       console.log('[NodeSyncEvents] Updating nodes:', args.updateNodesData);
       for (const node of args.updateNodesData) {
         await updateNode(node, fetchedNodes);
-
-        const index = node.id - 2;
-        const colorKey = index.toString();
-
-        const color = colorMap[colorKey] || '#ccc';
+        const color = colorMap[node.id] || '#ccc';
 
         const svgGroup = document.querySelector(`g[data-n-id="${node.id}"]`);
         if (svgGroup) {

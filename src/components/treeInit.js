@@ -8,10 +8,7 @@ export async function initTree({ treeRef, treeInstance, setNodes }) {
   const fetchedNodes = await fetchNodesFromSheet();
   setTimeout(() => {
     fetchedNodes.forEach((node) => {
-      const index = node.id - 2;
-      const colorKey = index.toString();
-      const color = colorMap[colorKey] || "#ccc";
-
+      const color = colorMap[node.id ] || "#ccc";
       const svgGroup = document.querySelector(`g[data-n-id="${node.id}"]`);
       if (svgGroup) {
         const rect = svgGroup.querySelector("rect");
@@ -62,9 +59,8 @@ treeInstance.current.on('redraw', () => {
   }
 
   Object.values(nodesObj).forEach(node => {
-    const key = (node.id - 2).toString();
     const rect = document.querySelector(`g[data-n-id="${node.id}"] rect`);
-    if (rect) rect.setAttribute('fill', colorMap[key] || '#ccc');
+    if (rect) rect.setAttribute('fill', colorMap[node.id] || '#ccc');
   });
 });
 
