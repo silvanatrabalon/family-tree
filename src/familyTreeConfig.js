@@ -47,7 +47,6 @@ async function fetchNodesFromSheet() {
 
     return obj;
   });
-  console.log('[fetchNodesFromSheet] Processed nodes:', nodes);
   return nodes;
 }
 const nodes = await fetchNodesFromSheet();

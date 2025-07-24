@@ -8,7 +8,7 @@ export async function initTree({ treeRef, treeInstance, setNodes }) {
   const fetchedNodes = await fetchNodesFromSheet();
   setTimeout(() => {
     fetchedNodes.forEach((node) => {
-      const color = colorMap[node.id ] || "#ccc";
+      const color = colorMap[node.id] || "#ccc";
       const svgGroup = document.querySelector(`g[data-n-id="${node.id}"]`);
       if (svgGroup) {
         const rect = svgGroup.querySelector("rect");
@@ -49,20 +49,18 @@ export async function initTree({ treeRef, treeInstance, setNodes }) {
         enableEditForm: true,
       });
       setupTreeEvents(treeInstance.current, setNodes, fetchedNodes);
-treeInstance.current.on('redraw', () => {
-  console.log('[TreeInit] Render event triggered');
-  
-  const nodesObj = treeInstance.current.nodes;
-  if (!nodesObj) {
-    console.warn('[TreeInit] treeInstance.current.nodes is undefined');
-    return;
-  }
+      treeInstance.current.on('redraw', () => {
+        const nodesObj = treeInstance.current.nodes;
+        if (!nodesObj) {
+          console.warn('[TreeInit] treeInstance.current.nodes is undefined');
+          return;
+        }
 
-  Object.values(nodesObj).forEach(node => {
-    const rect = document.querySelector(`g[data-n-id="${node.id}"] rect`);
-    if (rect) rect.setAttribute('fill', colorMap[node.id] || '#ccc');
-  });
-});
+        Object.values(nodesObj).forEach(node => {
+          const rect = document.querySelector(`g[data-n-id="${node.id}"] rect`);
+          if (rect) rect.setAttribute('fill', colorMap[node.id] || '#ccc');
+        });
+      });
 
 
 
