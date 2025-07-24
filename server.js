@@ -99,12 +99,6 @@ app.post('/api/delete-node', async (req, res) => {
     if (sheetId === null) {
       throw new Error(`Sheet with name "${SHEET_NAME}" not found.`);
     }
-    console.log("[API] DELETE from Google Sheets:", {
-      sheetId,
-      startIndex: rowIndex - 1,
-      endIndex: rowIndex
-    });
-
     const sheets = google.sheets({ version: 'v4', auth: await auth.getClient() });
     await sheets.spreadsheets.batchUpdate({
       spreadsheetId: SPREADSHEET_ID,

@@ -37,7 +37,7 @@ const familyTreeData = {
     field_2: "Descendientes"
   },
   template: "hugo",
-  // nodeTreeMenu: false, // este es el icono de
+  nodeTreeMenu: true, // este es el icono add
   filterBy: ['Descendientes'],
   toolbar: {
     zoom: true,
@@ -69,7 +69,6 @@ const familyTreeData = {
     ],
   },
   nodeMenu: {
-    add: { text: "Agregar" },
     edit: { text: "Editar" },
     remove: { text: "Eliminar" }
   },
