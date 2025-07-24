@@ -51,13 +51,15 @@ async function fetchNodesFromSheet() {
 }
 const nodes = await fetchNodesFromSheet();
 const familyTreeData = {
+  mode: 'dark',
   nodes,
+  mouseScrool: FamilyTree.action.ctrlZoom,
   nodeBinding: {
     field_0: "nombre",
     field_1: "nacimiento",
     field_2: "Descendientes"
   },
-  template: "hugo",
+  template: "myTemplate",
   nodeTreeMenu: true, // este es el icono add
   filterBy: ['Descendientes'],
   toolbar: {
