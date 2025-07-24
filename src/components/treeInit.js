@@ -52,14 +52,22 @@ export async function initTree({ treeRef, treeInstance, setNodes }) {
         enableEditForm: true,
       });
       setupTreeEvents(treeInstance.current, setNodes, fetchedNodes);
-      treeInstance.current.on('redraw', () => {
-        console.log('[TreeInit] Render event triggered');
-        Object.values(treeInstance.current.nodes).forEach(node => {
-          const key = (node.id - 2).toString();
-          const rect = document.querySelector(`g[data-n-id="${node.id}"] rect`);
-          if (rect) rect.setAttribute('fill', colorMap[key] || '#ccc');
-        });
-      });
+treeInstance.current.on('redraw', () => {
+  console.log('[TreeInit] Render event triggered');
+  
+  const nodesObj = treeInstance.current.nodes;
+  if (!nodesObj) {
+    console.warn('[TreeInit] treeInstance.current.nodes is undefined');
+    return;
+  }
+
+  Object.values(nodesObj).forEach(node => {
+    const key = (node.id - 2).toString();
+    const rect = document.querySelector(`g[data-n-id="${node.id}"] rect`);
+    if (rect) rect.setAttribute('fill', colorMap[key] || '#ccc');
+  });
+});
+
 
 
     } catch (error) {

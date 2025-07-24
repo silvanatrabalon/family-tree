@@ -24,25 +24,33 @@ const auth = new google.auth.GoogleAuth({
 app.post('/api/update-node', async (req, res) => {
   try {
     const { rowIndex, nodeData } = req.body;
-    // Ensure tags is an array of strings
-    if (typeof nodeData.tags === 'string') {
-      nodeData.tags = nodeData.tags.split(',').map(tag => tag.trim());
+
+    // Validar índice
+    if (!rowIndex || rowIndex < 2) {
+      return res.status(400).json({ error: "Invalid rowIndex" });
     }
-    if (!Array.isArray(nodeData.tags)) {
-      nodeData.tags = [];
-    }
-    // Stringify for Google Sheets
-    nodeData.tags = JSON.stringify(nodeData.tags);
-    console.log('[API] Update Node request:', { rowIndex, nodeData });
+
+    // Asegurar que el orden de columnas coincida con la hoja
+    const orderedValues = [
+      nodeData.id ?? '',
+      nodeData.pids ?? '',
+      nodeData.nombre ?? '',
+      nodeData.gender ?? '',
+      nodeData.fid ?? '',
+      nodeData.mid ?? ''
+    ];
+
     const sheets = google.sheets({ version: 'v4', auth: await auth.getClient() });
     await sheets.spreadsheets.values.update({
       spreadsheetId: SPREADSHEET_ID,
-      range: `${SHEET_NAME}!A${rowIndex}:Y${rowIndex}`,
+      range: `${SHEET_NAME}!A${rowIndex}:F${rowIndex}`,
       valueInputOption: 'RAW',
-      requestBody: { values: [Object.values(nodeData)] },
+      requestBody: { values: [orderedValues] },
     });
+
     console.log('[API] Node updated successfully:', { rowIndex });
     res.json({ success: true });
+
   } catch (error) {
     console.error('[API] Update Node error:', error);
     res.status(500).json({ error: error.message });
@@ -53,23 +61,23 @@ app.post('/api/update-node', async (req, res) => {
 app.post('/api/add-node', async (req, res) => {
   try {
     const { nodeData } = req.body;
-    // Ensure tags is an array of strings
-    if (typeof nodeData.tags === 'string') {
-      nodeData.tags = nodeData.tags.split(',').map(tag => tag.trim());
-    }
-    if (!Array.isArray(nodeData.tags)) {
-      nodeData.tags = [];
-    }
-    // Stringify for Google Sheets
-    nodeData.tags = JSON.stringify(nodeData.tags);
     console.log('[API] Add Node request:', { nodeData });
+    const orderedValues = [
+      nodeData.id ?? '',
+      nodeData.pids ?? '',
+      nodeData.nombre ?? '',
+      nodeData.gender ?? '',
+      nodeData.fid ?? '',
+      nodeData.mid ?? ''
+    ];
+
     const sheets = google.sheets({ version: 'v4', auth: await auth.getClient() });
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
       range: `${SHEET_NAME}!A1`,
       valueInputOption: 'RAW',
       insertDataOption: 'INSERT_ROWS',
-      requestBody: { values: [Object.values(nodeData)] },
+      requestBody: { values: [orderedValues] },
     });
     console.log('[API] Node added successfully');
     res.json({ success: true });

@@ -4,28 +4,50 @@ async function fetchNodesFromSheet() {
   const url = "https://sheets.googleapis.com/v4/spreadsheets/1_4ehjHFEK8IQEVo0JnyCYgEmbzNRl-Ez9aUpncANlRM/values/family-tree?alt=json&key=AIzaSyBDQFpGm89HcwUmzweaR4MQF04IWKvnXgk";
   const response = await fetch(url);
   const data = await response.json();
-  const rows = data.values;
-  const headers = rows[0];
-  const nodes = rows.slice(1).map(row => {
-    const node = {};
-    headers.forEach((header, i) => {
-      let value = row[i];
-      // Parse arrays from string
-      if (header === "pids" || header === "tags") {
+  const arrayDeArrays = data.values;
+
+ const headers = arrayDeArrays[0];
+  const rows = arrayDeArrays.slice(1);
+
+  // Índices de columnas relevantes
+  const idIndex = headers.indexOf("id");
+  const fidIndex = headers.indexOf("fid");
+  const midIndex = headers.indexOf("mid");
+  const pidsIndex = headers.indexOf("pids");
+
+  const nodes = rows.map(row => {
+    const obj = {};
+
+    headers.forEach((header, index) => {
+      let value = row[index];
+
+      if ((index === idIndex || index === fidIndex || index === midIndex) && value) {
         try {
-          value = JSON.parse(value);
-        } catch {
+          value = JSON.parse(value); // e.g. "_d0il" → _d0il
+        } catch (err) {
+          console.warn(`Error parsing ${header}:`, value);
+        }
+      }
+
+      if (index === pidsIndex) {
+        try {
+          value = value ? JSON.parse(value) : []; // Always return array
+        } catch (err) {
+          console.warn(`Error parsing pids:`, value);
           value = [];
         }
       }
-      // Parse numbers
-      if (["id", "fid", "mid"].includes(header)) {
-        value = value ? Number(value) : undefined;
-      }
-      node[header] = value;
+
+      obj[header] = value;
     });
-    return node;
+
+    // Map fid and mid to pid/mid for FamilyTree.js
+    // if (obj.fid) obj.pid = obj.fid;
+    // if (obj.mid) obj.mid = obj.mid;
+
+    return obj;
   });
+  console.log('[fetchNodesFromSheet] Processed nodes:', nodes);
   return nodes;
 }
 const nodes = await fetchNodesFromSheet();
