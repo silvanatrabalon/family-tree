@@ -16,6 +16,9 @@ export async function updateNode(node, fetchedNodes) {
     nodeData.pids = JSON.stringify(nodeData.pids); // convierte ["_42bq"] → "[\"_42bq\"]"
   }
 
+  if (nodeData.tags) {
+    nodeData.tags = JSON.stringify(nodeData.tags); // convierte ["tag1", "tag2"] → "[\"tag1\", \"tag2\"]"
+  }
   const rowIndex = fetchedNodes.findIndex(n => String(n.id) === String(node.id)) + 2;
   await fetch("http://localhost:3001/api/update-node", {
     method: "POST",

@@ -16,6 +16,9 @@ export async function addNode(node) {
   if (nodeData.pids) {
     nodeData.pids = JSON.stringify(nodeData.pids); // convierte ["_42bq"] → "[\"_42bq\"]"
   }
+  if (nodeData.tags) {
+    nodeData.tags = JSON.stringify(nodeData.tags); // convierte ["tag1", "tag2"] → "[\"tag1\", \"tag2\"]"
+  }
 
   await fetch("http://localhost:3001/api/add-node", {
     method: "POST",

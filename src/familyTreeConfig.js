@@ -14,6 +14,8 @@ async function fetchNodesFromSheet() {
   const fidIndex = headers.indexOf("fid");
   const midIndex = headers.indexOf("mid");
   const pidsIndex = headers.indexOf("pids");
+  const tagsIndex = headers.indexOf("tags");
+
 
   const nodes = rows.map(row => {
     const obj = {};
@@ -29,7 +31,7 @@ async function fetchNodesFromSheet() {
         }
       }
 
-      if (index === pidsIndex) {
+      if (index === pidsIndex || index === tagsIndex) {
         try {
           value = value ? JSON.parse(value) : []; // Always return array
         } catch (err) {
