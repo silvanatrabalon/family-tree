@@ -10,10 +10,7 @@ const Header = ({ currentView, onNavigateToTree, onNavigateToAdmin, onShowAdminL
       <div className="header-container">
         {/* Logo y título */}
         <div className="header-brand">
-          <div className="logo">
-            <span className="tree-icon">🌳</span>
-          </div>
-          <h1 className="app-title">Árbol Genealógico</h1>
+          <h1 className="app-title">Familia Meana</h1>
         </div>
 
         {/* Navegación principal */}
@@ -31,7 +28,7 @@ const Header = ({ currentView, onNavigateToTree, onNavigateToAdmin, onShowAdminL
             onClick={onNavigateToAdmin}
           >
             <span className="nav-icon">⚙️</span>
-            <span className="nav-text">Administrar</span>
+            <span className="nav-text">Modificar</span>
           </button>
         </nav>
 
@@ -40,15 +37,14 @@ const Header = ({ currentView, onNavigateToTree, onNavigateToAdmin, onShowAdminL
           {isAdminMode ? (
             <div className="admin-status">
               <span className="admin-badge">
-                <span className="admin-icon">👑</span>
                 <span>Admin</span>
               </span>
               <button 
                 className="logout-btn"
                 onClick={logout}
-                title="Cerrar sesión de administrador"
+                title="Salir de modo admin"
               >
-                <span className="logout-icon">🚪</span>
+                <span className="logout-icon">✕</span>
               </button>
             </div>
           ) : (

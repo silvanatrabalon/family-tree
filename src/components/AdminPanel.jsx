@@ -54,8 +54,7 @@ const AdminPanel = () => {
   return (
     <div className="admin-panel">
       <div className="admin-header">
-        <h2>Panel de Administración</h2>
-        <p className="admin-subtitle">Gestiona los miembros del árbol genealógico</p>
+        <h2>Modifica los miembros del árbol genealógico</h2>
       </div>
 
       <div className="admin-tabs">
