@@ -3,6 +3,7 @@ import { addNode } from "./events/api/addNode";
 import { addNodeWithRelationships } from "./events/api/addNodeWithRelationships";
 import { updateNode } from "./events/api/updateNode";
 import { getTagFromNodeData } from "../constant/getTag";
+import SearchableSelect from './SearchableSelect';
 import "./NodeForm.css";
 
 const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
@@ -241,23 +242,24 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
         return null;
     }
 
+    // Crear opciones para el SearchableSelect
+    const selectOptions = filteredNodes.map(node => ({
+      value: node.id,
+      label: `${node.nombre} (${node.gender === "male" ? "Hombre" : "Mujer"})`
+    }));
+
     return (
       <div className="form-group">
         <label htmlFor="relatedNodeId">{labelText}</label>
-        <select
+        <SearchableSelect
           id="relatedNodeId"
           name="relatedNodeId"
           value={formData.relatedNodeId}
           onChange={handleRelatedNodeChange}
+          options={selectOptions}
+          placeholder={`Buscar ${labelText.toLowerCase()}...`}
           required
-        >
-          <option value="">Seleccionar...</option>
-          {filteredNodes.map(node => (
-            <option key={node.id} value={node.id}>
-              {node.nombre} ({node.gender === "male" ? "Hombre" : "Mujer"})
-            </option>
-          ))}
-        </select>
+        />
       </div>
     );
   };

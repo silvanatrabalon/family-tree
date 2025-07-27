@@ -22,8 +22,14 @@
 
 .form-group input,
 .form-group select,
-.form-group textarea {
+.form-group textarea,
+.form-group .searchable-select {
   width: 100%;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
