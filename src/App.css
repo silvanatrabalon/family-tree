@@ -1,34 +1,82 @@
-html, body, #root {
+/* Reset y configuración base */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
   height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .App {
-  text-align: center;
-  padding: 20px;
-}
-
-.App h1 {
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.nav-controls {
-  margin-bottom: 20px;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f8faff 0%, #e8f2ff 100%);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
 }
 
-.admin-button {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 5px;
-  cursor: pointer;
+.main-content {
+  flex: 1;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Mejoras globales para botones */
+button {
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+button:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* Estilos para scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Mejoras responsive */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 15px;
+  }
+}
+
+/* Loader global */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #667eea;
   font-size: 16px;
-  transition: background-color 0.3s;
+  font-weight: 500;
+}
+
+.loading::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .admin-button:hover {

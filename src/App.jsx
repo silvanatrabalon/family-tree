@@ -2,36 +2,44 @@ import { useState } from 'react';
 import './App.css'
 import FamilyTreeView from "./components/FamilyTreeView";
 import AdminPanel from "./components/AdminPanel";
+import Header from "./components/Header";
+import Welcome from "./components/Welcome";
+import AdminLogin from "./components/AdminLogin";
 import { AdminProvider } from "./context/AdminContext";
 
 function App() {
   const [currentView, setCurrentView] = useState('tree'); // 'tree' or 'admin'
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
 
   const navigateToTree = () => setCurrentView('tree');
   const navigateToAdmin = () => setCurrentView('admin');
+  const handleShowAdminLogin = () => setShowAdminLogin(true);
+  const handleCloseAdminLogin = () => setShowAdminLogin(false);
 
   return (
     <AdminProvider>
       <div className="App">
-        <h1>Árbol Genealógico</h1>
+        <Header 
+          currentView={currentView}
+          onNavigateToTree={navigateToTree}
+          onNavigateToAdmin={navigateToAdmin}
+          onShowAdminLogin={handleShowAdminLogin}
+        />
         
-        {currentView === 'tree' && (
-          <div>
-            <div className="nav-controls">
-              <button 
-                className="admin-button" 
-                onClick={navigateToAdmin}
-              >
-                Panel de Administración
-              </button>
-            </div>
-            <FamilyTreeView />
-          </div>
-        )}
+        <main className="main-content">
+          {currentView === 'tree' && (
+            <>
+              <Welcome />
+              <FamilyTreeView />
+            </>
+          )}
+          {currentView === 'admin' && <AdminPanel />}
+        </main>
         
-        {currentView === 'admin' && (
-          <AdminPanel onNavigateToTree={navigateToTree} />
-        )}
+        <AdminLogin 
+          isOpen={showAdminLogin}
+          onClose={handleCloseAdminLogin}
+        />
       </div>
     </AdminProvider>
   );
