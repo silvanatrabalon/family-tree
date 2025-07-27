@@ -10,7 +10,7 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
   const [formData, setFormData] = useState({
     id: "",
     nombre: "",
-    gender: "male",
+    gender: "",
     nacimiento: "",
     fid: "",
     mid: "",
@@ -27,6 +27,51 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
 
   const [availableNodes, setAvailableNodes] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // Personalizar mensajes de validación HTML5
+  useEffect(() => {
+    const setCustomValidityMessages = () => {
+      const nombreInput = document.getElementById('nombre');
+      const genderSelect = document.getElementById('gender');
+      const relationshipSelect = document.getElementById('relationshipType');
+      
+      if (nombreInput) {
+        nombreInput.addEventListener('invalid', function() {
+          if (this.validity.valueMissing) {
+            this.setCustomValidity('Por favor ingrese el nombre completo');
+          }
+        });
+        nombreInput.addEventListener('input', function() {
+          this.setCustomValidity('');
+        });
+      }
+      
+      if (genderSelect) {
+        genderSelect.addEventListener('invalid', function() {
+          if (this.validity.valueMissing) {
+            this.setCustomValidity('Por favor seleccione el género');
+          }
+        });
+        genderSelect.addEventListener('change', function() {
+          this.setCustomValidity('');
+        });
+      }
+      
+      if (relationshipSelect) {
+        relationshipSelect.addEventListener('invalid', function() {
+          if (this.validity.valueMissing) {
+            this.setCustomValidity('Por favor seleccione el tipo de relación');
+          }
+        });
+        relationshipSelect.addEventListener('change', function() {
+          this.setCustomValidity('');
+        });
+      }
+    };
+
+    const timeoutId = setTimeout(setCustomValidityMessages, 100);
+    return () => clearTimeout(timeoutId);
+  }, [editNode]);
 
   useEffect(() => {
     if (editNode) {
@@ -125,6 +170,33 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validación personalizada en español
+    const errors = [];
+    
+    if (!formData.nombre.trim()) {
+      errors.push("El nombre es obligatorio");
+    }
+    
+    if (!formData.gender) {
+      errors.push("El género es obligatorio");
+    }
+    
+    if (!editNode) {
+      if (!formData.relationshipType) {
+        errors.push("El tipo de relación es obligatorio");
+      }
+      
+      if (!formData.relatedNodeId) {
+        errors.push("Debe seleccionar una persona relacionada");
+      }
+    }
+    
+    if (errors.length > 0) {
+      alert("Por favor complete los siguientes campos:\n\n• " + errors.join("\n• "));
+      return;
+    }
+    
     setLoading(true);
 
     try {
@@ -176,7 +248,7 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
         setFormData({
           id: "",
           nombre: "",
-          gender: "male",
+          gender: "",
           nacimiento: "",
           fid: "",
           mid: "",
@@ -205,13 +277,14 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
     
     return (
       <div className="form-group">
-        <label htmlFor="relationshipType">Tipo de Relación:</label>
+        <label htmlFor="relationshipType">Tipo de Relación: <span className="required">*</span></label>
         <select
           id="relationshipType"
           name="relationshipType"
           value={formData.relationshipType}
           onChange={handleRelationshipChange}
           required
+          title="Por favor seleccione el tipo de relación"
         >
           <option value="child">Hijo/a de...</option>
           <option value="spouse">Esposo/a de...</option>
@@ -229,14 +302,14 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
 
     switch (formData.relationshipType) {
       case "child":
-        labelText = "Seleccionar Padre/Madre:";
+        labelText = "Seleccionar Padre/Madre: *";
         break;
       case "spouse":
-        labelText = "Seleccionar Pareja:";
+        labelText = "Seleccionar Pareja: *";
         filteredNodes = availableNodes.filter(node => node.gender !== formData.gender);
         break;
       case "parent":
-        labelText = "Seleccionar Hijo/a:";
+        labelText = "Seleccionar Hijo/a: *";
         break;
       default:
         return null;
@@ -259,6 +332,7 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
           options={selectOptions}
           placeholder={`Buscar ${labelText.toLowerCase()}...`}
           required
+          title="Por favor seleccione una persona relacionada"
         />
       </div>
     );
@@ -268,9 +342,15 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
     <div className="node-form">
       <h3>{editNode ? "Editar Persona" : "Agregar Nueva Persona"}</h3>
       
+      {!editNode && (
+        <div className="form-info">
+          <p>Los campos marcados con <span className="required">*</span> son obligatorios</p>
+        </div>
+      )}
+      
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="nombre">Nombre Completo:</label>
+          <label htmlFor="nombre">Nombre Completo: <span className="required">*</span></label>
           <input
             type="text"
             id="nombre"
@@ -278,18 +358,22 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
             value={formData.nombre}
             onChange={handleInputChange}
             required
+            title="Por favor ingrese el nombre completo"
+            placeholder="Ingrese el nombre completo de la persona"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="gender">Género:</label>
+          <label htmlFor="gender">Género: <span className="required">*</span></label>
           <select
             id="gender"
             name="gender"
             value={formData.gender}
             onChange={handleInputChange}
             required
+            title="Por favor seleccione el género"
           >
+            <option value="">Seleccionar género...</option>
             <option value="male">Masculino</option>
             <option value="female">Femenino</option>
           </select>

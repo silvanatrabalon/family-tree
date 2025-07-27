@@ -8,7 +8,8 @@ const SearchableSelect = ({
   placeholder = "Buscar y seleccionar...", 
   name,
   id,
-  required = false 
+  required = false,
+  title = ""
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,16 +24,13 @@ const SearchableSelect = ({
 
   // Actualizar el valor mostrado cuando cambia el value desde afuera
   useEffect(() => {
-    console.log('useEffect - value changed:', value); // Debug
     if (value && options && options.length > 0) {
       const selectedOption = options.find(opt => opt.value === value);
       if (selectedOption) {
-        console.log('Setting display value to:', selectedOption.label); // Debug
         setDisplayValue(selectedOption.label);
         setSearchTerm('');
       }
     } else {
-      console.log('Clearing display value'); // Debug
       setDisplayValue('');
       setSearchTerm('');
     }
@@ -52,7 +50,6 @@ const SearchableSelect = ({
   }, []);
 
   const handleInputClick = () => {
-    console.log('Input clicked, current value:', value); // Debug
     setIsOpen(true);
     // Solo limpiar si no hay nada seleccionado
     if (!value) {
@@ -65,14 +62,11 @@ const SearchableSelect = ({
   };
 
   const handleInputChange = (e) => {
-    console.log('Input changed:', e.target.value); // Debug
     setSearchTerm(e.target.value);
     setIsOpen(true);
   };
 
   const handleOptionSelect = (option) => {
-    console.log('Selecting option:', option); // Debug
-    
     // Prevenir que se cierre inmediatamente por el evento blur
     setTimeout(() => {
       setDisplayValue(option.label);
@@ -81,7 +75,6 @@ const SearchableSelect = ({
       
       // Asegurar que el onChange se llame correctamente
       if (onChange) {
-        console.log('Calling onChange with:', { target: { name, value: option.value } }); // Debug
         onChange({ target: { name, value: option.value } });
       }
     }, 0);
@@ -144,6 +137,7 @@ const SearchableSelect = ({
           autoComplete="off"
           required={required && !value}
           readOnly={false}
+          title={title}
         />
         
         {value && (
