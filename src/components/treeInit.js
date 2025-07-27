@@ -6,6 +6,7 @@ import { setupTreeEvents } from "./events/treeEvents";
 import { colorMap } from "../constant/const";
 export async function initTree({ treeRef, treeInstance, setNodes }) {
   const fetchedNodes = await fetchNodesFromSheet();
+  
   setTimeout(() => {
     fetchedNodes.forEach((node) => {
       const color = colorMap[node.id] || "#ccc";
@@ -48,6 +49,7 @@ export async function initTree({ treeRef, treeInstance, setNodes }) {
         min: true,
         enableEditForm: true,
       });
+      
       setupTreeEvents(treeInstance.current, setNodes, fetchedNodes);
       treeInstance.current.on('redraw', () => {
         const nodesObj = treeInstance.current.nodes;

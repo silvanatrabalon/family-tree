@@ -1,19 +1,51 @@
 function serializeNodeForSheet(node) {
   const serialized = { ...node };
 
-  if (serialized.id) serialized.id = JSON.stringify(serialized.id);
-  if (serialized.fid) serialized.fid = JSON.stringify(serialized.fid);
-  if (serialized.mid) serialized.mid = JSON.stringify(serialized.mid);
+  // Formatear según el patrón esperado: algunos campos como JSON strings, otros como strings normales
+  
+  // ID como JSON string
+  serialized.id = JSON.stringify(serialized.id || '');
+  
+  // pids como array JSON (o array vacío si no hay)
+  if (Array.isArray(serialized.pids)) {
+    serialized.pids = JSON.stringify(serialized.pids);
+  } else if (serialized.pids) {
+    // Si es string, convertir a array y luego a JSON
+    serialized.pids = JSON.stringify([serialized.pids]);
+  } else {
+    serialized.pids = JSON.stringify([]);
+  }
+  
+  // Campos simples como strings normales
+  serialized.nombre = serialized.nombre || '';
+  serialized.gender = serialized.gender || '';
+  
+  // fid y mid como JSON strings (pueden ser vacíos)
+  serialized.fid = JSON.stringify(serialized.fid || '');
+  serialized.mid = JSON.stringify(serialized.mid || '');
+  
+  serialized.nacimiento = serialized.nacimiento || '';
+  serialized.Descendientes = serialized.Descendientes || '';
+  
+  // tags como array JSON
+  if (Array.isArray(serialized.tags)) {
+    serialized.tags = JSON.stringify(serialized.tags);
+  } else if (serialized.tags) {
+    // Si es string CSV, convertir a array y luego a JSON
+    serialized.tags = JSON.stringify(serialized.tags.split(','));
+  } else {
+    serialized.tags = JSON.stringify([]);
+  }
+  
+  serialized.contacto = serialized.contacto || '';
+  serialized.detalles = serialized.detalles || '';
 
-  if (serialized.pids) serialized.pids = JSON.stringify(serialized.pids);
-  if (serialized.tags) serialized.tags = JSON.stringify(serialized.tags);
-
-  // Los booleanos se serializan como strings para Google Sheets
-  if (typeof serialized.whatsapp === 'boolean') serialized.whatsapp = serialized.whatsapp.toString();
-  if (typeof serialized.ha_sido_invitado === 'boolean') serialized.ha_sido_invitado = serialized.ha_sido_invitado.toString();
-  if (typeof serialized.confirmo_asistencia === 'boolean') serialized.confirmo_asistencia = serialized.confirmo_asistencia.toString();
-  if (typeof serialized.realizo_pago === 'boolean') serialized.realizo_pago = serialized.realizo_pago.toString();
-
+  // Los booleanos se mantienen como booleanos
+  serialized.whatsapp = serialized.whatsapp === true || serialized.whatsapp === 'true';
+  serialized.ha_sido_invitado = serialized.ha_sido_invitado === true || serialized.ha_sido_invitado === 'true';
+  serialized.confirmo_asistencia = serialized.confirmo_asistencia === true || serialized.confirmo_asistencia === 'true';
+  serialized.realizo_pago = serialized.realizo_pago === true || serialized.realizo_pago === 'true';
+  
   return serialized;
 }
 

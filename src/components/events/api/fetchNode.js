@@ -8,9 +8,22 @@ async function fetchNodesFromSheet() {
 
   const headers = arrayDeArrays[0];
   const rows = arrayDeArrays.slice(1);
-  const nodes = rows.map(row => deserializeNodeFromSheet(row, headers));
+  
+  const nodes = rows.map((row, index) => {
+    const node = deserializeNodeFromSheet(row, headers);
+    return node;
+  });
+  
+  // Filtrar nodos sin ID o con datos incompletos
+  const validNodes = nodes.filter((node, index) => {
+    const hasValidId = node.id && node.id !== '' && node.id !== 'undefined';
+    const hasValidName = node.nombre && node.nombre !== '';
+    const isValid = hasValidId && hasValidName;
+    
+    return isValid;
+  });
 
-  return nodes;
+  return validNodes;
 }
 
 export { fetchNodesFromSheet };

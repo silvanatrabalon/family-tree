@@ -1,8 +1,9 @@
 import FamilyTree from "@balkangraph/familytree.js";
 import { fetchNodesFromSheet } from "./components/events/api/fetchNode.js";
-const nodes = await fetchNodesFromSheet();
+
+// NO ejecutar fetchNodesFromSheet aquí - se ejecutará en treeInit.js
 const familyTreeData = {
-  nodes,
+  nodes: [], // Inicializar vacío, se poblará en treeInit.js
   mouseScrool: FamilyTree.action.ctrlZoom,
   nodeBinding: {
     field_0: "nombre",

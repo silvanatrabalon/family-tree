@@ -38,6 +38,11 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
 
   // Filtrar nodos por búsqueda, invitación y confirmación
   const filteredNodes = nodes.filter(node => {
+    // Verificar que el nodo y sus propiedades existan
+    if (!node || !node.nombre) {
+      return false;
+    }
+    
     const matchesSearch = node.nombre.toLowerCase().includes(searchTerm.toLowerCase());
     
     let matchesInvitation = true;

@@ -1,4 +1,6 @@
 // Delete node API logic
+import { API_CONFIG, makeApiRequest, makeExpressRequest } from "../../../utils/apiConfig";
+
 export async function deleteNode(nodeIdToRemove, treeInstance) {
   console.log('[deleteNode] Attempting to delete node:', nodeIdToRemove);
   const allTreeNodes = treeInstance.config.nodes || [];
@@ -16,11 +18,13 @@ export async function deleteNode(nodeIdToRemove, treeInstance) {
     return false;
   }
   console.log('[deleteNode] Sending delete request for rowIndex:', rowIndex);
-  await fetch("http://localhost:3001/api/delete-node", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ rowIndex }),
-  });
+  
+  if (API_CONFIG.USE_APPS_SCRIPT) {
+    await makeApiRequest('delete-node', { rowIndex });
+  } else {
+    await makeExpressRequest('/api/delete-node', { rowIndex });
+  }
+  
   console.log('[deleteNode] Delete request sent successfully for node:', nodeIdToRemove);
   return true;
 }
@@ -33,9 +37,9 @@ export async function deleteNodeFromAdmin(node, fetchedNodes) {
     throw new Error("Node not found in the list");
   }
 
-  await fetch("http://localhost:3001/api/delete-node", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ rowIndex }),
-  });
+  if (API_CONFIG.USE_APPS_SCRIPT) {
+    await makeApiRequest('delete-node', { rowIndex });
+  } else {
+    await makeExpressRequest('/api/delete-node', { rowIndex });
+  }
 }

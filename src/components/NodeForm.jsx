@@ -100,7 +100,21 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode =
   }, [nodes, formData.id]);
 
   const generateId = () => {
-    return "_" + Math.random().toString(36).substr(2, 4);
+    let newId;
+    let attempts = 0;
+    const maxAttempts = 10;
+    
+    do {
+      newId = "_" + Math.random().toString(36).substr(2, 4);
+      attempts++;
+    } while (nodes.some(node => node.id === newId) && attempts < maxAttempts);
+    
+    // Si después de 10 intentos aún hay duplicado, usar timestamp
+    if (attempts >= maxAttempts) {
+      newId = "_" + Date.now().toString(36).substr(-4);
+    }
+    
+    return newId;
   };
 
   const getTagFromRelatedNode = (relatedNodeId) => {
