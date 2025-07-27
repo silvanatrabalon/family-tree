@@ -24,7 +24,7 @@ const auth = new google.auth.GoogleAuth({
 app.post('/api/update-node', async (req, res) => {
   try {
     const { rowIndex, nodeData } = req.body;
-
+    console.log('[API] Update Node:', {  nodeData });
     // Validar índice
     if (!rowIndex || rowIndex < 2) {
       return res.status(400).json({ error: "Invalid rowIndex" });
@@ -33,14 +33,14 @@ app.post('/api/update-node', async (req, res) => {
     // Asegurar que el orden de columnas coincida con la hoja
     const orderedValues = [
       nodeData.id ?? '',
-      nodeData.pids ?? '',
+      nodeData.pids ,
       nodeData.nombre ?? '',
       nodeData.gender ?? '',
       nodeData.fid ?? '',
       nodeData.mid ?? '',
       nodeData.nacimiento ?? '',
       nodeData.Descendientes ?? '',
-      nodeData.tags ?? ''
+      JSON.stringify(nodeData.tags ?? [])
     ];
 
     const sheets = google.sheets({ version: 'v4', auth: await auth.getClient() });
@@ -50,8 +50,6 @@ app.post('/api/update-node', async (req, res) => {
       valueInputOption: 'RAW',
       requestBody: { values: [orderedValues] },
     });
-
-    console.log('[API] Node updated successfully:', { rowIndex });
     res.json({ success: true });
 
   } catch (error) {
@@ -64,7 +62,6 @@ app.post('/api/update-node', async (req, res) => {
 app.post('/api/add-node', async (req, res) => {
   try {
     const { nodeData } = req.body;
-    console.log('[API] Add Node request:', { nodeData });
     const orderedValues = [
       nodeData.id ?? '',
       nodeData.pids ?? '',
@@ -85,7 +82,6 @@ app.post('/api/add-node', async (req, res) => {
       insertDataOption: 'INSERT_ROWS',
       requestBody: { values: [orderedValues] },
     });
-    console.log('[API] Node added successfully');
     res.json({ success: true });
   } catch (error) {
     console.error('[API] Add Node error:', error);
@@ -133,7 +129,6 @@ app.post('/api/delete-node', async (req, res) => {
     });
     res.json({ success: true });
   } catch (error) {
-    console.error('[API] Delete Node error:', error);
     res.status(500).json({ error: error.message });
   }
 });

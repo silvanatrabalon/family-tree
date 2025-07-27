@@ -88,9 +88,9 @@ const familyTreeData = {
       { type: "textbox", label: "Fecha de nacimiento", binding: "nacimiento" },
       { type: "textbox", label: "Descendientes", binding: "Descendientes" },
       { type: "textbox", label: "ID", binding: "id", readonly: true },
-      { type: "textbox", label: "PID (Padre)", binding: "pid" },
-      { type: "textbox", label: "PIDs (Padres)", binding: "pids" },
-      { type: "textbox", label: "Tags", binding: "tags" },
+      { type: "textbox", label: "PID (Padre)", binding: "pid", readonly: true  },
+      { type: "textbox", label: "PIDs (Padres)", binding: "pids", readonly: true  },
+      // { type: "textbox", label: "Tags", binding: "tags" , readonly: true },
     ],
   },
   nodeMenu: {

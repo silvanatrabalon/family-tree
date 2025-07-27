@@ -1,5 +1,6 @@
 // Add node API logic
-export async function addNode(node) {
+import { getTag } from "../../../constant/getTag";
+export async function addNode(node, treeInstance) {
   const nodeData = { ...node };
 
   if (nodeData.id) {
@@ -16,6 +17,18 @@ export async function addNode(node) {
   if (nodeData.pids) {
     nodeData.pids = JSON.stringify(nodeData.pids); // convierte ["_42bq"] → "[\"_42bq\"]"
   }
+
+  // Prioridad: fid > mid > pids[0]
+  const pidsCheck = JSON.parse(nodeData.pids) || [];
+  const refId = pidsCheck[0]  || nodeData.mid || nodeData.fid ;
+  const tagNumber = getTag(refId);
+  if (tagNumber !== null) {
+    const tag = ["Descendientes", String(tagNumber)];
+    nodeData.tags = tag;
+  } else {
+    console.log("⚠️ No se pudo obtener tag de Descendientes para:", refId);
+  }
+
   if (nodeData.tags) {
     nodeData.tags = JSON.stringify(nodeData.tags); // convierte ["tag1", "tag2"] → "[\"tag1\", \"tag2\"]"
   }
