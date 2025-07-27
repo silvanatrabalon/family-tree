@@ -281,6 +281,45 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
           />
         </div>
 
+        {/* Solo mostrar información de relaciones en modo edición, sin permitir editar */}
+        {editNode && (
+          <div className="readonly-info">
+            <h4>Información de Relaciones (Solo lectura)</h4>
+            <div className="readonly-fields">
+              <div className="readonly-field">
+                <strong>ID:</strong> {editNode.id}
+              </div>
+              {editNode.fid && (
+                <div className="readonly-field">
+                  <strong>Padre:</strong> {nodes.find(n => n.id === editNode.fid)?.nombre || editNode.fid}
+                </div>
+              )}
+              {editNode.mid && (
+                <div className="readonly-field">
+                  <strong>Madre:</strong> {nodes.find(n => n.id === editNode.mid)?.nombre || editNode.mid}
+                </div>
+              )}
+              {editNode.pids && editNode.pids.length > 0 && (
+                <div className="readonly-field">
+                  <strong>Pareja(s):</strong> {editNode.pids.map(pid => 
+                    nodes.find(n => n.id === pid)?.nombre || pid
+                  ).join(", ")}
+                </div>
+              )}
+              {editNode.tags && (
+                <div className="readonly-field">
+                  <strong>Tags:</strong> {editNode.tags.join(", ")}
+                </div>
+              )}
+              {editNode.Descendientes && (
+                <div className="readonly-field">
+                  <strong>Descendientes:</strong> {editNode.Descendientes}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {getRelationshipOptions()}
         {getRelatedNodeOptions()}
 

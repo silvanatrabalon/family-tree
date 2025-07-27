@@ -24,31 +24,6 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
     node.nombre?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getRelationshipInfo = (node) => {
-    const relations = [];
-    
-    if (node.fid) {
-      const father = nodes.find(n => n.id === node.fid);
-      if (father) relations.push(`Padre: ${father.nombre}`);
-    }
-    
-    if (node.mid) {
-      const mother = nodes.find(n => n.id === node.mid);
-      if (mother) relations.push(`Madre: ${mother.nombre}`);
-    }
-    
-    if (node.pids && node.pids.length > 0) {
-      node.pids.forEach(pid => {
-        const partner = nodes.find(n => n.id === pid);
-        if (partner) {
-          relations.push(`Pareja: ${partner.nombre}`);
-        }
-      });
-    }
-    
-    return relations.length > 0 ? relations.join(", ") : "Sin relaciones";
-  };
-
   return (
     <div className="node-list">
       <div className="list-header">
@@ -72,46 +47,66 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
         />
       </div>
 
-      <div className="nodes-grid">
-        {filteredNodes.map(node => (
-          <div key={node.id} className="node-card">
-            <div className="node-header">
-              <h4>{node.nombre}</h4>
-              <span className={`gender-badge ${node.gender}`}>
-                {node.gender === "male" ? "♂" : "♀"}
-              </span>
-            </div>
-            
-            <div className="node-details">
-              <p><strong>ID:</strong> {node.id}</p>
-              <p><strong>Género:</strong> {node.gender === "male" ? "Masculino" : "Femenino"}</p>
-              {node.nacimiento && (
-                <p><strong>Nacimiento:</strong> {node.nacimiento}</p>
-              )}
-              {node.Descendientes && (
-                <p><strong>Descendientes:</strong> {node.Descendientes}</p>
-              )}
-              <p><strong>Tags:</strong> {node.tags ? node.tags.join(", ") : "Sin tags"}</p>
-              <p><strong>Relaciones:</strong> {getRelationshipInfo(node)}</p>
-            </div>
+      <div className="table-container">
+        <table className="nodes-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Género</th>
+              <th>Nacimiento</th>
+              <th>Padre</th>
+              <th>Madre</th>
+              <th>Pareja(s)</th>
+              <th>Descendiente de</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredNodes.map(node => {
+              const father = node.fid ? nodes.find(n => n.id === node.fid) : null;
+              const mother = node.mid ? nodes.find(n => n.id === node.mid) : null;
+              const partners = node.pids ? node.pids.map(pid => 
+                nodes.find(n => n.id === pid)?.nombre || pid
+              ).join(", ") : "";
 
-            <div className="node-actions">
-              <button 
-                onClick={() => onEditNode(node)}
-                className="edit-button"
-              >
-                Editar
-              </button>
-              <button 
-                onClick={() => handleDelete(node)}
-                className="delete-button"
-                disabled={loading}
-              >
-                Eliminar
-              </button>
-            </div>
-          </div>
-        ))}
+              return (
+                <tr key={node.id}>
+                  <td className="name-cell">
+                    <div className="name-with-gender">
+                      <span className="name">{node.nombre}</span>
+                      <span className={`gender-icon ${node.gender}`}>
+                        {node.gender === "male" ? "♂" : "♀"}
+                      </span>
+                    </div>
+                  </td>
+                  <td>{node.gender === "male" ? "Masculino" : "Femenino"}</td>
+                  <td>{node.nacimiento || "-"}</td>
+                  <td>{father ? father.nombre : "-"}</td>
+                  <td>{mother ? mother.nombre : "-"}</td>
+                  <td>{partners || "-"}</td>
+                  <td>{node.Descendientes || "-"}</td>
+                  <td className="actions-cell">
+                    <button 
+                      onClick={() => onEditNode(node)}
+                      className="edit-button"
+                      title="Editar"
+                    >
+                      ✏️
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(node)}
+                      className="delete-button"
+                      disabled={loading}
+                      title="Eliminar"
+                    >
+                      🗑️
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
 
       {filteredNodes.length === 0 && (
