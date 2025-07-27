@@ -125,7 +125,8 @@
 }
 
 .actions-cell .edit-button,
-.actions-cell .delete-button {
+.actions-cell .delete-button,
+.actions-cell .view-button {
   padding: 6px;
   margin: 0 2px;
   border: none;
@@ -135,6 +136,14 @@
   transition: background-color 0.3s;
   min-width: 32px;
   height: 32px;
+}
+
+.actions-cell .view-button {
+  background-color: #007bff;
+}
+
+.actions-cell .view-button:hover {
+  background-color: #0056b3;
 }
 
 .actions-cell .edit-button {

@@ -1,10 +1,23 @@
 import { useState } from "react";
 import { deleteNodeFromAdmin } from "./events/api/deleteNode";
+import NodeDetailsModal from './NodeDetailsModal';
 import "./NodeList.css";
 
 const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedNode, setSelectedNode] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewNode = (node) => {
+    setSelectedNode(node);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedNode(null);
+  };
 
   const handleDelete = async (node) => {
     if (window.confirm(`¿Estás seguro de que quieres eliminar a ${node.nombre}?`)) {
@@ -52,14 +65,9 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
           <thead>
             <tr>
               <th>Nombre</th>
-              <th>Género</th>
               <th>Nacimiento</th>
-              <th>Padre</th>
-              <th>Madre</th>
-              <th>Pareja(s)</th>
               <th>Descendiente de</th>
               <th>Contacto</th>
-              <th>Detalles</th>
               <th>WhatsApp</th>
               <th>Invitado</th>
               <th>Confirmó</th>
@@ -68,12 +76,6 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
           </thead>
           <tbody>
             {filteredNodes.map(node => {
-              const father = node.fid ? nodes.find(n => n.id === node.fid) : null;
-              const mother = node.mid ? nodes.find(n => n.id === node.mid) : null;
-              const partners = node.pids ? node.pids.map(pid => 
-                nodes.find(n => n.id === pid)?.nombre || pid
-              ).join(", ") : "";
-
               return (
                 <tr key={node.id}>
                   <td className="name-cell">
@@ -84,20 +86,9 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
                       </span>
                     </div>
                   </td>
-                  <td>{node.gender === "male" ? "Masculino" : "Femenino"}</td>
                   <td>{node.nacimiento || "-"}</td>
-                  <td>{father ? father.nombre : "-"}</td>
-                  <td>{mother ? mother.nombre : "-"}</td>
-                  <td>{partners || "-"}</td>
                   <td>{node.Descendientes || "-"}</td>
                   <td>{node.contacto || "-"}</td>
-                  <td className="details-cell" title={node.detalles}>
-                    {node.detalles ? (
-                      node.detalles.length > 30 
-                        ? node.detalles.substring(0, 30) + "..." 
-                        : node.detalles
-                    ) : "-"}
-                  </td>
                   <td className="boolean-cell">
                     <span className={`status-badge ${node.whatsapp ? 'yes' : 'no'}`}>
                       {node.whatsapp ? '✅' : '❌'}
@@ -114,6 +105,13 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
                     </span>
                   </td>
                   <td className="actions-cell">
+                    <button 
+                      onClick={() => handleViewNode(node)}
+                      className="view-button"
+                      title="Ver más"
+                    >
+                      👁️
+                    </button>
                     <button 
                       onClick={() => onEditNode(node)}
                       className="edit-button"
@@ -142,6 +140,13 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
           <p>No se encontraron personas.</p>
         </div>
       )}
+
+      <NodeDetailsModal 
+        node={selectedNode}
+        nodes={nodes}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };
