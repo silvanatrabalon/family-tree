@@ -24,13 +24,10 @@ const auth = new google.auth.GoogleAuth({
 app.post('/api/update-node', async (req, res) => {
   try {
     const { rowIndex, nodeData } = req.body;
-    console.log('[API] Update Node:', {  nodeData });
-    // Validar índice
     if (!rowIndex || rowIndex < 2) {
       return res.status(400).json({ error: "Invalid rowIndex" });
     }
 
-    // Asegurar que el orden de columnas coincida con la hoja
     const orderedValues = [
       nodeData.id ?? '',
       nodeData.pids ,
@@ -40,7 +37,7 @@ app.post('/api/update-node', async (req, res) => {
       nodeData.mid ?? '',
       nodeData.nacimiento ?? '',
       nodeData.Descendientes ?? '',
-      JSON.stringify(nodeData.tags ?? [])
+      nodeData.tags ?? ''
     ];
 
     const sheets = google.sheets({ version: 'v4', auth: await auth.getClient() });

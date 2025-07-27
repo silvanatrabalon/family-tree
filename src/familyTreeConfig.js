@@ -1,56 +1,5 @@
 import FamilyTree from "@balkangraph/familytree.js";
-
-async function fetchNodesFromSheet() {
-  const url = "https://sheets.googleapis.com/v4/spreadsheets/1_4ehjHFEK8IQEVo0JnyCYgEmbzNRl-Ez9aUpncANlRM/values/family-tree?alt=json&key=AIzaSyBDQFpGm89HcwUmzweaR4MQF04IWKvnXgk";
-  const response = await fetch(url);
-  const data = await response.json();
-  const arrayDeArrays = data.values;
-
- const headers = arrayDeArrays[0];
-  const rows = arrayDeArrays.slice(1);
-
-  // Índices de columnas relevantes
-  const idIndex = headers.indexOf("id");
-  const fidIndex = headers.indexOf("fid");
-  const midIndex = headers.indexOf("mid");
-  const pidsIndex = headers.indexOf("pids");
-  const tagsIndex = headers.indexOf("tags");
-
-
-  const nodes = rows.map(row => {
-    const obj = {};
-
-    headers.forEach((header, index) => {
-      let value = row[index];
-
-      if ((index === idIndex || index === fidIndex || index === midIndex) && value) {
-        try {
-          value = JSON.parse(value); // e.g. "_d0il" → _d0il
-        } catch (err) {
-          console.warn(`Error parsing ${header}:`, value);
-        }
-      }
-
-      if (index === pidsIndex || index === tagsIndex) {
-        try {
-          value = value ? JSON.parse(value) : []; // Always return array
-        } catch (err) {
-          console.warn(`Error parsing pids:`, value);
-          value = [];
-        }
-      }
-
-      obj[header] = value;
-    });
-
-    // Map fid and mid to pid/mid for FamilyTree.js
-    // if (obj.fid) obj.pid = obj.fid;
-    // if (obj.mid) obj.mid = obj.mid;
-
-    return obj;
-  });
-  return nodes;
-}
+import { fetchNodesFromSheet } from "./components/events/api/fetchNode.js";
 const nodes = await fetchNodesFromSheet();
 const familyTreeData = {
   mode: 'dark',
@@ -88,8 +37,8 @@ const familyTreeData = {
       { type: "textbox", label: "Fecha de nacimiento", binding: "nacimiento" },
       { type: "textbox", label: "Descendientes", binding: "Descendientes" },
       { type: "textbox", label: "ID", binding: "id", readonly: true },
-      { type: "textbox", label: "PID (Padre)", binding: "pid", readonly: true  },
-      { type: "textbox", label: "PIDs (Padres)", binding: "pids", readonly: true  },
+      { type: "textbox", label: "PID (Padre)", binding: "pid", readonly: true },
+      { type: "textbox", label: "PIDs (Padres)", binding: "pids", readonly: true },
       // { type: "textbox", label: "Tags", binding: "tags" , readonly: true },
     ],
   },

@@ -11,7 +11,7 @@ export function setupNodeSyncEvents(treeInstance, setNodes, fetchedNodes) {
     // Add
     if (args.addNodesData?.length) {
       for (const node of args.addNodesData) {
-        await addNode(node, treeInstance);
+        await addNode(node);
       }
     }
 
