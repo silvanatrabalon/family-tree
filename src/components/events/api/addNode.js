@@ -1,15 +1,38 @@
-import { getTag } from "../../../constant/getTag";
+import { getTag, getTagFromNodeData } from "../../../constant/getTag";
 import { serializeNodeForSheet } from "../../../utils/serializeNodeForSheet";
 
-export async function addNode(node) {
+export async function addNode(node, nodes = null) {
   const nodeCopy = { ...node };
 
-  // Agrega tags ANTES de serializar
-  const pidsCheck = node.pids || [];
-  const refId = pidsCheck[0] || node.mid || node.fid;
-  const tagNumber = getTag(refId);
-  if (tagNumber !== null) {
-    nodeCopy.tags = ["Descendientes", String(tagNumber)];
+  // Solo procesar tags y Descendientes si no están ya definidos en el nodo
+  if (!nodeCopy.tags || !nodeCopy.Descendientes) {
+    const pidsCheck = node.pids || [];
+    const refId = pidsCheck[0] || node.mid || node.fid;
+    
+    let tagNumber = null;
+    let descendientes = node.nombre; // Default al nombre del nodo
+    
+    // Si tenemos los datos de los nodos (desde AdminPanel), usamos la función basada en datos
+    if (nodes && refId) {
+      tagNumber = getTagFromNodeData(refId, nodes);
+      
+      // Obtener Descendientes del nodo relacionado
+      const relatedNode = nodes.find(n => n.id === refId);
+      if (relatedNode && relatedNode.Descendientes) {
+        descendientes = relatedNode.Descendientes;
+      }
+    } else if (refId) {
+      // Si no tenemos datos, usamos la función DOM (para compatibilidad)
+      tagNumber = getTag(refId);
+    }
+    
+    if (tagNumber !== null && !nodeCopy.tags) {
+      nodeCopy.tags = ["Descendientes", String(tagNumber)];
+    }
+    
+    if (!nodeCopy.Descendientes) {
+      nodeCopy.Descendientes = descendientes;
+    }
   }
 
   // Serializa todo una sola vez

@@ -1,0 +1,75 @@
+.admin-panel {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.admin-header h2 {
+  color: #333;
+  margin: 0;
+}
+
+.nav-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+  background-color: #0056b3;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.tab {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 12px 24px;
+  border-radius: 5px 5px 0 0;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 14px;
+}
+
+.tab:hover {
+  background-color: #e9ecef;
+}
+
+.tab.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.admin-content {
+  background-color: #f8f9fa;
+  padding: 30px;
+  border-radius: 0 5px 5px 5px;
+  min-height: 400px;
+}
+
+.loading {
+  text-align: center;
+  font-size: 16px;
+  color: #666;
+  padding: 40px;
+}

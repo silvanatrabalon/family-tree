@@ -10,4 +10,14 @@ function getTag(id) {
     }
     return null; // Si no se encuentra el nodo o no tiene la clase esperada
 }
-export { getTag };
+
+// Función alternativa que trabaja con datos directamente
+function getTagFromNodeData(id, nodes) {
+    const node = nodes.find(n => n.id === id);
+    if (node && node.tags && node.tags.length >= 2) {
+        return parseInt(node.tags[1], 10);
+    }
+    return 0; // Tag por defecto
+}
+
+export { getTag, getTagFromNodeData };

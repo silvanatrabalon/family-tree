@@ -24,3 +24,18 @@ export async function deleteNode(nodeIdToRemove, treeInstance) {
   console.log('[deleteNode] Delete request sent successfully for node:', nodeIdToRemove);
   return true;
 }
+
+// Delete node from admin panel
+export async function deleteNodeFromAdmin(node, fetchedNodes) {
+  const rowIndex = fetchedNodes.findIndex(n => String(n.id) === String(node.id)) + 2;
+
+  if (rowIndex <= 1) {
+    throw new Error("Node not found in the list");
+  }
+
+  await fetch("http://localhost:3001/api/delete-node", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ rowIndex }),
+  });
+}
