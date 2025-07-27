@@ -5,7 +5,7 @@ import ModernHeaderStyled from "./components/ModernHeaderStyled";
 import LandingPageStyled from "./components/LandingPageStyled";
 import TestPage from "./components/TestPage";
 import Welcome from "./components/Welcome";
-import AdminLogin from "./components/AdminLogin";
+import AdminLoginStyled from "./components/AdminLoginStyled";
 import { AdminProvider } from "./context/AdminContext";
 
 function App() {
@@ -52,7 +52,7 @@ function App() {
           </>
         )}
         
-        <AdminLogin 
+        <AdminLoginStyled 
           isOpen={showAdminLogin}
           onClose={handleCloseAdminLogin}
         />
