@@ -42,13 +42,14 @@ app.post('/api/update-node', async (req, res) => {
       nodeData.detalles ?? '',
       nodeData.whatsapp ?? false,
       nodeData.ha_sido_invitado ?? false,
-      nodeData.confirmo_asistencia ?? false
+      nodeData.confirmo_asistencia ?? false,
+      nodeData.realizo_pago ?? false
     ];
 
     const sheets = google.sheets({ version: 'v4', auth: await auth.getClient() });
     await sheets.spreadsheets.values.update({
       spreadsheetId: SPREADSHEET_ID,
-      range: `${SHEET_NAME}!A${rowIndex}:N${rowIndex}`,
+      range: `${SHEET_NAME}!A${rowIndex}:O${rowIndex}`,
       valueInputOption: 'RAW',
       requestBody: { values: [orderedValues] },
     });
@@ -78,7 +79,8 @@ app.post('/api/add-node', async (req, res) => {
       nodeData.detalles ?? '',
       nodeData.whatsapp ?? false,
       nodeData.ha_sido_invitado ?? false,
-      nodeData.confirmo_asistencia ?? false
+      nodeData.confirmo_asistencia ?? false,
+      nodeData.realizo_pago ?? false
     ];
 
     const sheets = google.sheets({ version: 'v4', auth: await auth.getClient() });

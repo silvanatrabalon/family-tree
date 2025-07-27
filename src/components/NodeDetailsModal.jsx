@@ -95,6 +95,13 @@ const NodeDetailsModal = ({ node, nodes, isOpen, onClose }) => {
               </span>
             </div>
             
+            <div className="detail-item boolean-detail">
+              <label>Realizó el pago:</label>
+              <span className={`status-badge ${node.realizo_pago ? 'yes' : 'no'}`}>
+                {node.realizo_pago ? '✅ Sí' : '❌ No'}
+              </span>
+            </div>
+            
             {node.detalles && (
               <div className="detail-item full-width">
                 <label>Detalles:</label>

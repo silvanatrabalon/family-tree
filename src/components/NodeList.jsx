@@ -10,6 +10,7 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invitationFilter, setInvitationFilter] = useState("all"); // all, invited, confirmed, not-invited
   const [confirmationFilter, setConfirmationFilter] = useState("all"); // all, confirmed, not-confirmed
+  const [paymentFilter, setPaymentFilter] = useState("all"); // all, paid, not-paid
 
   const handleViewNode = (node) => {
     setSelectedNode(node);
@@ -53,7 +54,14 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
       matchesConfirmation = node.confirmo_asistencia === false;
     }
     
-    return matchesSearch && matchesInvitation && matchesConfirmation;
+    let matchesPayment = true;
+    if (paymentFilter === "paid") {
+      matchesPayment = node.realizo_pago === true;
+    } else if (paymentFilter === "not-paid") {
+      matchesPayment = node.realizo_pago === false;
+    }
+    
+    return matchesSearch && matchesInvitation && matchesConfirmation && matchesPayment;
   });
 
   return (
@@ -108,6 +116,20 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
           </select>
         </div>
 
+        <div className="filter-group">
+          <label htmlFor="payment-filter">Estado de pago:</label>
+          <select
+            id="payment-filter"
+            value={paymentFilter}
+            onChange={(e) => setPaymentFilter(e.target.value)}
+            className="filter-select"
+          >
+            <option value="all">Todos</option>
+            <option value="paid">Pagaron</option>
+            <option value="not-paid">No pagaron</option>
+          </select>
+        </div>
+
         <div className="filter-summary">
           <span className="results-count">
             Mostrando {filteredNodes.length} de {nodes.length} personas
@@ -126,6 +148,7 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
               <th>En grupo de WhatsApp</th>
               <th>Invitado</th>
               <th>Confirmó</th>
+              <th>Pagó</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -159,28 +182,33 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
                       {node.confirmo_asistencia ? '✅' : '❌'}
                     </span>
                   </td>
+                  <td className="boolean-cell">
+                    <span className={`status-badge ${node.realizo_pago ? 'yes' : 'no'}`}>
+                      {node.realizo_pago ? '✅' : '❌'}
+                    </span>
+                  </td>
                   <td className="actions-cell">
                     <button 
                       onClick={() => handleViewNode(node)}
                       className="view-button"
-                      title="Ver más"
+                      title="Ver más información"
                     >
-                      👁️
+                      Ver más
                     </button>
                     <button 
                       onClick={() => onEditNode(node)}
                       className="edit-button"
-                      title="Editar"
+                      title="Editar información"
                     >
-                      ✏️
+                      Editar
                     </button>
                     <button 
                       onClick={() => handleDelete(node)}
                       className="delete-button"
                       disabled={loading}
-                      title="Eliminar"
+                      title="Eliminar persona"
                     >
-                      🗑️
+                      Eliminar
                     </button>
                   </td>
                 </tr>

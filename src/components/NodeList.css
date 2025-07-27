@@ -123,7 +123,7 @@
   width: 100%;
   border-collapse: collapse;
   background: white;
-  min-width: 800px;
+  min-width: 950px;
 }
 
 .nodes-table th,
@@ -179,50 +179,36 @@
 }
 
 .actions-cell {
-  width: 100px;
+  width: 120px;
   text-align: center;
+  padding: 8px 4px;
 }
 
 .actions-cell .edit-button,
 .actions-cell .delete-button,
 .actions-cell .view-button {
-  padding: 6px;
-  margin: 0 2px;
+  display: block;
+  width: 100%;
+  padding: 4px 8px;
+  margin: 2px 0;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 11px;
+  font-weight: 500;
   transition: background-color 0.3s;
-  min-width: 32px;
-  height: 32px;
+  background-color: #6c757d;
+  color: white;
 }
 
-.actions-cell .view-button {
-  background-color: #007bff;
-}
-
+.actions-cell .edit-button:hover,
+.actions-cell .delete-button:hover:not(:disabled),
 .actions-cell .view-button:hover {
-  background-color: #0056b3;
-}
-
-.actions-cell .edit-button {
-  background-color: #ffc107;
-}
-
-.actions-cell .edit-button:hover {
-  background-color: #e0a800;
-}
-
-.actions-cell .delete-button {
-  background-color: #dc3545;
-}
-
-.actions-cell .delete-button:hover:not(:disabled) {
-  background-color: #c82333;
+  background-color: #5a6268;
 }
 
 .actions-cell .delete-button:disabled {
-  background-color: #6c757d;
+  background-color: #adb5bd;
   cursor: not-allowed;
 }
 
@@ -302,8 +288,13 @@
   .actions-cell .edit-button,
   .actions-cell .delete-button,
   .actions-cell .view-button {
-    font-size: 14px;
-    min-width: 28px;
-    height: 28px;
+    font-size: 10px;
+    padding: 3px 6px;
+    margin: 1px 0;
+  }
+  
+  .actions-cell {
+    width: 100px;
+    padding: 4px 2px;
   }
 }

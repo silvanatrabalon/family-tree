@@ -23,7 +23,7 @@ function deserializeNodeFromSheet(row, headers) {
     }
 
     // Campos booleanos
-    if (["whatsapp", "ha_sido_invitado", "confirmo_asistencia"].includes(header)) {
+    if (["whatsapp", "ha_sido_invitado", "confirmo_asistencia", "realizo_pago"].includes(header)) {
       if (value === "true" || value === true) {
         value = true;
       } else if (value === "false" || value === false) {

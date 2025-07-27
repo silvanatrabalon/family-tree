@@ -21,6 +21,7 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
     whatsapp: false,
     ha_sido_invitado: false,
     confirmo_asistencia: false,
+    realizo_pago: false,
   });
 
   const [availableNodes, setAvailableNodes] = useState([]);
@@ -43,6 +44,7 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
         whatsapp: editNode.whatsapp || false,
         ha_sido_invitado: editNode.ha_sido_invitado || false,
         confirmo_asistencia: editNode.confirmo_asistencia || false,
+        realizo_pago: editNode.realizo_pago || false,
       });
     }
   }, [editNode]);
@@ -138,6 +140,7 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
         whatsapp: formData.whatsapp,
         ha_sido_invitado: formData.ha_sido_invitado,
         confirmo_asistencia: formData.confirmo_asistencia,
+        realizo_pago: formData.realizo_pago,
       };
 
       // Asignar tags y Descendientes basado en el nodo relacionado
@@ -184,6 +187,7 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
           whatsapp: false,
           ha_sido_invitado: false,
           confirmo_asistencia: false,
+          realizo_pago: false,
         });
       }
 
@@ -361,6 +365,19 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
               onChange={handleInputChange}
             />
             <span>Confirmó asistencia a la reunión</span>
+          </label>
+        </div>
+
+        <div className="form-group checkbox-group">
+          <label htmlFor="realizo_pago" className="checkbox-label">
+            <input
+              type="checkbox"
+              id="realizo_pago"
+              name="realizo_pago"
+              checked={formData.realizo_pago}
+              onChange={handleInputChange}
+            />
+            <span>Realizó el pago</span>
           </label>
         </div>
 
