@@ -1,13 +1,13 @@
-/* FamilyTreeJS node color by Descendientes value (1-8) - use escaped class names for numbers */
-svg.hugo .node.Descendientes.\31 > rect { fill: #f44336 !important; }   /* rojo */
-svg.hugo .node.Descendientes.\32 > rect { fill: #e91e63 !important; }   /* rosa */
-svg.hugo .node.Descendientes.\33 > rect { fill: #9c27b0 !important; }   /* morado */
-svg.hugo .node.Descendientes.\34 > rect { fill: #673ab7 !important; }   /* violeta oscuro */
-svg.hugo .node.Descendientes.\35 > rect { fill: #3f51b5 !important; }   /* azul indigo */
-svg.hugo .node.Descendientes.\36 > rect { fill: #2196f3 !important; }   /* azul claro */
-svg.hugo .node.Descendientes.\37 > rect { fill: #009688 !important; }   /* teal */
-svg.hugo .node.Descendientes.\38 > rect { fill: #4caf50 !important; }   /* verde */
-svg.hugo .node.Descendientes.\39 > rect { fill: #ff9800 !important; }   /* naranja */
+/* FamilyTreeJS node color by Descendientes value (1-9) - use escaped class names for numbers */
+svg.hugo .node.Descendientes.\31 > rect { fill: #FF0000 !important; }   /* rojo brillante */
+svg.hugo .node.Descendientes.\32 > rect { fill: #FF8C00 !important; }   /* naranja vibrante */
+svg.hugo .node.Descendientes.\33 > rect { fill: #FFD700 !important; }   /* amarillo dorado */
+svg.hugo .node.Descendientes.\34 > rect { fill: #32CD32 !important; }   /* verde lima */
+svg.hugo .node.Descendientes.\35 > rect { fill: #00FFFF !important; }   /* cian brillante */
+svg.hugo .node.Descendientes.\36 > rect { fill: #0066FF !important; }   /* azul real */
+svg.hugo .node.Descendientes.\37 > rect { fill: #8A2BE2 !important; }   /* morado intenso */
+svg.hugo .node.Descendientes.\38 > rect { fill: #FF1493 !important; }   /* magenta */
+svg.hugo .node.Descendientes.\39 > rect { fill: #D2691E !important; }   /* marrón chocolate */
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
