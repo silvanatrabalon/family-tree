@@ -8,6 +8,8 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedNode, setSelectedNode] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [invitationFilter, setInvitationFilter] = useState("all"); // all, invited, confirmed, not-invited
+  const [confirmationFilter, setConfirmationFilter] = useState("all"); // all, confirmed, not-confirmed
 
   const handleViewNode = (node) => {
     setSelectedNode(node);
@@ -33,9 +35,26 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
     }
   };
 
-  const filteredNodes = nodes.filter(node =>
-    node.nombre?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filtrar nodos por búsqueda, invitación y confirmación
+  const filteredNodes = nodes.filter(node => {
+    const matchesSearch = node.nombre.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    let matchesInvitation = true;
+    if (invitationFilter === "invited") {
+      matchesInvitation = node.ha_sido_invitado === true;
+    } else if (invitationFilter === "not-invited") {
+      matchesInvitation = node.ha_sido_invitado === false;
+    }
+    
+    let matchesConfirmation = true;
+    if (confirmationFilter === "confirmed") {
+      matchesConfirmation = node.confirmo_asistencia === true;
+    } else if (confirmationFilter === "not-confirmed") {
+      matchesConfirmation = node.confirmo_asistencia === false;
+    }
+    
+    return matchesSearch && matchesInvitation && matchesConfirmation;
+  });
 
   return (
     <div className="node-list">
@@ -60,6 +79,42 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
         />
       </div>
 
+      <div className="filters-section">
+        <div className="filter-group">
+          <label htmlFor="invitation-filter">Estado de invitación:</label>
+          <select
+            id="invitation-filter"
+            value={invitationFilter}
+            onChange={(e) => setInvitationFilter(e.target.value)}
+            className="filter-select"
+          >
+            <option value="all">Todos</option>
+            <option value="invited">Invitados</option>
+            <option value="not-invited">No invitados</option>
+          </select>
+        </div>
+
+        <div className="filter-group">
+          <label htmlFor="confirmation-filter">Estado de confirmación:</label>
+          <select
+            id="confirmation-filter"
+            value={confirmationFilter}
+            onChange={(e) => setConfirmationFilter(e.target.value)}
+            className="filter-select"
+          >
+            <option value="all">Todos</option>
+            <option value="confirmed">Confirmados</option>
+            <option value="not-confirmed">No confirmados</option>
+          </select>
+        </div>
+
+        <div className="filter-summary">
+          <span className="results-count">
+            Mostrando {filteredNodes.length} de {nodes.length} personas
+          </span>
+        </div>
+      </div>
+
       <div className="table-container">
         <table className="nodes-table">
           <thead>
@@ -68,7 +123,7 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
               <th>Nacimiento</th>
               <th>Descendiente de</th>
               <th>Contacto</th>
-              <th>WhatsApp</th>
+              <th>En grupo de WhatsApp</th>
               <th>Invitado</th>
               <th>Confirmó</th>
               <th>Acciones</th>

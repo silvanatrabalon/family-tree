@@ -367,7 +367,7 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
         {/* Solo mostrar información de relaciones en modo edición, sin permitir editar */}
         {editNode && (
           <div className="readonly-info">
-            <h4>Información de Relaciones (Solo lectura)</h4>
+            <h4>Información de Relaciones</h4>
             <div className="readonly-fields">
               {editNode.fid && (
                 <div className="readonly-field">
