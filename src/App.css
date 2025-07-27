@@ -1,27 +1,15 @@
-/* Reset y configuración base */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Estilos legacy para compatibilidad con componentes existentes */
+/* Estos estilos se mantendrán temporalmente mientras migramos completamente a Tailwind */
 
-html, body, #root {
-  height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.App {
+/* Reset y configuración base para elementos no migrados */
+.legacy-container {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #f8faff 0%, #e8f2ff 100%);
+  background: linear-gradient(to bottom, #1a1a1a 0%, #2a2a2a 100%);
   display: flex;
   flex-direction: column;
 }
 
-.main-content {
+.legacy-main-content {
   flex: 1;
   padding: 20px;
   max-width: 1200px;
@@ -29,27 +17,71 @@ html, body, #root {
   width: 100%;
 }
 
-/* Mejoras globales para botones */
-button {
+/* Mejoras globales para botones legacy */
+.legacy-button {
   font-family: inherit;
   transition: all 0.2s ease;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  background-color: #6c47ff;
+  color: white;
+  cursor: pointer;
 }
 
-button:focus {
-  outline: 2px solid #667eea;
+.legacy-button:hover {
+  background-color: #5b38e8;
+  transform: translateY(-1px);
+}
+
+.legacy-button:focus {
+  outline: 2px solid #6c47ff;
   outline-offset: 2px;
 }
 
-/* Estilos para scroll suave */
-html {
-  scroll-behavior: smooth;
+/* Mejoras responsive para componentes legacy */
+@media (max-width: 768px) {
+  .legacy-main-content {
+    padding: 10px;
+  }
 }
 
-/* Mejoras responsive */
-@media (max-width: 768px) {
-  .main-content {
-    padding: 15px;
-  }
+/* Estilos específicos para FamilyTree que mantienen funcionalidad */
+#family-tree-container {
+  background: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid #404040;
+}
+
+/* Asegurar que los modales aparezcan por encima de todo */
+.modal-overlay {
+  z-index: 9999;
+}
+
+/* Compatibilidad con componentes existentes que usan clases específicas */
+.family-tree-view,
+.admin-panel {
+  background: transparent;
+  color: #ffffff;
+}
+
+.family-tree-view button,
+.admin-panel button {
+  background: #6c47ff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.family-tree-view button:hover,
+.admin-panel button:hover {
+  background: #5b38e8;
+  transform: translateY(-1px);
 }
 
 /* Loader global */
