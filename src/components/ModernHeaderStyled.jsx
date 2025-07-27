@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAdmin } from '../context/AdminContext';
 
-const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToAdmin, onNavigateToLanding, onShowAdminLogin }) => {
+const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToExpandTree, onNavigateToLanding, onShowAdminLogin }) => {
   const { isAdminMode, logout } = useAdmin();
 
   const styles = {
@@ -155,29 +155,27 @@ const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToAdmin, 
             Árbol Familiar
           </button>
           
-          {isAdminMode && (
-            <button 
-              onClick={onNavigateToAdmin}
-              style={{
-                ...styles.navButton,
-                ...(currentView === 'admin' ? styles.navButtonActive : styles.navButtonInactive)
-              }}
-              onMouseEnter={(e) => {
-                if (currentView !== 'admin') {
-                  e.target.style.color = '#ffffff';
-                  e.target.style.background = '#2a2a2a';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (currentView !== 'admin') {
-                  e.target.style.color = '#a1a1aa';
-                  e.target.style.background = 'transparent';
-                }
-              }}
-            >
-              Administrar
-            </button>
-          )}
+          <button 
+            onClick={onNavigateToExpandTree}
+            style={{
+              ...styles.navButton,
+              ...(currentView === 'expand' ? styles.navButtonActive : styles.navButtonInactive)
+            }}
+            onMouseEnter={(e) => {
+              if (currentView !== 'expand') {
+                e.target.style.color = '#ffffff';
+                e.target.style.background = '#2a2a2a';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (currentView !== 'expand') {
+                e.target.style.color = '#a1a1aa';
+                e.target.style.background = 'transparent';
+              }
+            }}
+          >
+            Expandir Árbol
+          </button>
         </nav>
 
         {/* Acciones del usuario */}
@@ -185,7 +183,7 @@ const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToAdmin, 
           {isAdminMode ? (
             <div style={styles.adminInfo}>
               <span style={styles.adminLabel}>
-                Modo Admin
+                Organizador de Evento
               </span>
               <button 
                 onClick={logout}
@@ -215,7 +213,7 @@ const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToAdmin, 
                 e.target.style.background = 'transparent';
               }}
             >
-              Admin
+              Admin Evento
             </button>
           )}
           

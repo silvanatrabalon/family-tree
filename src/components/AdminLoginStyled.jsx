@@ -170,7 +170,7 @@ const AdminLoginStyled = ({ isOpen, onClose }) => {
     <div style={styles.overlay}>
       <div style={styles.modal}>
         <div style={styles.header}>
-          <h3 style={styles.title}>Acceso Administrador</h3>
+          <h3 style={styles.title}>Acceso Administrador de Evento</h3>
           <button 
             onClick={handleClose}
             style={styles.closeButton}
@@ -192,7 +192,7 @@ const AdminLoginStyled = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit} style={styles.form}>
           <div style={styles.formGroup}>
             <label style={styles.label}>
-              Contraseña de administrador:
+              Contraseña del organizador del evento:
             </label>
             <div style={styles.inputContainer}>
               <input

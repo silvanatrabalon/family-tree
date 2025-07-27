@@ -9,12 +9,12 @@ import AdminLoginStyled from "./components/AdminLoginStyled";
 import { AdminProvider } from "./context/AdminContext";
 
 function App() {
-  const [currentView, setCurrentView] = useState('landing'); // Cambiado de vuelta a 'landing'
+  const [currentView, setCurrentView] = useState('landing'); // 'landing', 'tree', 'expand'
   const [showAdminLogin, setShowAdminLogin] = useState(false);
 
   const navigateToLanding = () => setCurrentView('landing');
   const navigateToTree = () => setCurrentView('tree');
-  const navigateToAdmin = () => setCurrentView('admin');
+  const navigateToExpandTree = () => setCurrentView('expand');
   const navigateToApp = () => setCurrentView('tree');
   const handleShowAdminLogin = () => setShowAdminLogin(true);
   const handleCloseAdminLogin = () => setShowAdminLogin(false);
@@ -31,7 +31,7 @@ function App() {
             <ModernHeaderStyled 
               currentView={currentView}
               onNavigateToTree={navigateToTree}
-              onNavigateToAdmin={navigateToAdmin}
+              onNavigateToExpandTree={navigateToExpandTree}
               onNavigateToLanding={navigateToLanding}
               onShowAdminLogin={handleShowAdminLogin}
             />
@@ -43,8 +43,23 @@ function App() {
                   <FamilyTreeView />
                 </div>
               )}
-              {currentView === 'admin' && (
+              {currentView === 'expand' && (
                 <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '2rem 1.5rem' }}>
+                  <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
+                    <h2 style={{ 
+                      fontSize: 'clamp(1.875rem, 5vw, 3rem)', 
+                      fontWeight: 'bold', 
+                      marginBottom: '1rem',
+                      background: 'linear-gradient(135deg, #6c47ff 0%, #a155f9 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent'
+                    }}>
+                      Expandir Árbol Familiar
+                    </h2>
+                    <p style={{ fontSize: '18px', color: '#a1a1aa' }}>
+                      Agrega nuevos miembros y edita información del árbol genealógico
+                    </p>
+                  </div>
                   <AdminPanel />
                 </div>
               )}
