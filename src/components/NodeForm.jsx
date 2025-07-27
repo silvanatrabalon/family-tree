@@ -16,6 +16,11 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
     pids: [],
     relationshipType: "child", // "child", "spouse", "parent"
     relatedNodeId: "",
+    contacto: "",
+    detalles: "",
+    whatsapp: false,
+    ha_sido_invitado: false,
+    confirmo_asistencia: false,
   });
 
   const [availableNodes, setAvailableNodes] = useState([]);
@@ -33,6 +38,11 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
         pids: editNode.pids || [],
         relationshipType: "child",
         relatedNodeId: "",
+        contacto: editNode.contacto || "",
+        detalles: editNode.detalles || "",
+        whatsapp: editNode.whatsapp || false,
+        ha_sido_invitado: editNode.ha_sido_invitado || false,
+        confirmo_asistencia: editNode.confirmo_asistencia || false,
       });
     }
   }, [editNode]);
@@ -58,10 +68,10 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -123,6 +133,11 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
         fid: formData.fid,
         mid: formData.mid,
         pids: formData.pids,
+        contacto: formData.contacto,
+        detalles: formData.detalles,
+        whatsapp: formData.whatsapp,
+        ha_sido_invitado: formData.ha_sido_invitado,
+        confirmo_asistencia: formData.confirmo_asistencia,
       };
 
       // Asignar tags y Descendientes basado en el nodo relacionado
@@ -164,6 +179,11 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
           pids: [],
           relationshipType: "child",
           relatedNodeId: "",
+          contacto: "",
+          detalles: "",
+          whatsapp: false,
+          ha_sido_invitado: false,
+          confirmo_asistencia: false,
         });
       }
 
@@ -281,14 +301,74 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
           />
         </div>
 
+        <div className="form-group">
+          <label htmlFor="contacto">Contacto:</label>
+          <input
+            type="text"
+            id="contacto"
+            name="contacto"
+            value={formData.contacto}
+            onChange={handleInputChange}
+            placeholder="Ej: +1234567890, nombre@email.com"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="detalles">Detalles adicionales:</label>
+          <textarea
+            id="detalles"
+            name="detalles"
+            value={formData.detalles}
+            onChange={handleInputChange}
+            placeholder="Información adicional sobre la persona (profesión, hobbies, etc.)"
+            rows="3"
+          />
+        </div>
+
+        <div className="form-group checkbox-group">
+          <label htmlFor="whatsapp" className="checkbox-label">
+            <input
+              type="checkbox"
+              id="whatsapp"
+              name="whatsapp"
+              checked={formData.whatsapp}
+              onChange={handleInputChange}
+            />
+            <span>Incluido en grupo de WhatsApp</span>
+          </label>
+        </div>
+
+        <div className="form-group checkbox-group">
+          <label htmlFor="ha_sido_invitado" className="checkbox-label">
+            <input
+              type="checkbox"
+              id="ha_sido_invitado"
+              name="ha_sido_invitado"
+              checked={formData.ha_sido_invitado}
+              onChange={handleInputChange}
+            />
+            <span>Ha sido invitado a la reunión familiar</span>
+          </label>
+        </div>
+
+        <div className="form-group checkbox-group">
+          <label htmlFor="confirmo_asistencia" className="checkbox-label">
+            <input
+              type="checkbox"
+              id="confirmo_asistencia"
+              name="confirmo_asistencia"
+              checked={formData.confirmo_asistencia}
+              onChange={handleInputChange}
+            />
+            <span>Confirmó asistencia a la reunión</span>
+          </label>
+        </div>
+
         {/* Solo mostrar información de relaciones en modo edición, sin permitir editar */}
         {editNode && (
           <div className="readonly-info">
             <h4>Información de Relaciones (Solo lectura)</h4>
             <div className="readonly-fields">
-              <div className="readonly-field">
-                <strong>ID:</strong> {editNode.id}
-              </div>
               {editNode.fid && (
                 <div className="readonly-field">
                   <strong>Padre:</strong> {nodes.find(n => n.id === editNode.fid)?.nombre || editNode.fid}
@@ -304,11 +384,6 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
                   <strong>Pareja(s):</strong> {editNode.pids.map(pid => 
                     nodes.find(n => n.id === pid)?.nombre || pid
                   ).join(", ")}
-                </div>
-              )}
-              {editNode.tags && (
-                <div className="readonly-field">
-                  <strong>Tags:</strong> {editNode.tags.join(", ")}
                 </div>
               )}
               {editNode.Descendientes && (

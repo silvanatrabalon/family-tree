@@ -58,6 +58,11 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
               <th>Madre</th>
               <th>Pareja(s)</th>
               <th>Descendiente de</th>
+              <th>Contacto</th>
+              <th>Detalles</th>
+              <th>WhatsApp</th>
+              <th>Invitado</th>
+              <th>Confirmó</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -85,6 +90,29 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
                   <td>{mother ? mother.nombre : "-"}</td>
                   <td>{partners || "-"}</td>
                   <td>{node.Descendientes || "-"}</td>
+                  <td>{node.contacto || "-"}</td>
+                  <td className="details-cell" title={node.detalles}>
+                    {node.detalles ? (
+                      node.detalles.length > 30 
+                        ? node.detalles.substring(0, 30) + "..." 
+                        : node.detalles
+                    ) : "-"}
+                  </td>
+                  <td className="boolean-cell">
+                    <span className={`status-badge ${node.whatsapp ? 'yes' : 'no'}`}>
+                      {node.whatsapp ? '✅' : '❌'}
+                    </span>
+                  </td>
+                  <td className="boolean-cell">
+                    <span className={`status-badge ${node.ha_sido_invitado ? 'yes' : 'no'}`}>
+                      {node.ha_sido_invitado ? '✅' : '❌'}
+                    </span>
+                  </td>
+                  <td className="boolean-cell">
+                    <span className={`status-badge ${node.confirmo_asistencia ? 'yes' : 'no'}`}>
+                      {node.confirmo_asistencia ? '✅' : '❌'}
+                    </span>
+                  </td>
                   <td className="actions-cell">
                     <button 
                       onClick={() => onEditNode(node)}

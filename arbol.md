@@ -8,6 +8,7 @@
 | "_30k8"  | []                           | "Jose"                             | "male"   | "_42bq"   | "_d0il"   | ""            | "Jose"               | ["Descendientes", "2"]   |
 | "_vcyx"  | []                           | "Marino"                           | "male"   | "_d0il"   | "_42bq"   | ""            | "Marino"             | ["Descendientes", "3"]   |
 
-Ejemplo de pareja agregada en sheet:
-
-"_d9rk"	["_vcyx"]	esposa de marino	female			123	Marino	["Descendientes","3"]
+Nuevos campos
+contacto	detalles	whatsapp	ha_sido_invitado	confirmo_asistencia
+	true	true	true	true
+	true	true	true	

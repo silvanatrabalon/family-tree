@@ -22,6 +22,17 @@ function deserializeNodeFromSheet(row, headers) {
       }
     }
 
+    // Campos booleanos
+    if (["whatsapp", "ha_sido_invitado", "confirmo_asistencia"].includes(header)) {
+      if (value === "true" || value === true) {
+        value = true;
+      } else if (value === "false" || value === false) {
+        value = false;
+      } else {
+        value = false; // Default a false para booleanos
+      }
+    }
+
     obj[header] = value;
   });
 
