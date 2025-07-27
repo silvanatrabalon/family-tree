@@ -29,8 +29,7 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
         await deleteNodeFromAdmin(node, nodes);
         onDeleteNode();
       } catch (error) {
-        console.error("Error deleting node:", error);
-        alert("Error al eliminar la persona. Por favor intenta de nuevo.");
+        setError("Error deleting node: " + error.message);
       }
       setLoading(false);
     }

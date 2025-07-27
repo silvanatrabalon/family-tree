@@ -8,12 +8,16 @@ export async function addNode(node, nodes = null) {
   // Solo procesar tags y Descendientes si no están ya definidos en el nodo
   if (!nodeCopy.tags || !nodeCopy.Descendientes) {
     const pidsCheck = node.pids || [];
-    const refId = pidsCheck[0] || node.mid || node.fid;
+    let refId = pidsCheck[0] || node.mid || node.fid;
     
-    console.log('🔍 [AddNode] ID de referencia:', refId);
-    console.log('🔍 [AddNode] pids del nodo:', pidsCheck);
-    console.log('🔍 [AddNode] mid del nodo:', node.mid);
-    console.log('🔍 [AddNode] fid del nodo:', node.fid);
+    // Si no tiene refId directo, buscar si otros nodos lo referencian como padre/madre
+    if (!refId && nodes) {
+      // Buscar nodos que tengan este ID como fid o mid
+      const childNode = nodes.find(n => n.fid === node.id || n.mid === node.id);
+      if (childNode) {
+        refId = childNode.id;
+      }
+    }
     
     let tagNumber = null;
     let descendientes = node.nombre; // Default al nombre del nodo
@@ -23,13 +27,9 @@ export async function addNode(node, nodes = null) {
     if (nodes && refId) {
       // Buscar el nodo padre/relacionado
       const relatedNode = nodes.find(n => n.id === refId);
-      console.log('👨‍👩‍👧‍👦 [AddNode] Nodo relacionado encontrado:', relatedNode);
       
       if (relatedNode) {
         // Heredar los tags COMPLETOS del nodo padre
-        console.log('🏷️ [AddNode] Tags del nodo padre (raw):', relatedNode.tags);
-        console.log('🏷️ [AddNode] Tipo de tags del padre:', typeof relatedNode.tags);
-        
         let parentTags = relatedNode.tags;
         
         // Manejar diferentes formatos de tags
@@ -37,27 +37,19 @@ export async function addNode(node, nodes = null) {
           if (parentTags.startsWith('[')) {
             try {
               parentTags = JSON.parse(parentTags);
-              console.log('🔄 [AddNode] Tags del padre parseados de JSON:', parentTags);
             } catch (e) {
-              console.warn('⚠️ [AddNode] Error parseando tags JSON:', e);
               parentTags = parentTags.split(',');
-              console.log('🔄 [AddNode] Tags del padre parseados de CSV:', parentTags);
             }
           } else {
             parentTags = parentTags.split(',');
-            console.log('🔄 [AddNode] Tags del padre parseados de CSV:', parentTags);
           }
         }
         
         if (Array.isArray(parentTags) && parentTags.length >= 2) {
           inheritedTags = [...parentTags]; // Copia completa de los tags
           tagNumber = parseInt(parentTags[1], 10);
-          console.log('🏷️ [AddNode] Tags heredados del nodo padre:', inheritedTags);
-          console.log('🏷️ [AddNode] Tag número heredado:', tagNumber);
         } else {
-          console.warn('⚠️ [AddNode] Tags del padre no son válidos, usando getTagFromNodeData');
           tagNumber = getTagFromNodeData(refId, nodes);
-          console.log('🏷️ [AddNode] Tag obtenido con getTagFromNodeData:', tagNumber);
         }
         
         // Obtener Descendientes del nodo relacionado
@@ -73,13 +65,10 @@ export async function addNode(node, nodes = null) {
     // Usar los tags heredados si están disponibles, sino crear nuevos
     if (inheritedTags && !nodeCopy.tags) {
       nodeCopy.tags = inheritedTags;
-      console.log('✅ [AddNode] Tags heredados asignados:', nodeCopy.tags);
     } else if (tagNumber !== null && !isNaN(tagNumber) && !nodeCopy.tags) {
       nodeCopy.tags = ["Descendientes", String(tagNumber)];
-      console.log('✅ [AddNode] Tags creados con tagNumber:', nodeCopy.tags);
     } else if (!nodeCopy.tags) {
       nodeCopy.tags = ["Descendientes", "0"]; // Tag por defecto
-      console.log('⚠️ [AddNode] Tags por defecto asignados:', nodeCopy.tags);
     }
     
     if (!nodeCopy.Descendientes) {

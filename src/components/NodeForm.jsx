@@ -279,7 +279,6 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode =
       }
 
     } catch (error) {
-      console.error("Error saving node:", error);
       alert("Error al guardar la persona. Por favor intenta de nuevo.");
     }
 

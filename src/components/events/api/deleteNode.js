@@ -2,22 +2,18 @@
 import { API_CONFIG, makeApiRequest, makeExpressRequest } from "../../../utils/apiConfig";
 
 export async function deleteNode(nodeIdToRemove, treeInstance) {
-  console.log('[deleteNode] Attempting to delete node:', nodeIdToRemove);
   const allTreeNodes = treeInstance.config.nodes || [];
-  console.log('[deleteNode] All tree nodes:', allTreeNodes);
   const nodeToDelete = allTreeNodes.find(n => String(n.id) === String(nodeIdToRemove));
-  console.log('[deleteNode] Node to delete:', nodeToDelete);
+  
   if (!nodeToDelete) {
-    console.error("❌ Nodo a eliminar no encontrado:", nodeIdToRemove);
     return false;
   }
+  
   const rowIndex = allTreeNodes.indexOf(nodeToDelete) + 2;
-  console.log('[deleteNode] Calculated rowIndex for delete:', rowIndex);
+  
   if (rowIndex <= 1 || isNaN(rowIndex)) {
-    console.error("❌ rowIndex inválido para delete:", rowIndex);
     return false;
   }
-  console.log('[deleteNode] Sending delete request for rowIndex:', rowIndex);
   
   if (API_CONFIG.USE_APPS_SCRIPT) {
     await makeApiRequest('delete-node', { rowIndex });
@@ -25,7 +21,6 @@ export async function deleteNode(nodeIdToRemove, treeInstance) {
     await makeExpressRequest('/api/delete-node', { rowIndex });
   }
   
-  console.log('[deleteNode] Delete request sent successfully for node:', nodeIdToRemove);
   return true;
 }
 

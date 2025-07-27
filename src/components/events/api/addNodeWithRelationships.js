@@ -14,12 +14,9 @@ export async function addNodeWithRelationships(nodeData, relatedNodeId, relation
 
 async function updateRelationships(newNode, relatedNodeId, relationshipType, allNodes) {
   const relatedNode = allNodes.find(node => node.id === relatedNodeId);
-  if (!relatedNode) {
-    console.warn("Related node not found:", relatedNodeId);
-    return;
-  }
-
-  let updatedRelatedNode = { ...relatedNode };
+    if (!relatedNode) {
+      return;
+    }  let updatedRelatedNode = { ...relatedNode };
   let needsUpdate = false;
 
   switch (relationshipType) {
@@ -50,7 +47,6 @@ async function updateRelationships(newNode, relatedNodeId, relationshipType, all
   }
 
   if (needsUpdate) {
-    console.log("Updating related node:", updatedRelatedNode);
     await updateNode(updatedRelatedNode, allNodes);
   }
 }

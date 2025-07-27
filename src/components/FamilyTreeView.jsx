@@ -14,7 +14,7 @@ const FamilyTreeView = () => {
         try {
           treeInstance.current.destroy();
         } catch (err) {
-          console.warn("Error en limpieza de instancia:", err);
+          // Silently handle cleanup errors
         }
       }
     };

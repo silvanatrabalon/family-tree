@@ -13,47 +13,52 @@ export const API_CONFIG = {
 
 // Función helper para hacer requests a Apps Script
 export const makeApiRequest = async (action, data = {}) => {
-  try {
-    const requestData = {
-      action: action,
-      ...data
+  if (USE_APPS_SCRIPT) {
+    const payload = {
+      action,
+      data: JSON.stringify(data)
     };
+    
+    let url = `${APPS_SCRIPT_URL}?${new URLSearchParams(payload)}`;
 
-    console.log('🚀 Enviando petición a Apps Script:', { action, data });
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
 
-    // Estrategia 1: Usar parámetros GET para evitar CORS completamente
-    const params = new URLSearchParams();
-    params.append('action', action);
-    params.append('data', JSON.stringify(data));
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP Error: ${response.status} - ${errorText}`);
+      }
 
-    const url = `${API_CONFIG.BASE_URL}?${params.toString()}`;
-    console.log('🔗 URL construida:', url);
+      const result = await response.json();
 
-    const response = await fetch(url, {
-      method: 'GET'
+      if (result.success === false) {
+        throw new Error(result.error || 'Apps Script returned error');
+      }
+
+      return result;
+    } catch (error) {
+      throw new Error(`API request failed: ${error.message}`);
+    }
+  } else {
+    // Express logic
+    const response = await fetch(`${EXPRESS_URL}/${action}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
     });
 
-    console.log('📡 Respuesta HTTP status:', response.status);
-
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('❌ Error HTTP:', errorText);
-      throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const result = await response.json();
-    console.log('✅ Respuesta de Apps Script:', result);
-
-    // Verificar si Apps Script devolvió un error
-    if (result.error) {
-      console.error('❌ Error desde Apps Script:', result.error);
-      throw new Error(`Apps Script Error: ${result.error}`);
-    }
-
-    return result;
-  } catch (error) {
-    console.error('❌ Error completo en makeApiRequest:', error);
-    throw error;
+    return await response.json();
   }
 };
 

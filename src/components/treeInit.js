@@ -21,13 +21,11 @@ export async function initTree({ treeRef, treeInstance, setNodes }) {
   }, 10);
   setNodes(fetchedNodes);
 
-  if (hasDuplicateIds(fetchedNodes)) {
-    console.error("❌ Data error: Duplicate node IDs detected.");
-    return;
+  if (duplicateIds.length > 0) {
+    throw new Error("Duplicate node IDs detected.");
   }
-  if (hasSelfParenting(fetchedNodes)) {
-    console.error("❌ Data error: Self-parenting detected.");
-    return;
+  if (selfParentingNodes.length > 0) {
+    throw new Error("Self-parenting detected.");
   }
 
   if (treeRef.current && fetchedNodes.length > 0) {
@@ -35,7 +33,7 @@ export async function initTree({ treeRef, treeInstance, setNodes }) {
       try {
         treeInstance.current.destroy();
       } catch (err) {
-        console.warn("Error al destruir instancia previa:", err);
+        // Silently handle destruction errors
       }
     }
 
@@ -54,7 +52,6 @@ export async function initTree({ treeRef, treeInstance, setNodes }) {
       treeInstance.current.on('redraw', () => {
         const nodesObj = treeInstance.current.nodes;
         if (!nodesObj) {
-          console.warn('[TreeInit] treeInstance.current.nodes is undefined');
           return;
         }
 
@@ -67,7 +64,7 @@ export async function initTree({ treeRef, treeInstance, setNodes }) {
 
 
     } catch (error) {
-      console.error("❌ Error al inicializar el árbol:", error);
+      throw new Error(`Failed to initialize tree: ${error.message}`);
     }
   }
 }

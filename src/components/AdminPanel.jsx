@@ -20,7 +20,7 @@ const AdminPanel = () => {
       const fetchedNodes = await fetchNodesFromSheet();
       setNodes(fetchedNodes);
     } catch (error) {
-      console.error("Error loading nodes:", error);
+      // Silently handle loading errors
     }
     setLoading(false);
   };

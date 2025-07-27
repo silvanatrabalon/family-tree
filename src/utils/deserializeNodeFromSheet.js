@@ -29,7 +29,6 @@ function deserializeNodeFromSheet(row, headers) {
           value = JSON.parse(value); // "\"_d0il\"" → "_d0il"
         }
       } catch (err) {
-        console.warn(`Error parsing ${header}:`, value, 'usando valor original');
         // Si falla el parsing, usar el valor original
       }
     }
@@ -55,7 +54,6 @@ function deserializeNodeFromSheet(row, headers) {
           value = Array.isArray(value) ? value : [];
         }
       } catch (err) {
-        console.warn(`Error parsing ${header}:`, value, 'usando array vacío');
         value = [];
       }
     }
