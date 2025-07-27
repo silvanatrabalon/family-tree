@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { initTree } from "./treeInit";
+import "./FamilyTreeHamburger.css";
 
 const FamilyTreeView = () => {
   const treeRef = useRef(null);

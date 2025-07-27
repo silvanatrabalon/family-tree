@@ -13,27 +13,6 @@ export function setupTreeTemplates() {
   FamilyTree.filterUI.all = "[Todos]";
   FamilyTree.filterUI.clear = "Limpiar filtro";
 
-  FamilyTree.templates.base.defs =
-    `<g transform="matrix(1,0,0,1,0,0)" id="dot"><circle class="ba-fill" cx="0" cy="0" r="5" stroke="#aeaeae" stroke-width="1"></circle></g>
-    <g id="base_node_menu" style="cursor:pointer;">
-        <rect x="0" y="0" fill="transparent" width="22" height="22"></rect>
-        <circle cx="4" cy="11" r="2" fill="#fff"></circle>
-        <circle cx="11" cy="11" r="2" fill="#fff"></circle>
-        <circle cx="18" cy="11" r="2" fill="#fff"></circle>
-    </g>
-    <g style="cursor: pointer;" id="base_tree_menu">
-        <rect x="0" y="0" width="25" height="25" fill="transparent"></rect>
-        ${FamilyTree.icon.addUser(13, 13, '#fff', 0, 0)}
-    </g>
-    <g style="cursor: pointer;" id="base_tree_menu_close">
-        <circle cx="9" cy="9" r="10" fill="#aeaeae"></circle>
-        ${FamilyTree.icon.close(18, 18, '#fff', 0, 0)}
-    </g>            
-    <g id="base_up">
-        <circle cx="15" cy="15" r="15" fill="#fff" stroke="#aeaeae" stroke-width="1"></circle>
-        ${FamilyTree.icon.ft(20, 20, '#aeaeae', 5, 5)}
-    </g>
-`;
   FamilyTree.templates.myTemplate = Object.assign({}, FamilyTree.templates.tommy);
   FamilyTree.templates.myTemplate.size = [200, 90];
   FamilyTree.templates.myTemplate_male = Object.assign({}, FamilyTree.templates.tommy);
