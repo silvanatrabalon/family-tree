@@ -3,7 +3,7 @@ import { deleteNodeFromAdmin } from "./events/api/deleteNode";
 import NodeDetailsModal from './NodeDetailsModal';
 import "./NodeList.css";
 
-const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
+const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = false }) => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedNode, setSelectedNode] = useState(null);
@@ -87,55 +87,65 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
         />
       </div>
 
-      <div className="filters-section">
-        <div className="filter-group">
-          <label htmlFor="invitation-filter">Estado de invitación:</label>
-          <select
-            id="invitation-filter"
-            value={invitationFilter}
-            onChange={(e) => setInvitationFilter(e.target.value)}
-            className="filter-select"
-          >
-            <option value="all">Todos</option>
-            <option value="invited">Invitados</option>
-            <option value="not-invited">No invitados</option>
-          </select>
-        </div>
+      {isAdminMode && (
+        <div className="filters-section">
+          <div className="filter-group">
+            <label htmlFor="invitation-filter">Estado de invitación:</label>
+            <select
+              id="invitation-filter"
+              value={invitationFilter}
+              onChange={(e) => setInvitationFilter(e.target.value)}
+              className="filter-select"
+            >
+              <option value="all">Todos</option>
+              <option value="invited">Invitados</option>
+              <option value="not-invited">No invitados</option>
+            </select>
+          </div>
 
-        <div className="filter-group">
-          <label htmlFor="confirmation-filter">Estado de confirmación:</label>
-          <select
-            id="confirmation-filter"
-            value={confirmationFilter}
-            onChange={(e) => setConfirmationFilter(e.target.value)}
-            className="filter-select"
-          >
-            <option value="all">Todos</option>
-            <option value="confirmed">Confirmados</option>
-            <option value="not-confirmed">No confirmados</option>
-          </select>
-        </div>
+          <div className="filter-group">
+            <label htmlFor="confirmation-filter">Estado de confirmación:</label>
+            <select
+              id="confirmation-filter"
+              value={confirmationFilter}
+              onChange={(e) => setConfirmationFilter(e.target.value)}
+              className="filter-select"
+            >
+              <option value="all">Todos</option>
+              <option value="confirmed">Confirmados</option>
+              <option value="not-confirmed">No confirmados</option>
+            </select>
+          </div>
 
-        <div className="filter-group">
-          <label htmlFor="payment-filter">Estado de pago:</label>
-          <select
-            id="payment-filter"
-            value={paymentFilter}
-            onChange={(e) => setPaymentFilter(e.target.value)}
-            className="filter-select"
-          >
-            <option value="all">Todos</option>
-            <option value="paid">Pagaron</option>
-            <option value="not-paid">No pagaron</option>
-          </select>
-        </div>
+          <div className="filter-group">
+            <label htmlFor="payment-filter">Estado de pago:</label>
+            <select
+              id="payment-filter"
+              value={paymentFilter}
+              onChange={(e) => setPaymentFilter(e.target.value)}
+              className="filter-select"
+            >
+              <option value="all">Todos</option>
+              <option value="paid">Pagaron</option>
+              <option value="not-paid">No pagaron</option>
+            </select>
+          </div>
 
+          <div className="filter-summary">
+            <span className="results-count">
+              Mostrando {filteredNodes.length} de {nodes.length} personas
+            </span>
+          </div>
+        </div>
+      )}
+
+      {!isAdminMode && (
         <div className="filter-summary">
           <span className="results-count">
             Mostrando {filteredNodes.length} de {nodes.length} personas
           </span>
         </div>
-      </div>
+      )}
 
       <div className="table-container">
         <table className="nodes-table">
@@ -145,10 +155,14 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
               <th>Nacimiento</th>
               <th>Descendiente de</th>
               <th>Contacto</th>
-              <th>En grupo de WhatsApp</th>
-              <th>Invitado</th>
-              <th>Confirmó</th>
-              <th>Pagó</th>
+              {isAdminMode && (
+                <>
+                  <th>En grupo de WhatsApp</th>
+                  <th>Invitado</th>
+                  <th>Confirmó</th>
+                  <th>Pagó</th>
+                </>
+              )}
               <th>Acciones</th>
             </tr>
           </thead>
@@ -167,26 +181,30 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
                   <td>{node.nacimiento || "-"}</td>
                   <td>{node.Descendientes || "-"}</td>
                   <td>{node.contacto || "-"}</td>
-                  <td className="boolean-cell">
-                    <span className={`status-badge ${node.whatsapp ? 'yes' : 'no'}`}>
-                      {node.whatsapp ? '✅' : '❌'}
-                    </span>
-                  </td>
-                  <td className="boolean-cell">
-                    <span className={`status-badge ${node.ha_sido_invitado ? 'yes' : 'no'}`}>
-                      {node.ha_sido_invitado ? '✅' : '❌'}
-                    </span>
-                  </td>
-                  <td className="boolean-cell">
-                    <span className={`status-badge ${node.confirmo_asistencia ? 'yes' : 'no'}`}>
-                      {node.confirmo_asistencia ? '✅' : '❌'}
-                    </span>
-                  </td>
-                  <td className="boolean-cell">
-                    <span className={`status-badge ${node.realizo_pago ? 'yes' : 'no'}`}>
-                      {node.realizo_pago ? '✅' : '❌'}
-                    </span>
-                  </td>
+                  {isAdminMode && (
+                    <>
+                      <td className="boolean-cell">
+                        <span className={`status-badge ${node.whatsapp ? 'yes' : 'no'}`}>
+                          {node.whatsapp ? '✅' : '❌'}
+                        </span>
+                      </td>
+                      <td className="boolean-cell">
+                        <span className={`status-badge ${node.ha_sido_invitado ? 'yes' : 'no'}`}>
+                          {node.ha_sido_invitado ? '✅' : '❌'}
+                        </span>
+                      </td>
+                      <td className="boolean-cell">
+                        <span className={`status-badge ${node.confirmo_asistencia ? 'yes' : 'no'}`}>
+                          {node.confirmo_asistencia ? '✅' : '❌'}
+                        </span>
+                      </td>
+                      <td className="boolean-cell">
+                        <span className={`status-badge ${node.realizo_pago ? 'yes' : 'no'}`}>
+                          {node.realizo_pago ? '✅' : '❌'}
+                        </span>
+                      </td>
+                    </>
+                  )}
                   <td className="actions-cell">
                     <button 
                       onClick={() => handleViewNode(node)}
@@ -229,6 +247,7 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh }) => {
         nodes={nodes}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
+        isAdminMode={isAdminMode}
       />
     </div>
   );

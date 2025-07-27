@@ -14,6 +14,58 @@
   border-bottom: 2px solid #e0e0e0;
 }
 
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.admin-mode-section {
+  display: flex;
+  align-items: center;
+}
+
+.admin-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-badge {
+  background: #28a745;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.admin-login-btn,
+.admin-logout-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.admin-login-btn:hover {
+  background: #0056b3;
+}
+
+.admin-logout-btn {
+  background: #6c757d;
+  font-size: 11px;
+  padding: 4px 8px;
+}
+
+.admin-logout-btn:hover {
+  background: #545b62;
+}
+
 .admin-header h2 {
   color: #333;
   margin: 0;

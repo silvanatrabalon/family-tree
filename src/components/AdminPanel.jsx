@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { fetchNodesFromSheet } from "./events/api/fetchNode";
 import NodeForm from "./NodeForm";
 import NodeList from "./NodeList";
+import AdminLogin from "./AdminLogin";
+import { useAdmin } from "../context/AdminContext";
 import "./AdminPanel.css";
 
 const AdminPanel = ({ onNavigateToTree }) => {
@@ -9,6 +11,9 @@ const AdminPanel = ({ onNavigateToTree }) => {
   const [selectedNode, setSelectedNode] = useState(null);
   const [activeTab, setActiveTab] = useState("add"); // "add", "edit", "list"
   const [loading, setLoading] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  
+  const { isAdminMode, logout } = useAdmin();
 
   const loadNodes = async () => {
     setLoading(true);
@@ -51,12 +56,36 @@ const AdminPanel = ({ onNavigateToTree }) => {
     <div className="admin-panel">
       <div className="admin-header">
         <h2>Panel de Administración</h2>
-        <button 
-          className="nav-button"
-          onClick={onNavigateToTree}
-        >
-          Ver Árbol Genealógico
-        </button>
+        <div className="admin-header-actions">
+          <div className="admin-mode-section">
+            {isAdminMode ? (
+              <div className="admin-status">
+                <span className="admin-badge">Modo Admin</span>
+                <button 
+                  className="admin-logout-btn"
+                  onClick={logout}
+                  title="Cerrar sesión de administrador"
+                >
+                  Salir
+                </button>
+              </div>
+            ) : (
+              <button 
+                className="admin-login-btn"
+                onClick={() => setShowAdminLogin(true)}
+                title="Acceder al modo administrador"
+              >
+                Modo Admin
+              </button>
+            )}
+          </div>
+          <button 
+            className="nav-button"
+            onClick={onNavigateToTree}
+          >
+            Ver Árbol Genealógico
+          </button>
+        </div>
       </div>
 
       <div className="admin-tabs">
@@ -84,6 +113,7 @@ const AdminPanel = ({ onNavigateToTree }) => {
           <NodeForm 
             nodes={nodes}
             onNodeCreated={handleNodeCreated}
+            isAdminMode={isAdminMode}
           />
         )}
 
@@ -92,6 +122,7 @@ const AdminPanel = ({ onNavigateToTree }) => {
             nodes={nodes}
             editNode={selectedNode}
             onNodeUpdated={handleNodeUpdated}
+            isAdminMode={isAdminMode}
           />
         )}
 
@@ -101,9 +132,15 @@ const AdminPanel = ({ onNavigateToTree }) => {
             onEditNode={handleEditNode}
             onDeleteNode={handleDeleteNode}
             onRefresh={loadNodes}
+            isAdminMode={isAdminMode}
           />
         )}
       </div>
+      
+      <AdminLogin 
+        isOpen={showAdminLogin}
+        onClose={() => setShowAdminLogin(false)}
+      />
     </div>
   );
 };

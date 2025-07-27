@@ -6,7 +6,7 @@ import { getTagFromNodeData } from "../constant/getTag";
 import SearchableSelect from './SearchableSelect';
 import "./NodeForm.css";
 
-const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
+const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode = false }) => {
   const [formData, setFormData] = useState({
     id: "",
     nombre: "",
@@ -415,57 +415,62 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated }) => {
           />
         </div>
 
-        <div className="form-group checkbox-group">
-          <label htmlFor="whatsapp" className="checkbox-label">
-            <input
-              type="checkbox"
-              id="whatsapp"
-              name="whatsapp"
-              checked={formData.whatsapp}
-              onChange={handleInputChange}
-            />
-            <span>Incluido en grupo de WhatsApp</span>
-          </label>
-        </div>
+        {/* Campos booleanos - Solo visibles en modo admin */}
+        {isAdminMode && (
+          <>
+            <div className="form-group checkbox-group">
+              <label htmlFor="whatsapp" className="checkbox-label">
+                <input
+                  type="checkbox"
+                  id="whatsapp"
+                  name="whatsapp"
+                  checked={formData.whatsapp}
+                  onChange={handleInputChange}
+                />
+                <span>Incluido en grupo de WhatsApp</span>
+              </label>
+            </div>
 
-        <div className="form-group checkbox-group">
-          <label htmlFor="ha_sido_invitado" className="checkbox-label">
-            <input
-              type="checkbox"
-              id="ha_sido_invitado"
-              name="ha_sido_invitado"
-              checked={formData.ha_sido_invitado}
-              onChange={handleInputChange}
-            />
-            <span>Ha sido invitado a la reunión familiar</span>
-          </label>
-        </div>
+            <div className="form-group checkbox-group">
+              <label htmlFor="ha_sido_invitado" className="checkbox-label">
+                <input
+                  type="checkbox"
+                  id="ha_sido_invitado"
+                  name="ha_sido_invitado"
+                  checked={formData.ha_sido_invitado}
+                  onChange={handleInputChange}
+                />
+                <span>Ha sido invitado a la reunión familiar</span>
+              </label>
+            </div>
 
-        <div className="form-group checkbox-group">
-          <label htmlFor="confirmo_asistencia" className="checkbox-label">
-            <input
-              type="checkbox"
-              id="confirmo_asistencia"
-              name="confirmo_asistencia"
-              checked={formData.confirmo_asistencia}
-              onChange={handleInputChange}
-            />
-            <span>Confirmó asistencia a la reunión</span>
-          </label>
-        </div>
+            <div className="form-group checkbox-group">
+              <label htmlFor="confirmo_asistencia" className="checkbox-label">
+                <input
+                  type="checkbox"
+                  id="confirmo_asistencia"
+                  name="confirmo_asistencia"
+                  checked={formData.confirmo_asistencia}
+                  onChange={handleInputChange}
+                />
+                <span>Confirmó asistencia a la reunión</span>
+              </label>
+            </div>
 
-        <div className="form-group checkbox-group">
-          <label htmlFor="realizo_pago" className="checkbox-label">
-            <input
-              type="checkbox"
-              id="realizo_pago"
-              name="realizo_pago"
-              checked={formData.realizo_pago}
-              onChange={handleInputChange}
-            />
-            <span>Realizó el pago</span>
-          </label>
-        </div>
+            <div className="form-group checkbox-group">
+              <label htmlFor="realizo_pago" className="checkbox-label">
+                <input
+                  type="checkbox"
+                  id="realizo_pago"
+                  name="realizo_pago"
+                  checked={formData.realizo_pago}
+                  onChange={handleInputChange}
+                />
+                <span>Realizó el pago</span>
+              </label>
+            </div>
+          </>
+        )}
 
         {/* Solo mostrar información de relaciones en modo edición, sin permitir editar */}
         {editNode && (

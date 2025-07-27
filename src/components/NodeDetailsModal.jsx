@@ -1,7 +1,7 @@
 import React from 'react';
 import './NodeDetailsModal.css';
 
-const NodeDetailsModal = ({ node, nodes, isOpen, onClose }) => {
+const NodeDetailsModal = ({ node, nodes, isOpen, onClose, isAdminMode = false }) => {
   if (!isOpen || !node) return null;
 
   // Encontrar relaciones familiares
@@ -74,33 +74,38 @@ const NodeDetailsModal = ({ node, nodes, isOpen, onClose }) => {
               <span>{node.contacto || "No especificado"}</span>
             </div>
             
-            <div className="detail-item boolean-detail">
-              <label>WhatsApp:</label>
-              <span className={`status-badge ${node.whatsapp ? 'yes' : 'no'}`}>
-                {node.whatsapp ? '✅ Sí' : '❌ No'}
-              </span>
-            </div>
-            
-            <div className="detail-item boolean-detail">
-              <label>Ha sido invitado:</label>
-              <span className={`status-badge ${node.ha_sido_invitado ? 'yes' : 'no'}`}>
-                {node.ha_sido_invitado ? '✅ Sí' : '❌ No'}
-              </span>
-            </div>
-            
-            <div className="detail-item boolean-detail">
-              <label>Confirmó asistencia:</label>
-              <span className={`status-badge ${node.confirmo_asistencia ? 'yes' : 'no'}`}>
-                {node.confirmo_asistencia ? '✅ Sí' : '❌ No'}
-              </span>
-            </div>
-            
-            <div className="detail-item boolean-detail">
-              <label>Realizó el pago:</label>
-              <span className={`status-badge ${node.realizo_pago ? 'yes' : 'no'}`}>
-                {node.realizo_pago ? '✅ Sí' : '❌ No'}
-              </span>
-            </div>
+            {/* Campos booleanos - Solo visibles en modo admin */}
+            {isAdminMode && (
+              <>
+                <div className="detail-item boolean-detail">
+                  <label>WhatsApp:</label>
+                  <span className={`status-badge ${node.whatsapp ? 'yes' : 'no'}`}>
+                    {node.whatsapp ? '✅ Sí' : '❌ No'}
+                  </span>
+                </div>
+                
+                <div className="detail-item boolean-detail">
+                  <label>Ha sido invitado:</label>
+                  <span className={`status-badge ${node.ha_sido_invitado ? 'yes' : 'no'}`}>
+                    {node.ha_sido_invitado ? '✅ Sí' : '❌ No'}
+                  </span>
+                </div>
+                
+                <div className="detail-item boolean-detail">
+                  <label>Confirmó asistencia:</label>
+                  <span className={`status-badge ${node.confirmo_asistencia ? 'yes' : 'no'}`}>
+                    {node.confirmo_asistencia ? '✅ Sí' : '❌ No'}
+                  </span>
+                </div>
+                
+                <div className="detail-item boolean-detail">
+                  <label>Realizó el pago:</label>
+                  <span className={`status-badge ${node.realizo_pago ? 'yes' : 'no'}`}>
+                    {node.realizo_pago ? '✅ Sí' : '❌ No'}
+                  </span>
+                </div>
+              </>
+            )}
             
             {node.detalles && (
               <div className="detail-item full-width">
