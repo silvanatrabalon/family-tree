@@ -62,9 +62,13 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode =
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+    const newValue = type === 'checkbox' ? checked : value;
+    
+    console.log(`Campo ${name} cambiado de ${formData[name]} a ${newValue}`);
+    
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: newValue
     }));
   };
 
@@ -126,6 +130,9 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode =
         confirmo_asistencia: formData.confirmo_asistencia,
         realizo_pago: formData.realizo_pago,
       };
+
+      console.log('Datos a enviar:', nodeData);
+      console.log('FormData actual:', formData);
 
       // Asignar tags y Descendientes basado en el nodo relacionado
       if (formData.relationshipType === "child" && (formData.fatherId || formData.motherId)) {

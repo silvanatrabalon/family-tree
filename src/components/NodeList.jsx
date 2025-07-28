@@ -126,13 +126,18 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
       return false;
     }
     
+    // Log temporal para ver los valores booleanos
+    if (node.nombre && node.nombre.includes('test')) { // Solo para nodos de prueba
+      console.log(`Nodo ${node.nombre} - booleanos:`, {
+        whatsapp: node.whatsapp,
+        ha_sido_invitado: node.ha_sido_invitado,
+        confirmo_asistencia: node.confirmo_asistencia,
+        realizo_pago: node.realizo_pago
+      });
+    }
+    
     const matchesSearch = searchTerm.trim() === '' || 
       node.nombre.toLowerCase().includes(searchTerm.toLowerCase().trim());
-    
-    // Debug temporal
-    if (searchTerm.trim() !== '') {
-      console.log(`Buscando: "${searchTerm}" en "${node.nombre}" = ${matchesSearch}`);
-    }
     
     let matchesInvitation = true;
     if (invitationFilter === "invited") {
@@ -195,10 +200,7 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
           type="text"
           placeholder="Buscar por nombre..."
           value={searchTerm}
-          onChange={(e) => {
-            console.log(`Nuevo término de búsqueda: "${e.target.value}"`);
-            setSearchTerm(e.target.value);
-          }}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
       </div>

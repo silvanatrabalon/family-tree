@@ -62,13 +62,17 @@ function deserializeNodeFromSheet(row, headers) {
 
     // Campos booleanos
     if (["whatsapp", "ha_sido_invitado", "confirmo_asistencia", "realizo_pago"].includes(header)) {
-      if (value === "true" || value === true) {
+      console.log(`Deserializando campo booleano ${header}: valor original = "${value}" (tipo: ${typeof value})`);
+      
+      if (value === "true" || value === true || value === "TRUE" || value === 1 || value === "1") {
         value = true;
-      } else if (value === "false" || value === false) {
+      } else if (value === "false" || value === false || value === "FALSE" || value === 0 || value === "0") {
         value = false;
       } else {
         value = false; // Default a false para booleanos
       }
+      
+      console.log(`Deserializando campo booleano ${header}: valor final = ${value}`);
     }
 
     obj[header] = value;
