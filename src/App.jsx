@@ -11,6 +11,7 @@ import { AdminProvider } from "./context/AdminContext";
 function App() {
   const [currentView, setCurrentView] = useState('landing'); // 'landing', 'tree', 'expand'
   const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [expandActiveTab, setExpandActiveTab] = useState('add'); // Para controlar el tab activo en AdminPanel
 
   const navigateToLanding = () => setCurrentView('landing');
   const navigateToTree = () => setCurrentView('tree');
@@ -18,6 +19,13 @@ function App() {
   const navigateToApp = () => setCurrentView('tree');
   const handleShowAdminLogin = () => setShowAdminLogin(true);
   const handleCloseAdminLogin = () => setShowAdminLogin(false);
+  const handleExpandTabChange = (tab) => {
+    setExpandActiveTab(tab);
+    // Si cambiamos a "add", aseguramos que no haya un nodo en edición
+    if (tab === 'add') {
+      // El AdminPanel manejará esto internamente
+    }
+  };
 
   return (
     <AdminProvider>
@@ -34,6 +42,7 @@ function App() {
               onNavigateToExpandTree={navigateToExpandTree}
               onNavigateToLanding={navigateToLanding}
               onShowAdminLogin={handleShowAdminLogin}
+              onExpandTabChange={handleExpandTabChange}
             />
             
             <main style={{ paddingTop: '80px', minHeight: '100vh' }}>
@@ -60,7 +69,7 @@ function App() {
                       Agrega nuevos miembros y edita información del árbol genealógico
                     </p>
                   </div>
-                  <AdminPanel />
+                  <AdminPanel activeTab={expandActiveTab} onTabChange={setExpandActiveTab} />
                 </div>
               )}
             </main>

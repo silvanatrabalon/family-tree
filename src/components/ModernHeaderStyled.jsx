@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAdmin } from '../context/AdminContext';
 
-const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToAdmin, onNavigateToExpandTree, onNavigateToLanding, onShowAdminLogin }) => {
+const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToExpandTree, onNavigateToLanding, onShowAdminLogin, onExpandTabChange }) => {
   const { isAdminMode, logout } = useAdmin();
+  const [showExpandDropdown, setShowExpandDropdown] = useState(false);
+
+  // Cerrar dropdown al hacer clic fuera
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showExpandDropdown && !event.target.closest('.dropdown-container')) {
+        setShowExpandDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showExpandDropdown]);
 
   const styles = {
     header: {
@@ -101,6 +116,53 @@ const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToAdmin, 
       background: 'transparent',
       border: 'none',
       cursor: 'pointer'
+    },
+    dropdownContainer: {
+      position: 'relative'
+    },
+    expandButton: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.5rem',
+      padding: '0.5rem 1rem',
+      borderRadius: '8px',
+      fontWeight: '500',
+      border: 'none',
+      cursor: 'pointer',
+      transition: 'all 0.3s ease'
+    },
+    dropdownMenu: {
+      position: 'absolute',
+      top: '100%',
+      left: '0',
+      marginTop: '0.5rem',
+      background: 'rgba(26, 26, 26, 0.95)',
+      backdropFilter: 'blur(12px)',
+      border: '1px solid #404040',
+      borderRadius: '12px',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+      minWidth: '200px',
+      zIndex: 60,
+      overflow: 'hidden'
+    },
+    dropdownItem: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.75rem',
+      padding: '0.75rem 1rem',
+      background: 'transparent',
+      border: 'none',
+      color: '#a1a1aa',
+      cursor: 'pointer',
+      transition: 'all 0.2s ease',
+      width: '100%',
+      textAlign: 'left',
+      fontSize: '14px',
+      fontWeight: '500'
+    },
+    dropdownItemHover: {
+      background: '#2a2a2a',
+      color: '#ffffff'
     }
   };
 
@@ -155,27 +217,87 @@ const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToAdmin, 
             Árbol Familiar
           </button>
           
-          <button 
-            onClick={onNavigateToExpandTree}
-            style={{
-              ...styles.navButton,
-              ...(currentView === 'expand' ? styles.navButtonActive : styles.navButtonInactive)
-            }}
-            onMouseEnter={(e) => {
-              if (currentView !== 'expand') {
-                e.target.style.color = '#ffffff';
-                e.target.style.background = '#2a2a2a';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (currentView !== 'expand') {
-                e.target.style.color = '#a1a1aa';
-                e.target.style.background = 'transparent';
-              }
-            }}
-          >
-            Expandir Árbol
-          </button>
+          {/* Menú desplegable de Expandir Árbol */}
+          <div style={styles.dropdownContainer} className="dropdown-container">
+            <button 
+              onClick={() => {
+                onNavigateToExpandTree();
+                setShowExpandDropdown(!showExpandDropdown);
+              }}
+              style={{
+                ...styles.expandButton,
+                ...(currentView === 'expand' ? styles.navButtonActive : styles.navButtonInactive)
+              }}
+              onMouseEnter={(e) => {
+                if (currentView !== 'expand') {
+                  e.target.style.color = '#ffffff';
+                  e.target.style.background = '#2a2a2a';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (currentView !== 'expand') {
+                  e.target.style.color = '#a1a1aa';
+                  e.target.style.background = 'transparent';
+                }
+              }}
+            >
+              Expandir Árbol
+              <svg 
+                style={{
+                  width: '16px', 
+                  height: '16px',
+                  transform: showExpandDropdown ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s ease'
+                }} 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            {showExpandDropdown && currentView === 'expand' && (
+              <div style={styles.dropdownMenu}>
+                <button 
+                  style={styles.dropdownItem}
+                  onClick={() => {
+                    onExpandTabChange && onExpandTabChange('add');
+                    setShowExpandDropdown(false);
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = '#2a2a2a';
+                    e.target.style.color = '#ffffff';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'transparent';
+                    e.target.style.color = '#a1a1aa';
+                  }}
+                >
+                  <span>➕</span>
+                  Agregar Persona
+                </button>
+                <button 
+                  style={styles.dropdownItem}
+                  onClick={() => {
+                    onExpandTabChange && onExpandTabChange('list');
+                    setShowExpandDropdown(false);
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = '#2a2a2a';
+                    e.target.style.color = '#ffffff';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'transparent';
+                    e.target.style.color = '#a1a1aa';
+                  }}
+                >
+                  <span>📋</span>
+                  Lista de Personas
+                </button>
+              </div>
+            )}
+          </div>
         </nav>
 
         {/* Acciones del usuario */}
