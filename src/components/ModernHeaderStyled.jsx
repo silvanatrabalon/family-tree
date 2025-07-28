@@ -176,30 +176,6 @@ const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToAdmin, 
           >
             Expandir Árbol
           </button>
-          
-          {isAdminMode && (
-            <button 
-              onClick={onNavigateToAdmin}
-              style={{
-                ...styles.navButton,
-                ...(currentView === 'admin' ? styles.navButtonActive : styles.navButtonInactive)
-              }}
-              onMouseEnter={(e) => {
-                if (currentView !== 'admin') {
-                  e.target.style.color = '#ffffff';
-                  e.target.style.background = '#2a2a2a';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (currentView !== 'admin') {
-                  e.target.style.color = '#a1a1aa';
-                  e.target.style.background = 'transparent';
-                }
-              }}
-            >
-              Gestión de Evento
-            </button>
-          )}
         </nav>
 
         {/* Acciones del usuario */}

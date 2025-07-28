@@ -53,10 +53,6 @@ const AdminPanel = () => {
 
   return (
     <div className="admin-panel">
-      <div className="admin-header">
-        <h2>Modifica los miembros del árbol genealógico</h2>
-      </div>
-
       <div className="admin-tabs">
         <button 
           className={`tab ${activeTab === "add" ? "active" : ""}`}

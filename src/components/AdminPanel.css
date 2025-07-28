@@ -93,15 +93,6 @@
   font-size: 16px;
 }
 
-.admin-content {
-  background: white;
-  border-radius: 16px;
-  padding: 30px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(102, 126, 234, 0.1);
-  min-height: 500px;
-}
-
 .loading {
   text-align: center;
   font-size: 16px;
@@ -138,8 +129,5 @@
     display: none;
   }
 
-  .admin-content {
-    margin: 0 15px;
-    padding: 20px;
-  }
+
 }
