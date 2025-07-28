@@ -41,21 +41,7 @@ export const handleRelationshipConfiguration = (formData, nodes, relatedNodeId) 
   const newFormData = { ...formData, relatedNodeId };
 
   // Configurar relaciones según el tipo
-  if (formData.relationshipType === "child") {
-    // Para hijos, mantenemos la lógica existente pero también actualizamos fatherId/motherId
-    const relatedNode = nodes.find(node => node.id === relatedNodeId);
-    if (relatedNode) {
-      if (relatedNode.gender === "male") {
-        newFormData.fid = relatedNodeId;
-        newFormData.fatherId = relatedNodeId;
-        newFormData.mid = "";
-      } else {
-        newFormData.mid = relatedNodeId;
-        newFormData.motherId = relatedNodeId;
-        newFormData.fid = "";
-      }
-    }
-  } else if (formData.relationshipType === "spouse") {
+  if (formData.relationshipType === "spouse") {
     newFormData.pids = [relatedNodeId];
   } else if (formData.relationshipType === "parent") {
     // Encontrar el nodo hijo y actualizar sus padres
@@ -64,6 +50,7 @@ export const handleRelationshipConfiguration = (formData, nodes, relatedNodeId) 
       newFormData.relatedNodeId = relatedNodeId;
     }
   }
+  // Para "child", no hacemos nada aquí ya que se maneja con fatherId/motherId por separado
 
   return newFormData;
 };

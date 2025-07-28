@@ -128,7 +128,15 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode =
       };
 
       // Asignar tags y Descendientes basado en el nodo relacionado
-      if (formData.relatedNodeId && formData.relationshipType !== "parent") {
+      if (formData.relationshipType === "child" && (formData.fatherId || formData.motherId)) {
+        // Para hijos, usar el padre o la madre para obtener tags y descendientes
+        const parentId = formData.fatherId || formData.motherId;
+        const tagNumber = getTagFromRelatedNode(parentId);
+        const descendientes = getDescendientesFromRelatedNode(parentId);
+        
+        nodeData.tags = ["Descendientes", tagNumber];
+        nodeData.Descendientes = descendientes;
+      } else if (formData.relatedNodeId && formData.relationshipType !== "parent") {
         const tagNumber = getTagFromRelatedNode(formData.relatedNodeId);
         const descendientes = getDescendientesFromRelatedNode(formData.relatedNodeId);
         
@@ -144,12 +152,18 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode =
         onNodeUpdated && onNodeUpdated();
       } else {
         // Usar la función que maneja relaciones bidireccionales
-        await addNodeWithRelationships(
-          nodeData, 
-          formData.relatedNodeId, 
-          formData.relationshipType, 
-          nodes
-        );
+        if (formData.relationshipType === "child") {
+          // Para hijos, simplemente agregar el nodo ya que las relaciones están en fid/mid
+          await addNode(nodeData, nodes);
+        } else {
+          // Para otros tipos de relación, usar la función existente
+          await addNodeWithRelationships(
+            nodeData, 
+            formData.relatedNodeId, 
+            formData.relationshipType, 
+            nodes
+          );
+        }
         
         onNodeCreated && onNodeCreated();
       }
