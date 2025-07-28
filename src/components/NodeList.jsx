@@ -126,7 +126,13 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
       return false;
     }
     
-    const matchesSearch = node.nombre.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = searchTerm.trim() === '' || 
+      node.nombre.toLowerCase().includes(searchTerm.toLowerCase().trim());
+    
+    // Debug temporal
+    if (searchTerm.trim() !== '') {
+      console.log(`Buscando: "${searchTerm}" en "${node.nombre}" = ${matchesSearch}`);
+    }
     
     let matchesInvitation = true;
     if (invitationFilter === "invited") {
@@ -189,7 +195,10 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
           type="text"
           placeholder="Buscar por nombre..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {
+            console.log(`Nuevo término de búsqueda: "${e.target.value}"`);
+            setSearchTerm(e.target.value);
+          }}
           className="search-input"
         />
       </div>
