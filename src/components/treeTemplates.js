@@ -1,11 +1,6 @@
 // FamilyTree template and UI customization
 import FamilyTree from "@balkangraph/familytree.js";
-import esposaTemplate from "./templates/esposa";
-import madreTemplate from "./templates/madre";
-import hijaTemplate from "./templates/hija";
-import hijoTemplate from "./templates/hijo";
-import padreTemplate from "./templates/padre";
-import esposoTemplate from "./templates/esposo";
+
 
 export function setupTreeTemplates() {
   FamilyTree.SEARCH_PLACEHOLDER = "Buscar persona...";
@@ -41,36 +36,6 @@ export function setupTreeTemplates() {
     FamilyTree.templates.myTemplate_female.nodeMenuButton =
     `<use ${FamilyTree.attr.control_node_menu_id}="{id}" x="5" y="5" xlink:href="#base_node_menu" />`;
 
-  FamilyTree.templates.myTemplate.nodeTreeMenuCloseButton =
-    FamilyTree.templates.myTemplate_male.nodeTreeMenuCloseButton =
-    FamilyTree.templates.myTemplate_female.nodeTreeMenuCloseButton =
-    `<use ${'data-ctrl-n-t-menu-c'}="" x="5" y="5" xlink:href="#base_tree_menu_close" />`;
 
-  FamilyTree.templates.mother = Object.assign({}, FamilyTree.templates.base);
-  FamilyTree.templates.mother.up = '';
-  FamilyTree.templates.mother.size = [200, 90];
-  FamilyTree.templates.mother.node = madreTemplate
-  FamilyTree.templates.father = Object.assign({}, FamilyTree.templates.base);
-  FamilyTree.templates.father.up = '';
-  FamilyTree.templates.father.size = [200, 90];
-  FamilyTree.templates.father.node = padreTemplate
-  FamilyTree.templates.husband = Object.assign({}, FamilyTree.templates.base);
-  FamilyTree.templates.husband.up = '';
-  FamilyTree.templates.husband.size = [200, 90];
-  FamilyTree.templates.husband.node = esposoTemplate
-  FamilyTree.templates.son = Object.assign({}, FamilyTree.templates.base);
-  FamilyTree.templates.son.up = '';
-  FamilyTree.templates.son.size = [200, 90];
-  FamilyTree.templates.son.node = hijoTemplate
-  FamilyTree.templates.daughter = Object.assign({}, FamilyTree.templates.base);
-  FamilyTree.templates.daughter.up = '';
-  FamilyTree.templates.daughter.size = [200, 90];
-  FamilyTree.templates.daughter.node = hijaTemplate
-
-  FamilyTree.templates.wife = Object.assign({}, FamilyTree.templates.base);
-  FamilyTree.templates.wife.up = '';
-  FamilyTree.templates.wife.size = [200, 90]; // Ancho x Alto
-
-  FamilyTree.templates.wife.node = esposaTemplate
 
 }
