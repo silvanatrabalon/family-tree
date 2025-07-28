@@ -260,8 +260,10 @@ const LandingPageStyled = ({ onNavigateToApp, onNavigateToAddPerson, onNavigateT
     },
     ctaSection: {
       padding: '5rem 0',
-      background: 'linear-gradient(135deg, #6c47ff 0%, #a155f9 100%)',
-      textAlign: 'center'
+      background: 'linear-gradient(135deg, #1a1a1a 0%, #6c47ff 50%, #a155f9 100%)',
+      textAlign: 'center',
+      position: 'relative',
+      overflow: 'hidden'
     },
     ctaTitle: {
       fontSize: 'clamp(2.5rem, 6vw, 5rem)',
@@ -479,7 +481,7 @@ const LandingPageStyled = ({ onNavigateToApp, onNavigateToAddPerson, onNavigateT
                 <span style={{color: '#6c47ff'}}>📅</span>
                 <span>Domingo 14 de Septiembre, de 10hs a 18hs</span>
               </div>
-              <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem'}}>
+              <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', }}>
                 <span style={{color: '#6c47ff'}}>📍</span>
                 <span>Campo Amudoch - Ruta 11 KM 1001, Resistencia, Chaco</span>
               </div>
@@ -552,7 +554,27 @@ const LandingPageStyled = ({ onNavigateToApp, onNavigateToAddPerson, onNavigateT
 
       {/* CTA Section */}
       <section style={styles.ctaSection}>
-        <div style={styles.sectionContainer}>
+        {/* Efectos de fondo adicionales */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'radial-gradient(circle at 30% 50%, rgba(108, 71, 255, 0.3) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(161, 85, 249, 0.3) 0%, transparent 50%)',
+          zIndex: 1
+        }}></div>
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'linear-gradient(45deg, transparent 30%, rgba(108, 71, 255, 0.1) 50%, transparent 70%)',
+          zIndex: 2
+        }}></div>
+        
+        <div style={{...styles.sectionContainer, position: 'relative', zIndex: 3}}>
           <h2 style={styles.ctaTitle}>
             Comienza tu Viaje Genealógico
           </h2>
