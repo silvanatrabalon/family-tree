@@ -16,15 +16,15 @@ const LandingPage = ({ onNavigateToApp }) => {
             <div className="flex items-center space-x-6">
               <button 
                 onClick={() => onNavigateToApp()}
-                className="btn-ghost"
+                className="btn-primary"
               >
                 Ver Árbol
               </button>
               <button 
                 onClick={() => onNavigateToApp()}
-                className="btn-primary"
+                className="btn-ghost"
               >
-                Comenzar
+                Expandir
               </button>
             </div>
           </div>
@@ -36,11 +36,11 @@ const LandingPage = ({ onNavigateToApp }) => {
         <div className="section-container text-center">
           <div className="max-w-4xl mx-auto animate-fade-in">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              Descubre tu
-              <span className="gradient-text block">Historia Familiar</span>
+              Descubre la
+              <span className="gradient-text block">Familia Meana</span>
             </h1>
             <p className="text-xl md:text-2xl text-text-secondary mb-8 max-w-2xl mx-auto">
-              Explora, conecta y preserva las historias de tu familia con nuestra plataforma interactiva
+              Explora, conecta y preserva las historias de la familia Meana.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button 
@@ -49,9 +49,9 @@ const LandingPage = ({ onNavigateToApp }) => {
               >
                 Explorar Árbol Familiar
               </button>
-              <button className="btn-secondary text-lg px-8 py-4">
+              {/* <button className="btn-secondary text-lg px-8 py-4">
                 Conoce Más
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -150,7 +150,7 @@ const LandingPage = ({ onNavigateToApp }) => {
             Comienza tu Viaje Genealógico
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Únete a miles de familias que ya han comenzado a preservar su legado
+            Únete a familiares que ya han comenzado a preservar su legado
           </p>
           <button 
             onClick={() => onNavigateToApp()}
@@ -172,7 +172,7 @@ const LandingPage = ({ onNavigateToApp }) => {
               <span className="text-text-primary font-semibold">Familia Meana</span>
             </div>
             <p className="text-text-secondary text-sm">
-              © 2025 Familia Meana. Todos los derechos reservados.
+              ©2025 Software Queen. Todos los derechos reservados.
             </p>
           </div>
         </div>

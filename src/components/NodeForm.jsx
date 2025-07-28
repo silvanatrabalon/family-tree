@@ -159,12 +159,6 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode =
         {editNode ? "Editar Persona" : "Agregar Nueva Persona"}
       </h3>
       
-      {!editNode && (
-        <div style={formStyles.infoBox}>
-          <p>Los campos marcados con <span style={formStyles.required}>*</span> son obligatorios</p>
-        </div>
-      )}
-      
       <form onSubmit={handleSubmit}>
         <NodeFormFields 
           formData={formData} 

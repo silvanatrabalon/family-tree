@@ -62,12 +62,6 @@ const Welcome = () => {
           Explora y descubre las conexiones familiares de nuestra familia. 
           Navega por las generaciones y conoce más sobre cada miembro de nuestra historia.
         </p>
-        <div style={styles.statusCard}>
-          <div style={styles.status}>
-            <span style={styles.statusDot}></span>
-            <span style={styles.statusText}>Navegación interactiva disponible</span>
-          </div>
-        </div>
       </div>
     </div>
   );

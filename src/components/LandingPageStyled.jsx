@@ -285,6 +285,21 @@ const LandingPageStyled = ({ onNavigateToApp }) => {
           <div style={styles.navButtons}>
             <button 
               onClick={() => onNavigateToApp()}
+                            style={styles.btnPrimary}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 8px 25px 0 rgba(108, 71, 255, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 14px 0 rgba(108, 71, 255, 0.25)';
+              }}
+
+            >
+              Ver Árbol
+            </button>
+            <button 
+              onClick={() => onNavigateToApp()}
               style={styles.btnGhost}
               onMouseEnter={(e) => {
                 e.target.style.color = '#ffffff';
@@ -295,21 +310,7 @@ const LandingPageStyled = ({ onNavigateToApp }) => {
                 e.target.style.background = 'transparent';
               }}
             >
-              Ver Árbol
-            </button>
-            <button 
-              onClick={() => onNavigateToApp()}
-              style={styles.btnPrimary}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 8px 25px 0 rgba(108, 71, 255, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 4px 14px 0 rgba(108, 71, 255, 0.25)';
-              }}
-            >
-              Comenzar
+              Expandir
             </button>
           </div>
         </div>
@@ -320,11 +321,11 @@ const LandingPageStyled = ({ onNavigateToApp }) => {
         <div style={styles.heroContainer}>
           <div style={styles.heroContent}>
             <h1 style={styles.heroTitle}>
-              Descubre tu
-              <span style={styles.gradientText}>Historia Familiar</span>
+              Descubre la
+              <span style={styles.gradientText}>Familia Meana</span>
             </h1>
             <p style={styles.heroSubtitle}>
-              Explora, conecta y preserva las historias de tu familia con nuestra plataforma interactiva
+              Explora, conecta y preserva las historias de la familia Meana.
             </p>
             <div style={styles.heroButtons}>
               <button 
@@ -341,7 +342,7 @@ const LandingPageStyled = ({ onNavigateToApp }) => {
               >
                 Explorar Árbol Familiar
               </button>
-              <button 
+              {/* <button 
                 style={styles.btnSecondary}
                 onMouseEnter={(e) => {
                   e.target.style.background = '#3a3a3a';
@@ -353,7 +354,7 @@ const LandingPageStyled = ({ onNavigateToApp }) => {
                 }}
               >
                 Conoce Más
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -416,7 +417,7 @@ const LandingPageStyled = ({ onNavigateToApp }) => {
             Comienza tu Viaje Genealógico
           </h2>
           <p style={styles.ctaSubtitle}>
-            Únete a miles de familias que ya han comenzado a preservar su legado
+            Únete a familiares que ya han comenzado a preservar su legado
           </p>
           <button 
             onClick={() => onNavigateToApp()}
@@ -444,7 +445,7 @@ const LandingPageStyled = ({ onNavigateToApp }) => {
               <span style={styles.logoText}>Familia Meana</span>
             </div>
             <p style={styles.footerText}>
-              © 2025 Familia Meana. Todos los derechos reservados.
+              ©2025 Software Queen. Todos los derechos reservados.
             </p>
           </div>
         </div>
