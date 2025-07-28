@@ -3,6 +3,7 @@ import { fetchNodesFromSheet } from "./components/events/api/fetchNode.js";
 
 // NO ejecutar fetchNodesFromSheet aquí - se ejecutará en treeInit.js
 const familyTreeData = {
+  mode: "dark",
   nodes: [], // Inicializar vacío, se poblará en treeInit.js
   mouseScrool: FamilyTree.action.ctrlZoom,
   nodeBinding: {

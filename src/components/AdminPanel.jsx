@@ -6,10 +6,9 @@ import AdminLogin from "./AdminLogin";
 import { useAdmin } from "../context/AdminContext";
 import "./AdminPanel.css";
 
-const AdminPanel = () => {
+const AdminPanel = ({ activeTab = "add", onTabChange }) => {
   const [nodes, setNodes] = useState([]);
   const [selectedNode, setSelectedNode] = useState(null);
-  const [activeTab, setActiveTab] = useState("add"); // "add", "edit", "list"
   const [loading, setLoading] = useState(false);
   
   const { isAdminMode } = useAdmin();
@@ -29,57 +28,38 @@ const AdminPanel = () => {
     loadNodes();
   }, []);
 
+  // Resetear nodo seleccionado cuando se cambia a "add"
+  useEffect(() => {
+    if (activeTab === 'add') {
+      setSelectedNode(null);
+    }
+  }, [activeTab]);
+
   const handleNodeCreated = () => {
     loadNodes();
-    setActiveTab("list");
+    onTabChange && onTabChange("list");
   };
 
   const handleNodeUpdated = () => {
     loadNodes();
     setSelectedNode(null);
-    setActiveTab("list");
+    onTabChange && onTabChange("list");
   };
 
   const handleEditNode = (node) => {
     setSelectedNode(node);
-    setActiveTab("edit");
+    onTabChange && onTabChange("edit");
   };
 
   const handleDeleteNode = () => {
     loadNodes();
     setSelectedNode(null);
-    setActiveTab("list");
+    onTabChange && onTabChange("list");
   };
 
   return (
     <div className="admin-panel">
-      <div className="admin-header">
-        <h2>Modifica los miembros del árbol genealógico</h2>
-      </div>
-
-      <div className="admin-tabs">
-        <button 
-          className={`tab ${activeTab === "add" ? "active" : ""}`}
-          onClick={() => {
-            setActiveTab("add");
-            setSelectedNode(null);
-          }}
-        >
-          <span className="tab-icon">➕</span>
-          <span>Agregar Persona</span>
-        </button>
-        <button 
-          className={`tab ${activeTab === "list" ? "active" : ""}`}
-          onClick={() => setActiveTab("list")}
-        >
-          <span className="tab-icon">📋</span>
-          <span>Lista de Personas</span>
-        </button>
-      </div>
-
       <div className="admin-content">
-        {loading && <div className="loading">Cargando...</div>}
-        
         {activeTab === "add" && (
           <NodeForm 
             nodes={nodes}
@@ -104,6 +84,7 @@ const AdminPanel = () => {
             onDeleteNode={handleDeleteNode}
             onRefresh={loadNodes}
             isAdminMode={isAdminMode}
+            loading={loading}
           />
         )}
       </div>

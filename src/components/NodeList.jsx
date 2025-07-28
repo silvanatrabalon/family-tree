@@ -1,16 +1,22 @@
 import { useState } from "react";
 import { deleteNodeFromAdmin } from "./events/api/deleteNode";
 import NodeDetailsModal from './NodeDetailsModal';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 import "./NodeList.css";
 
-const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = false }) => {
+const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = false, loading: externalLoading = false }) => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedNode, setSelectedNode] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteConfirmNode, setDeleteConfirmNode] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [invitationFilter, setInvitationFilter] = useState("all"); // all, invited, confirmed, not-invited
   const [confirmationFilter, setConfirmationFilter] = useState("all"); // all, confirmed, not-confirmed
   const [paymentFilter, setPaymentFilter] = useState("all"); // all, paid, not-paid
+
+  // Usar loading externo o interno
+  const isLoading = externalLoading || loading;
 
   const handleViewNode = (node) => {
     setSelectedNode(node);
@@ -22,18 +28,30 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
     setSelectedNode(null);
   };
 
-  const handleDelete = async (node) => {
-    if (window.confirm(`¿Estás seguro de que quieres eliminar a ${node.nombre}?`)) {
-      setLoading(true);
-      try {
-        await deleteNodeFromAdmin(node, nodes);
-        onDeleteNode();
-      } catch (error) {
-        console.error("Error deleting node:", error);
-        alert("Error al eliminar la persona. Por favor intenta de nuevo.");
-      }
-      setLoading(false);
+  const handleDeleteClick = (node) => {
+    setDeleteConfirmNode(node);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteModalOpen(false);
+    setDeleteConfirmNode(null);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteConfirmNode) return;
+    
+    setLoading(true);
+    try {
+      await deleteNodeFromAdmin(deleteConfirmNode, nodes);
+      onDeleteNode();
+      setIsDeleteModalOpen(false);
+      setDeleteConfirmNode(null);
+    } catch (error) {
+      console.error("Error deleting node:", error);
+      alert("Error al eliminar la persona. Por favor intenta de nuevo.");
     }
+    setLoading(false);
   };
 
   // Filtrar nodos por búsqueda, invitación y confirmación
@@ -76,13 +94,19 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
         <button 
           onClick={onRefresh}
           className="refresh-button"
-          disabled={loading}
+          disabled={isLoading}
         >
-          {loading ? "Actualizando..." : "Actualizar"}
+          {isLoading ? "Actualizando..." : "Actualizar"}
         </button>
       </div>
 
-      <div className="search-box">
+      {isLoading ? (
+        <div className="loading-state">
+          <p>Cargando personas...</p>
+        </div>
+      ) : (
+        <>
+          <div className="search-box">
         <input
           type="text"
           placeholder="Buscar por nombre..."
@@ -190,22 +214,22 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
                     <>
                       <td className="boolean-cell">
                         <span className={`status-badge ${node.whatsapp ? 'yes' : 'no'}`}>
-                          {node.whatsapp ? '✅' : '❌'}
+                          {node.whatsapp ? '✓' : '✗'}
                         </span>
                       </td>
                       <td className="boolean-cell">
                         <span className={`status-badge ${node.ha_sido_invitado ? 'yes' : 'no'}`}>
-                          {node.ha_sido_invitado ? '✅' : '❌'}
+                          {node.ha_sido_invitado ? '✓' : '✗'}
                         </span>
                       </td>
                       <td className="boolean-cell">
                         <span className={`status-badge ${node.confirmo_asistencia ? 'yes' : 'no'}`}>
-                          {node.confirmo_asistencia ? '✅' : '❌'}
+                          {node.confirmo_asistencia ? '✓' : '✗'}
                         </span>
                       </td>
                       <td className="boolean-cell">
                         <span className={`status-badge ${node.realizo_pago ? 'yes' : 'no'}`}>
-                          {node.realizo_pago ? '✅' : '❌'}
+                          {node.realizo_pago ? '✓' : '✗'}
                         </span>
                       </td>
                     </>
@@ -216,22 +240,22 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
                       className="view-button"
                       title="Ver más información"
                     >
-                      Ver más
+                      👁
                     </button>
                     <button 
                       onClick={() => onEditNode(node)}
                       className="edit-button"
                       title="Editar información"
                     >
-                      Editar
+                      ✏
                     </button>
                     <button 
-                      onClick={() => handleDelete(node)}
+                      onClick={() => handleDeleteClick(node)}
                       className="delete-button"
                       disabled={loading}
                       title="Eliminar persona"
                     >
-                      Eliminar
+                      🗑
                     </button>
                   </td>
                 </tr>
@@ -246,6 +270,8 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
           <p>No se encontraron personas.</p>
         </div>
       )}
+        </>
+      )}
 
       <NodeDetailsModal 
         node={selectedNode}
@@ -253,6 +279,14 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         isAdminMode={isAdminMode}
+      />
+
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        personName={deleteConfirmNode?.nombre || ''}
+        isLoading={loading}
       />
     </div>
   );
