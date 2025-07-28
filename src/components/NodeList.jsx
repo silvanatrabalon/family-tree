@@ -231,14 +231,14 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
                       className="view-button"
                       title="Ver más información"
                     >
-                      Ver más
+                      👁
                     </button>
                     <button 
                       onClick={() => onEditNode(node)}
                       className="edit-button"
                       title="Editar información"
                     >
-                      Editar
+                      ✏
                     </button>
                     <button 
                       onClick={() => handleDeleteClick(node)}
@@ -246,7 +246,7 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
                       disabled={loading}
                       title="Eliminar persona"
                     >
-                      Eliminar
+                      🗑
                     </button>
                   </td>
                 </tr>
