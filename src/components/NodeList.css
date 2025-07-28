@@ -164,7 +164,7 @@
 }
 
 .nodes-table th {
-  background: linear-gradient(135deg, #6c47ff 0%, #764ba2 100%);
+  background:  #21043d ;
   font-weight: 600;
   color: #ffffff;
   position: sticky;
@@ -284,6 +284,13 @@
   margin: 0;
 }
 
+.status-badge.yes {
+  color: #10b981;
+}
+
+.status-badge.no {
+  color: #ef4444;
+}
 
 .empty-state {
   text-align: center;
