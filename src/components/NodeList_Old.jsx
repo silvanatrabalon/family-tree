@@ -48,21 +48,21 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
     if (invitationFilter === "invited") {
       matchesInvitation = node.ha_sido_invitado === true;
     } else if (invitationFilter === "not-invited") {
-      matchesInvitation = node.ha_sido_invitado !== true;
+      matchesInvitation = node.ha_sido_invitado === false;
     }
     
     let matchesConfirmation = true;
     if (confirmationFilter === "confirmed") {
       matchesConfirmation = node.confirmo_asistencia === true;
     } else if (confirmationFilter === "not-confirmed") {
-      matchesConfirmation = node.confirmo_asistencia !== true;
+      matchesConfirmation = node.confirmo_asistencia === false;
     }
     
     let matchesPayment = true;
     if (paymentFilter === "paid") {
       matchesPayment = node.realizo_pago === true;
     } else if (paymentFilter === "not-paid") {
-      matchesPayment = node.realizo_pago !== true;
+      matchesPayment = node.realizo_pago === false;
     }
     
     return matchesSearch && matchesInvitation && matchesConfirmation && matchesPayment;
@@ -598,6 +598,55 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
                           }
                         }}
                       >
+                        Eliminar
+                      </button>
+                    </div>
+                  </td>
+            {filteredNodes.map(node => {
+              return (
+                <tr key={node.id}>
+                  <td className="name-cell">
+                    <div className="name-with-gender">
+                      <span className="name">{node.nombre}</span>
+                      <span className={`gender-icon ${node.gender}`}>
+                        {node.gender === "male" ? "♂" : "♀"}
+                      </span>
+                    </div>
+                  </td>
+                  <td>{node.nacimiento || "-"}</td>
+                  <td>{node.Descendientes || "-"}</td>
+                  <td>{node.contacto || "-"}</td>
+                  {isAdminMode && (
+                    <>
+                      <td className="boolean-cell">
+                        <span className={`status-badge ${node.whatsapp ? 'yes' : 'no'}`}>
+                          {node.whatsapp ? '✅' : '❌'}
+                        </span>
+                      </td>
+                      <td className="boolean-cell">
+                        <span className={`status-badge ${node.ha_sido_invitado ? 'yes' : 'no'}`}>
+                          {node.ha_sido_invitado ? '✅' : '❌'}
+                        </span>
+                      </td>
+                      <td className="boolean-cell">
+                        <span className={`status-badge ${node.confirmo_asistencia ? 'yes' : 'no'}`}>
+                          {node.confirmo_asistencia ? '✅' : '❌'}
+                        </span>
+                      </td>
+                      <td className="boolean-cell">
+                        <span className={`status-badge ${node.realizo_pago ? 'yes' : 'no'}`}>
+                          {node.realizo_pago ? '✅' : '❌'}
+                        </span>
+                      </td>
+                    </>
+                  )}
+                  <td className="actions-cell">
+                    <button 
+                      onClick={() => handleViewNode(node)}
+                      className="view-button"
+                      title="Ver más información"
+                    >
+                      Ver más
                         Eliminar
                       </button>
                     </div>

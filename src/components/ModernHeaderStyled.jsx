@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAdmin } from '../context/AdminContext';
 
-const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToExpandTree, onNavigateToLanding, onShowAdminLogin }) => {
+const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToAdmin, onNavigateToExpandTree, onNavigateToLanding, onShowAdminLogin }) => {
   const { isAdminMode, logout } = useAdmin();
 
   const styles = {
@@ -176,6 +176,30 @@ const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToExpandT
           >
             Expandir Árbol
           </button>
+          
+          {isAdminMode && (
+            <button 
+              onClick={onNavigateToAdmin}
+              style={{
+                ...styles.navButton,
+                ...(currentView === 'admin' ? styles.navButtonActive : styles.navButtonInactive)
+              }}
+              onMouseEnter={(e) => {
+                if (currentView !== 'admin') {
+                  e.target.style.color = '#ffffff';
+                  e.target.style.background = '#2a2a2a';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (currentView !== 'admin') {
+                  e.target.style.color = '#a1a1aa';
+                  e.target.style.background = 'transparent';
+                }
+              }}
+            >
+              Gestión de Evento
+            </button>
+          )}
         </nav>
 
         {/* Acciones del usuario */}
@@ -183,7 +207,7 @@ const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToExpandT
           {isAdminMode ? (
             <div style={styles.adminInfo}>
               <span style={styles.adminLabel}>
-                Organizador de Evento
+                Modo Organizador
               </span>
               <button 
                 onClick={logout}
