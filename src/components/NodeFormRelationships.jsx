@@ -6,6 +6,8 @@ const NodeFormRelationships = ({
   formData, 
   handleRelationshipChange, 
   handleRelatedNodeChange, 
+  handleFatherSelection,
+  handleMotherSelection,
   availableNodes,
   nodes 
 }) => {
@@ -70,13 +72,60 @@ const NodeFormRelationships = ({
 
   // Opciones del nodo relacionado
   const RelatedNodeOptions = () => {
+    if (formData.relationshipType === "child") {
+      // Para hijos, mostrar selectores separados para padre y madre
+      return (
+        <>
+          {/* Selector de Padre */}
+          <div style={formStyles.fieldGroup}>
+            <label htmlFor="fatherId" style={formStyles.label}>
+              Seleccionar Padre:
+            </label>
+            <SearchableSelect
+              id="fatherId"
+              name="fatherId"
+              value={formData.fatherId}
+              onChange={handleFatherSelection}
+              options={availableNodes
+                .filter(node => node.gender === "male")
+                .map(node => ({
+                  value: node.id,
+                  label: node.nombre
+                }))}
+              placeholder="Buscar padre..."
+              title="Seleccione el padre"
+            />
+          </div>
+
+          {/* Selector de Madre */}
+          <div style={formStyles.fieldGroup}>
+            <label htmlFor="motherId" style={formStyles.label}>
+              Seleccionar Madre:
+            </label>
+            <SearchableSelect
+              id="motherId"
+              name="motherId"
+              value={formData.motherId}
+              onChange={handleMotherSelection}
+              options={availableNodes
+                .filter(node => node.gender === "female")
+                .map(node => ({
+                  value: node.id,
+                  label: node.nombre
+                }))}
+              placeholder="Buscar madre..."
+              title="Seleccione la madre"
+            />
+          </div>
+        </>
+      );
+    }
+
+    // Para otros tipos de relación, mantener la lógica original
     let filteredNodes = availableNodes;
     let labelText = "";
 
     switch (formData.relationshipType) {
-      case "child":
-        labelText = "Seleccionar Padre/Madre: *";
-        break;
       case "spouse":
         labelText = "Seleccionar Pareja: *";
         filteredNodes = availableNodes.filter(node => node.gender !== formData.gender);
@@ -91,7 +140,7 @@ const NodeFormRelationships = ({
     // Crear opciones para el SearchableSelect
     const selectOptions = filteredNodes.map(node => ({
       value: node.id,
-      label: `${node.nombre} (${node.gender === "male" ? "Hombre" : "Mujer"})`
+      label: node.nombre
     }));
 
     return (

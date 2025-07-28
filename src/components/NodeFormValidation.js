@@ -15,8 +15,16 @@ export const validateFormData = (formData, editNode) => {
       errors.push("El tipo de relación es obligatorio");
     }
     
-    if (!formData.relatedNodeId) {
-      errors.push("Debe seleccionar una persona relacionada");
+    // Validación específica para hijos - al menos uno de los padres debe estar seleccionado
+    if (formData.relationshipType === "child") {
+      if (!formData.fatherId && !formData.motherId) {
+        errors.push("Debe seleccionar al menos un padre o una madre");
+      }
+    } else {
+      // Para otros tipos de relación, mantener la validación original
+      if (!formData.relatedNodeId) {
+        errors.push("Debe seleccionar una persona relacionada");
+      }
     }
   }
   

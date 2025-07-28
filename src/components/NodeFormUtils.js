@@ -27,6 +27,8 @@ export const createResetFormData = () => ({
   pids: [],
   relationshipType: "child",
   relatedNodeId: "",
+  fatherId: "",
+  motherId: "",
   contacto: "",
   detalles: "",
   whatsapp: false,
@@ -40,13 +42,16 @@ export const handleRelationshipConfiguration = (formData, nodes, relatedNodeId) 
 
   // Configurar relaciones según el tipo
   if (formData.relationshipType === "child") {
+    // Para hijos, mantenemos la lógica existente pero también actualizamos fatherId/motherId
     const relatedNode = nodes.find(node => node.id === relatedNodeId);
     if (relatedNode) {
       if (relatedNode.gender === "male") {
         newFormData.fid = relatedNodeId;
+        newFormData.fatherId = relatedNodeId;
         newFormData.mid = "";
       } else {
         newFormData.mid = relatedNodeId;
+        newFormData.motherId = relatedNodeId;
         newFormData.fid = "";
       }
     }
@@ -61,4 +66,21 @@ export const handleRelationshipConfiguration = (formData, nodes, relatedNodeId) 
   }
 
   return newFormData;
+};
+
+// Funciones para manejar la selección de padre y madre por separado
+export const handleFatherChange = (formData, fatherId) => {
+  return {
+    ...formData,
+    fatherId,
+    fid: fatherId
+  };
+};
+
+export const handleMotherChange = (formData, motherId) => {
+  return {
+    ...formData,
+    motherId,
+    mid: motherId
+  };
 };

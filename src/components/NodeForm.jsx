@@ -8,7 +8,7 @@ import NodeFormAdminFields from './NodeFormAdminFields';
 import NodeFormRelationships from './NodeFormRelationships';
 import { formStyles, buttonHandlers } from './NodeFormStyles';
 import { validateFormData, setupCustomValidityMessages } from './NodeFormValidation';
-import { generateNodeId, createResetFormData, handleRelationshipConfiguration } from './NodeFormUtils';
+import { generateNodeId, createResetFormData, handleRelationshipConfiguration, handleFatherChange, handleMotherChange } from './NodeFormUtils';
 
 const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode = false }) => {
   const [formData, setFormData] = useState(createResetFormData());
@@ -32,6 +32,8 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode =
         pids: editNode.pids || [],
         relationshipType: "child",
         relatedNodeId: "",
+        fatherId: editNode.fid || "",
+        motherId: editNode.mid || "",
         contacto: editNode.contacto || "",
         detalles: editNode.detalles || "",
         whatsapp: editNode.whatsapp || false,
@@ -72,6 +74,8 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode =
       ...prev,
       relationshipType: value,
       relatedNodeId: "",
+      fatherId: "",
+      motherId: "",
       fid: "",
       mid: "",
       pids: []
@@ -81,6 +85,16 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode =
   const handleRelatedNodeChange = (e) => {
     const { value } = e.target;
     setFormData(handleRelationshipConfiguration(formData, nodes, value));
+  };
+
+  const handleFatherSelection = (e) => {
+    const { value } = e.target;
+    setFormData(handleFatherChange(formData, value));
+  };
+
+  const handleMotherSelection = (e) => {
+    const { value } = e.target;
+    setFormData(handleMotherChange(formData, value));
   };
 
   const handleSubmit = async (e) => {
@@ -102,8 +116,8 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode =
         nombre: formData.nombre,
         gender: formData.gender,
         nacimiento: formData.nacimiento,
-        fid: formData.fid,
-        mid: formData.mid,
+        fid: formData.relationshipType === "child" ? formData.fatherId : formData.fid,
+        mid: formData.relationshipType === "child" ? formData.motherId : formData.mid,
         pids: formData.pids,
         contacto: formData.contacto,
         detalles: formData.detalles,
@@ -178,6 +192,8 @@ const NodeForm = ({ nodes, editNode, onNodeCreated, onNodeUpdated, isAdminMode =
           formData={formData}
           handleRelationshipChange={handleRelationshipChange}
           handleRelatedNodeChange={handleRelatedNodeChange}
+          handleFatherSelection={handleFatherSelection}
+          handleMotherSelection={handleMotherSelection}
           availableNodes={availableNodes}
           nodes={nodes}
         />
