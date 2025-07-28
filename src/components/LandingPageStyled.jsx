@@ -467,47 +467,84 @@ const LandingPageStyled = ({ onNavigateToApp, onNavigateToAddPerson, onNavigateT
         <div style={styles.backgroundBlur2}></div>
       </section>
 
-      {/* Features Section */}
+      {/* Event Invitation Section */}
       <section style={styles.featuresSection}>
         <div style={styles.sectionContainer}>
           <div style={styles.sectionHeader}>
-            <h2 style={styles.sectionTitle}>
-              Características
+            <h2 style={{...styles.sectionTitle, background: 'linear-gradient(135deg, #6c47ff 0%, #a155f9 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>
+              Juntada Familiar Asado a la Estaca
             </h2>
-            <p style={styles.sectionSubtitle}>
-              Herramientas modernas para preservar y explorar tu legado familiar
-            </p>
+            <div style={{...styles.sectionSubtitle, fontSize: '20px', fontWeight: '600', marginBottom: '2rem'}}>
+              <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '0.5rem'}}>
+                <span style={{color: '#6c47ff'}}>📅</span>
+                <span>Domingo 14 de Septiembre, de 10hs a 18hs</span>
+              </div>
+              <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem'}}>
+                <span style={{color: '#6c47ff'}}>📍</span>
+                <span>Campo Amudoch - Ruta 11 KM 1001, Resistencia, Chaco</span>
+              </div>
+            </div>
           </div>
           
-          <div style={styles.featuresGrid}>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '3rem'}}>
+            {/* Qué debe llevar cada familia */}
             <div style={styles.featureCard}>
-              <div style={styles.featureIcon}>
-                <span>🌳</span>
+              <div style={{...styles.featureIcon, background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'}}>
+                <span>�</span>
               </div>
-              <h3 style={styles.featureTitle}>Árbol Interactivo</h3>
-              <p style={styles.featureDescription}>
-                Visualiza tu árbol genealógico de forma interactiva con navegación fluida y diseño moderno
-              </p>
+              <h3 style={styles.featureTitle}>¿Qué debe llevar cada familia?</h3>
+              <ul style={{...styles.featureDescription, textAlign: 'left', paddingLeft: '1rem', lineHeight: '1.8'}}>
+                <li>Cubiertos (platos y vasos)</li>
+                <li>Ensaladas</li>
+                <li>Bebidas</li>
+                <li>Postre para compartir</li>
+                <li>1 mantel blanco</li>
+              </ul>
             </div>
             
+            {/* Qué provee la organización */}
             <div style={styles.featureCard}>
-              <div style={styles.featureIcon}>
-                <span>📱</span>
+              <div style={{...styles.featureIcon, background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'}}>
+                <span>🏢</span>
               </div>
-              <h3 style={styles.featureTitle}>Responsive</h3>
-              <p style={styles.featureDescription}>
-                Accede desde cualquier dispositivo con una experiencia optimizada para móvil y desktop
-              </p>
+              <h3 style={styles.featureTitle}>¿Qué provee la organización?</h3>
+              <ul style={{...styles.featureDescription, textAlign: 'left', paddingLeft: '1rem', lineHeight: '1.8'}}>
+                <li>Mesas y sillas</li>
+                <li>Asado</li>
+                <li>Pan</li>
+                <li>Hielo</li>
+              </ul>
             </div>
-            
-            <div style={styles.featureCard}>
-              <div style={styles.featureIcon}>
-                <span>⚡</span>
+          </div>
+
+          {/* Costos */}
+          <div style={{background: 'linear-gradient(to bottom, #0f0f0f 0%, #1a1a1a 100%)', border: '1px solid #2a2a2a', borderRadius: '16px', padding: '2rem', marginBottom: '2rem'}}>
+            <h3 style={{...styles.featureTitle, textAlign: 'center', marginBottom: '1.5rem', color: '#ffffff'}}>
+              <span style={{color: '#6c47ff'}}>💳</span> Costo por Tarjeta
+            </h3>
+            <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem'}}>
+              <div style={{textAlign: 'center', padding: '1rem', background: 'rgba(108, 71, 255, 0.1)', borderRadius: '12px', border: '1px solid rgba(108, 71, 255, 0.2)'}}>
+                <div style={{fontSize: '24px', fontWeight: 'bold', color: '#6c47ff', marginBottom: '0.5rem'}}>$15.000</div>
+                <div style={{color: '#a1a1aa'}}>Individual</div>
               </div>
-              <h3 style={styles.featureTitle}>Rápido y Moderno</h3>
-              <p style={styles.featureDescription}>
-                Tecnología de vanguardia para una experiencia rápida y sin interrupciones
-              </p>
+              <div style={{textAlign: 'center', padding: '1rem', background: 'rgba(108, 71, 255, 0.1)', borderRadius: '12px', border: '1px solid rgba(108, 71, 255, 0.2)'}}>
+                <div style={{fontSize: '24px', fontWeight: 'bold', color: '#6c47ff', marginBottom: '0.5rem'}}>$10.000 c/u</div>
+                <div style={{color: '#a1a1aa'}}>Familias de 3 y 4 personas</div>
+              </div>
+              <div style={{textAlign: 'center', padding: '1rem', background: 'rgba(108, 71, 255, 0.1)', borderRadius: '12px', border: '1px solid rgba(108, 71, 255, 0.2)'}}>
+                <div style={{fontSize: '24px', fontWeight: 'bold', color: '#6c47ff', marginBottom: '0.5rem'}}>$8.000 c/u</div>
+                <div style={{color: '#a1a1aa'}}>Familias de 5 o más</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Alias para transferencia */}
+          <div style={{textAlign: 'center', background: 'linear-gradient(135deg, #6c47ff 0%, #a155f9 100%)', padding: '1.5rem', borderRadius: '12px', color: 'white'}}>
+            <div style={{fontSize: '18px', fontWeight: '600', marginBottom: '0.5rem'}}>
+              💰 Alias para realizar transferencia:
+            </div>
+            <div style={{fontSize: '24px', fontWeight: 'bold', letterSpacing: '0.05em'}}>
+              encuentrofliar14.09
             </div>
           </div>
         </div>
