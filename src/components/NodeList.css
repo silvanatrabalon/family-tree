@@ -23,6 +23,38 @@
   letter-spacing: -0.025em;
 }
 
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.export-pdf-button {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  letter-spacing: -0.025em;
+}
+
+.export-pdf-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+}
+
+.export-pdf-button:disabled {
+  background: #4b5563;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.6;
+}
+
 .refresh-button {
   background: linear-gradient(135deg, #6c47ff 0%, #764ba2 100%);
   color: #ffffff;

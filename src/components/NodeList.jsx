@@ -2,6 +2,8 @@ import { useState } from "react";
 import { deleteNodeFromAdmin } from "./events/api/deleteNode";
 import NodeDetailsModal from './NodeDetailsModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import "./NodeList.css";
 
 const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = false, loading: externalLoading = false }) => {
@@ -38,7 +40,7 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
     setDeleteConfirmNode(null);
   };
 
-  const handleDeleteConfirm = async () => {
+    const handleDeleteConfirm = async () => {
     if (!deleteConfirmNode) return;
     
     setLoading(true);
@@ -49,9 +51,72 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
       setDeleteConfirmNode(null);
     } catch (error) {
       console.error("Error deleting node:", error);
-      alert("Error al eliminar la persona. Por favor intenta de nuevo.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
+  };
+
+  const handleExportToPDF = () => {
+    const doc = new jsPDF();
+    
+    // Configurar el documento
+    doc.setFontSize(16);
+    doc.text('Lista de Personas del Árbol Genealógico', 14, 22);
+    
+    // Agregar información adicional
+    doc.setFontSize(10);
+    doc.text(`Total de personas: ${filteredNodes.length}`, 14, 32);
+    doc.text(`Fecha de exportación: ${new Date().toLocaleDateString('es-ES')}`, 14, 38);
+    
+    // Preparar los datos para la tabla
+    const tableColumns = isAdminMode 
+      ? ['Nombre', 'Nacimiento', 'Descendiente de', 'Contacto', 'WhatsApp', 'Invitado', 'Confirmó', 'Pagó']
+      : ['Nombre', 'Nacimiento', 'Descendiente de', 'Contacto'];
+    
+    const tableRows = filteredNodes.map(node => {
+      const basicRow = [
+        node.nombre || '',
+        node.nacimiento || '',
+        node.Descendientes || '',
+        node.contacto || ''
+      ];
+      
+      if (isAdminMode) {
+        return [
+          ...basicRow,
+          node.whatsapp ? 'Sí' : 'No',
+          node.ha_sido_invitado ? 'Sí' : 'No',
+          node.confirmo_asistencia ? 'Sí' : 'No',
+          node.realizo_pago ? 'Sí' : 'No'
+        ];
+      }
+      
+      return basicRow;
+    });
+    
+    // Generar la tabla usando autoTable importado
+    autoTable(doc, {
+      head: [tableColumns],
+      body: tableRows,
+      startY: 45,
+      styles: {
+        fontSize: 8,
+        cellPadding: 2
+      },
+      headStyles: {
+        fillColor: [41, 128, 185],
+        textColor: 255,
+        fontStyle: 'bold'
+      },
+      alternateRowStyles: {
+        fillColor: [245, 245, 245]
+      },
+      margin: { top: 45, left: 14, right: 14 }
+    });
+    
+    // Guardar el PDF
+    const fileName = `lista-personas-${new Date().toISOString().split('T')[0]}.pdf`;
+    doc.save(fileName);
   };
 
   // Filtrar nodos por búsqueda, invitación y confirmación
@@ -85,19 +150,32 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
     }
     
     return matchesSearch && matchesInvitation && matchesConfirmation && matchesPayment;
+  }).sort((a, b) => {
+    // Ordenar alfabéticamente por nombre
+    return a.nombre.toLowerCase().localeCompare(b.nombre.toLowerCase());
   });
 
   return (
     <div className="node-list">
-      <div className="list-header">
+            <div className="list-header">
         <h3>Lista de Personas ({filteredNodes.length})</h3>
-        <button 
-          onClick={onRefresh}
-          className="refresh-button"
-          disabled={isLoading}
-        >
-          {isLoading ? "Actualizando..." : "Actualizar"}
-        </button>
+        <div className="header-actions">
+          <button
+            onClick={handleExportToPDF}
+            className="export-pdf-button"
+            disabled={filteredNodes.length === 0}
+            title="Exportar lista como PDF"
+          >
+            📄 Exportar PDF
+          </button>
+          <button
+            onClick={onRefresh}
+            disabled={isLoading}
+            className="refresh-button"
+          >
+            {isLoading ? "Actualizando..." : "🔄 Actualizar"}
+          </button>
+        </div>
       </div>
 
       {isLoading ? (
