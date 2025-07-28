@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAdmin } from '../context/AdminContext';
 
-const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToExpandTree, onNavigateToLanding, onShowAdminLogin, onExpandTabChange }) => {
+const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToExpandTree, onNavigateToAddPerson, onNavigateToPersonList, onNavigateToLanding, onShowAdminLogin, onExpandTabChange }) => {
   const { isAdminMode, logout } = useAdmin();
   const [showExpandDropdown, setShowExpandDropdown] = useState(false);
 
@@ -221,7 +221,6 @@ const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToExpandT
           <div style={styles.dropdownContainer} className="dropdown-container">
             <button 
               onClick={() => {
-                onNavigateToExpandTree();
                 setShowExpandDropdown(!showExpandDropdown);
               }}
               style={{
@@ -257,12 +256,12 @@ const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToExpandT
               </svg>
             </button>
             
-            {showExpandDropdown && currentView === 'expand' && (
+            {showExpandDropdown && (
               <div style={styles.dropdownMenu}>
                 <button 
                   style={styles.dropdownItem}
                   onClick={() => {
-                    onExpandTabChange && onExpandTabChange('add');
+                    onNavigateToAddPerson && onNavigateToAddPerson();
                     setShowExpandDropdown(false);
                   }}
                   onMouseEnter={(e) => {
@@ -280,7 +279,7 @@ const ModernHeaderStyled = ({ currentView, onNavigateToTree, onNavigateToExpandT
                 <button 
                   style={styles.dropdownItem}
                   onClick={() => {
-                    onExpandTabChange && onExpandTabChange('list');
+                    onNavigateToPersonList && onNavigateToPersonList();
                     setShowExpandDropdown(false);
                   }}
                   onMouseEnter={(e) => {

@@ -60,8 +60,6 @@ const AdminPanel = ({ activeTab = "add", onTabChange }) => {
   return (
     <div className="admin-panel">
       <div className="admin-content">
-        {loading && <div className="loading">Cargando...</div>}
-        
         {activeTab === "add" && (
           <NodeForm 
             nodes={nodes}
@@ -86,6 +84,7 @@ const AdminPanel = ({ activeTab = "add", onTabChange }) => {
             onDeleteNode={handleDeleteNode}
             onRefresh={loadNodes}
             isAdminMode={isAdminMode}
+            loading={loading}
           />
         )}
       </div>

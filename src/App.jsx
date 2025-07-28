@@ -17,6 +17,14 @@ function App() {
   const navigateToTree = () => setCurrentView('tree');
   const navigateToExpandTree = () => setCurrentView('expand');
   const navigateToApp = () => setCurrentView('tree');
+  const navigateToAddPerson = () => {
+    setCurrentView('expand');
+    setExpandActiveTab('add');
+  };
+  const navigateToPersonList = () => {
+    setCurrentView('expand');
+    setExpandActiveTab('list');
+  };
   const handleShowAdminLogin = () => setShowAdminLogin(true);
   const handleCloseAdminLogin = () => setShowAdminLogin(false);
   const handleExpandTabChange = (tab) => {
@@ -33,13 +41,19 @@ function App() {
         {currentView === 'test' ? (
           <TestPage />
         ) : currentView === 'landing' ? (
-          <LandingPageStyled onNavigateToApp={navigateToApp} />
+          <LandingPageStyled 
+            onNavigateToApp={navigateToApp}
+            onNavigateToAddPerson={navigateToAddPerson}
+            onNavigateToPersonList={navigateToPersonList}
+          />
         ) : (
           <>
             <ModernHeaderStyled 
               currentView={currentView}
               onNavigateToTree={navigateToTree}
               onNavigateToExpandTree={navigateToExpandTree}
+              onNavigateToAddPerson={navigateToAddPerson}
+              onNavigateToPersonList={navigateToPersonList}
               onNavigateToLanding={navigateToLanding}
               onShowAdminLogin={handleShowAdminLogin}
               onExpandTabChange={handleExpandTabChange}

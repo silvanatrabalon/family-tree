@@ -4,7 +4,7 @@ import NodeDetailsModal from './NodeDetailsModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 import "./NodeList.css";
 
-const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = false }) => {
+const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = false, loading: externalLoading = false }) => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedNode, setSelectedNode] = useState(null);
@@ -14,6 +14,9 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
   const [invitationFilter, setInvitationFilter] = useState("all"); // all, invited, confirmed, not-invited
   const [confirmationFilter, setConfirmationFilter] = useState("all"); // all, confirmed, not-confirmed
   const [paymentFilter, setPaymentFilter] = useState("all"); // all, paid, not-paid
+
+  // Usar loading externo o interno
+  const isLoading = externalLoading || loading;
 
   const handleViewNode = (node) => {
     setSelectedNode(node);
@@ -91,13 +94,19 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
         <button 
           onClick={onRefresh}
           className="refresh-button"
-          disabled={loading}
+          disabled={isLoading}
         >
-          {loading ? "Actualizando..." : "Actualizar"}
+          {isLoading ? "Actualizando..." : "Actualizar"}
         </button>
       </div>
 
-      <div className="search-box">
+      {isLoading ? (
+        <div className="loading-state">
+          <p>Cargando personas...</p>
+        </div>
+      ) : (
+        <>
+          <div className="search-box">
         <input
           type="text"
           placeholder="Buscar por nombre..."
@@ -260,6 +269,8 @@ const NodeList = ({ nodes, onEditNode, onDeleteNode, onRefresh, isAdminMode = fa
         <div className="empty-state">
           <p>No se encontraron personas.</p>
         </div>
+      )}
+        </>
       )}
 
       <NodeDetailsModal 

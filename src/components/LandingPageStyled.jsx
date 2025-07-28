@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const LandingPageStyled = ({ onNavigateToApp }) => {
+const LandingPageStyled = ({ onNavigateToApp, onNavigateToAddPerson, onNavigateToPersonList }) => {
+  const [showExpandDropdown, setShowExpandDropdown] = useState(false);  // Cerrado por defecto
   const styles = {
     container: {
       minHeight: '100vh',
@@ -73,6 +74,51 @@ const LandingPageStyled = ({ onNavigateToApp }) => {
       transition: 'all 0.3s ease',
       transform: 'translateY(0)',
       boxShadow: '0 4px 14px 0 rgba(108, 71, 255, 0.25)'
+    },
+    dropdownContainer: {
+      position: 'relative'
+    },
+    expandButton: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.5rem',
+      color: '#a1a1aa',
+      padding: '0.75rem 1.5rem',
+      borderRadius: '8px',
+      fontWeight: '500',
+      border: 'none',
+      background: 'transparent',
+      cursor: 'pointer',
+      transition: 'all 0.3s ease'
+    },
+    dropdownMenu: {
+      position: 'absolute',
+      top: '100%',
+      left: '0',
+      marginTop: '0.5rem',
+      background: 'rgba(26, 26, 26, 0.95)',
+      backdropFilter: 'blur(12px)',
+      border: '1px solid #404040',
+      borderRadius: '12px',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+      minWidth: '200px',
+      zIndex: 60,
+      overflow: 'hidden'
+    },
+    dropdownItem: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.75rem',
+      padding: '0.75rem 1rem',
+      background: 'transparent',
+      border: 'none',
+      color: '#a1a1aa',
+      cursor: 'pointer',
+      transition: 'all 0.2s ease',
+      width: '100%',
+      textAlign: 'left',
+      fontSize: '14px',
+      fontWeight: '500'
     },
     heroSection: {
       minHeight: '100vh',
@@ -298,20 +344,77 @@ const LandingPageStyled = ({ onNavigateToApp }) => {
             >
               Ver Árbol
             </button>
-            <button 
-              onClick={() => onNavigateToApp()}
-              style={styles.btnGhost}
-              onMouseEnter={(e) => {
-                e.target.style.color = '#ffffff';
-                e.target.style.background = '#2a2a2a';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.color = '#a1a1aa';
-                e.target.style.background = 'transparent';
-              }}
-            >
-              Expandir
-            </button>
+            {/* Menú desplegable de Expandir Árbol */}
+            <div style={styles.dropdownContainer}>
+              <button 
+                onClick={() => setShowExpandDropdown(!showExpandDropdown)}
+                style={styles.expandButton}
+                onMouseEnter={(e) => {
+                  e.target.style.color = '#ffffff';
+                  e.target.style.background = '#2a2a2a';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.color = '#a1a1aa';
+                  e.target.style.background = 'transparent';
+                }}
+              >
+                Expandir
+                <svg 
+                  style={{
+                    width: '16px', 
+                    height: '16px',
+                    transform: showExpandDropdown ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.2s ease'
+                  }} 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              {showExpandDropdown && (
+                <div style={styles.dropdownMenu}>
+                  <button 
+                    style={styles.dropdownItem}
+                    onClick={() => {
+                      onNavigateToAddPerson();
+                      setShowExpandDropdown(false);
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = '#2a2a2a';
+                      e.target.style.color = '#ffffff';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = 'transparent';
+                      e.target.style.color = '#a1a1aa';
+                    }}
+                  >
+                    <span>➕</span>
+                    Agregar Persona
+                  </button>
+                  <button 
+                    style={styles.dropdownItem}
+                    onClick={() => {
+                      onNavigateToPersonList();
+                      setShowExpandDropdown(false);
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = '#2a2a2a';
+                      e.target.style.color = '#ffffff';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = 'transparent';
+                      e.target.style.color = '#a1a1aa';
+                    }}
+                  >
+                    <span>📋</span>
+                    Lista de Personas
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </nav>
