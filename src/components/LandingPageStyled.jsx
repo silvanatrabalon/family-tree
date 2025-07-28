@@ -344,7 +344,7 @@ const LandingPageStyled = ({ onNavigateToApp, onNavigateToAddPerson, onNavigateT
               }}
 
             >
-              Ver Árbol
+              Árbol Familiar
             </button>
             {/* Menú desplegable de Expandir Árbol */}
             <div style={styles.dropdownContainer}>
@@ -478,11 +478,19 @@ const LandingPageStyled = ({ onNavigateToApp, onNavigateToAddPerson, onNavigateT
             </h2>
             <div style={{...styles.sectionSubtitle, fontSize: '20px', fontWeight: '600', marginBottom: '2rem'}}>
               <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '0.5rem'}}>
-                <span style={{color: '#6c47ff'}}>📅</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6c47ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
                 <span>Domingo 14 de Septiembre, de 10hs a 18hs</span>
               </div>
-              <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', }}>
-                <span style={{color: '#6c47ff'}}>📍</span>
+              <div style={{display: 'flex', paddingRight: '1rem'}}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6c47ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
                 <span>Campo Amudoch - Ruta 11 KM 1001, Resistencia, Chaco</span>
               </div>
             </div>

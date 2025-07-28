@@ -18,7 +18,7 @@ const LandingPage = ({ onNavigateToApp }) => {
                 onClick={() => onNavigateToApp()}
                 className="btn-primary"
               >
-                Ver Árbol
+                Árbol Familiar
               </button>
               <button 
                 onClick={() => onNavigateToApp()}
